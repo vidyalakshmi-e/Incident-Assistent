@@ -1,0 +1,295 @@
+{
+  "query_understanding": {
+    "original": "the system feels slow and basic things take forever",
+    "expanded_query": "the system feels slow and basic things take forever performance degradation high latency slow response time Application",
+    "technical_concepts": [
+      "performance degradation",
+      "high latency",
+      "slow response time"
+    ],
+    "matched_phrases": [
+      {
+        "phrase": "slow",
+        "maps_to": "slow response",
+        "concepts": [
+          "performance degradation",
+          "high latency",
+          "slow response time"
+        ]
+      }
+    ],
+    "hints": {
+      "component": "Application"
+    },
+    "token_count": 7,
+    "specificity": 0.575,
+    "is_vague": true,
+    "llm_expansion": []
+  },
+  "results": [
+    {
+      "rank": 1,
+      "incident_id": "IM0039198",
+      "title": "Document Management System Response Time Degradation",
+      "description": "Transactions are slow and eventually stop working after each restart.",
+      "resolution_notes": "A memory leak in the session cache had caused the heap to overflow, leading to application crashes. The service was restarted during a low traffic period, resolving the immediate issue but not fixing the underlying problem.",
+      "metadata": {
+        "category": "Application",
+        "ci_name": "SBA000054",
+        "ci_group": "app_server",
+        "ci_subcategory": "Server Based Application",
+        "priority": "Not Set",
+        "impact": "Not Set",
+        "urgency": "3",
+        "status": "Closed",
+        "closure_code": "Other",
+        "closure_class": "unspecified",
+        "severity": "Unknown",
+        "impact_scope": "Unknown",
+        "suggested_team": "Application Support",
+        "source": "B_event_log",
+        "open_time": "2014-02-24T13:07:00",
+        "resolved_time": "2014-02-24T13:16:00",
+        "resolution_hours": 0.15,
+        "reopened": false,
+        "no_of_reassignments": 0.0,
+        "related_change": null,
+        "kb_number": "KM0000052",
+        "text_generator": "llm:Qwen/Qwen2.5-3B-Instruct"
+      },
+      "provenance": {
+        "title": "synthetic",
+        "description": "synthetic",
+        "resolution_notes": "synthetic",
+        "category": "derived",
+        "priority": "original",
+        "impact": "original",
+        "urgency": "original",
+        "closure_code": "original",
+        "open_time": "original",
+        "resolution_hours": "derived",
+        "severity": "missing",
+        "impact_scope": "missing"
+      },
+      "quality": {
+        "score": 0.925,
+        "tier": "high",
+        "flags": [],
+        "influence_weight": 0.74
+      },
+      "scores": {
+        "semantic_similarity": 0.5179,
+        "semantic_rank": 15,
+        "bm25_score": 17.643,
+        "bm25_rank": 6,
+        "rrf_score": 0.02848,
+        "rerank_logit": 0.889,
+        "relevance_confidence": 0.7391,
+        "confidence_basis": "Platt-calibrated cross-encoder probability"
+      },
+      "why_retrieved": {
+        "summary": "semantic rank 15 (cosine 0.52); BM25 rank 6 on terms applic, degrad, response, slow, system, time; cross-encoder relevance 0.74",
+        "matched_terms": [
+          "applic",
+          "degrad",
+          "response",
+          "slow",
+          "system",
+          "time"
+        ],
+        "matched_concepts": [
+          "slow response time"
+        ],
+        "retrievers": [
+          "semantic",
+          "bm25"
+        ],
+        "filters_matched": {}
+      },
+      "duplicates_collapsed": 0,
+      "duplicate_ids": []
+    },
+    {
+      "rank": 2,
+      "incident_id": "IM0037705",
+      "title": "Document Management System Response Time Degradation",
+      "description": "Transactions slow down and eventually stop working after each restart. Application response time deteriorates.",
+      "resolution_notes": "Memory leak in the session cache was identified as the root cause. The vendor hotfix was deployed to address this issue, and the system has been stable without heap growth for two days.",
+      "metadata": {
+        "category": "Application",
+        "ci_name": "SUB000512",
+        "ci_group": "app_web",
+        "ci_subcategory": "Web Based Application",
+        "priority": "4",
+        "impact": "4",
+        "urgency": "4",
+        "status": "Closed",
+        "closure_code": "Software",
+        "closure_class": "software_fix",
+        "severity": "low",
+        "impact_scope": "limited (few users)",
+        "suggested_team": "Application Support",
+        "source": "B_event_log",
+        "open_time": "2014-02-18T11:25:00",
+        "resolved_time": "2014-02-26T13:41:00",
+        "resolution_hours": 194.26666666666668,
+        "reopened": false,
+        "no_of_reassignments": 2.0,
+        "related_change": null,
+        "kb_number": "KM0000776",
+        "text_generator": "llm:Qwen/Qwen2.5-3B-Instruct"
+      },
+      "provenance": {
+        "title": "synthetic",
+        "description": "synthetic",
+        "resolution_notes": "synthetic",
+        "category": "derived",
+        "priority": "original",
+        "impact": "original",
+        "urgency": "original",
+        "closure_code": "original",
+        "open_time": "original",
+        "resolution_hours": "derived",
+        "severity": "derived",
+        "impact_scope": "derived"
+      },
+      "quality": {
+        "score": 1.0,
+        "tier": "high",
+        "flags": [],
+        "influence_weight": 0.8
+      },
+      "scores": {
+        "semantic_similarity": 0.5088,
+        "semantic_rank": 26,
+        "bm25_score": 18.951,
+        "bm25_rank": 3,
+        "rrf_score": 0.0275,
+        "rerank_logit": 0.549,
+        "relevance_confidence": 0.7118,
+        "confidence_basis": "Platt-calibrated cross-encoder probability"
+      },
+      "why_retrieved": {
+        "summary": "semantic rank 26 (cosine 0.51); BM25 rank 3 on terms applic, degrad, response, slow, system, time; cross-encoder relevance 0.71",
+        "matched_terms": [
+          "applic",
+          "degrad",
+          "response",
+          "slow",
+          "system",
+          "time"
+        ],
+        "matched_concepts": [
+          "slow response time"
+        ],
+        "retrievers": [
+          "semantic",
+          "bm25"
+        ],
+        "filters_matched": {}
+      },
+      "duplicates_collapsed": 0,
+      "duplicate_ids": []
+    },
+    {
+      "rank": 3,
+      "incident_id": "IM0010220",
+      "title": "Loan Origination System Response Time Degradation",
+      "description": "Transactions are slow after each restart until the system crashes.",
+      "resolution_notes": "A memory leak in the application's session cache was identified as the root cause. The vendor-supplied fix was applied and deployed. The system was restarted, and no heap growth occurred over the next two days.",
+      "metadata": {
+        "category": "Application",
+        "ci_name": "DTA000016",
+        "ci_group": "app_desktop",
+        "ci_subcategory": "Desktop Application",
+        "priority": "4",
+        "impact": "4",
+        "urgency": "4",
+        "status": "Closed",
+        "closure_code": "Software",
+        "closure_class": "software_fix",
+        "severity": "low",
+        "impact_scope": "limited (few users)",
+        "suggested_team": "Workplace Applications",
+        "source": "B_event_log",
+        "open_time": "2013-11-01T17:01:00",
+        "resolved_time": "2013-11-01T18:30:00",
+        "resolution_hours": 1.4833333333333334,
+        "reopened": false,
+        "no_of_reassignments": 0.0,
+        "related_change": null,
+        "kb_number": "KM0001026",
+        "text_generator": "llm:Qwen/Qwen2.5-3B-Instruct"
+      },
+      "provenance": {
+        "title": "synthetic",
+        "description": "synthetic",
+        "resolution_notes": "synthetic",
+        "category": "derived",
+        "priority": "original",
+        "impact": "original",
+        "urgency": "original",
+        "closure_code": "original",
+        "open_time": "original",
+        "resolution_hours": "derived",
+        "severity": "derived",
+        "impact_scope": "derived"
+      },
+      "quality": {
+        "score": 0.925,
+        "tier": "high",
+        "flags": [],
+        "influence_weight": 0.74
+      },
+      "scores": {
+        "semantic_similarity": null,
+        "semantic_rank": null,
+        "bm25_score": 17.365,
+        "bm25_rank": 8,
+        "rrf_score": 0.01471,
+        "rerank_logit": 0.23,
+        "relevance_confidence": 0.6846,
+        "confidence_basis": "Platt-calibrated cross-encoder probability"
+      },
+      "why_retrieved": {
+        "summary": "BM25 rank 8 on terms applic, degrad, response, slow, system, time; cross-encoder relevance 0.68",
+        "matched_terms": [
+          "applic",
+          "degrad",
+          "response",
+          "slow",
+          "system",
+          "time"
+        ],
+        "matched_concepts": [
+          "slow response time"
+        ],
+        "retrievers": [
+          "bm25"
+        ],
+        "filters_matched": {}
+      },
+      "duplicates_collapsed": 0,
+      "duplicate_ids": []
+    }
+  ],
+  "mode": {
+    "semantic_available": true,
+    "reranked": true,
+    "embedder": "local:sentence-transformers/all-MiniLM-L6-v2",
+    "reranker": "local:cross-encoder/ms-marco-MiniLM-L-6-v2",
+    "labels": [],
+    "notes": []
+  },
+  "timings_ms": {
+    "query_processing": 0.27,
+    "embedding": 8.68,
+    "vector_search": 21.05,
+    "bm25": 8.8,
+    "hybrid_fusion": 0.07,
+    "reranking": 58.51,
+    "fingerprint": 0.44,
+    "pattern_match": 38.62,
+    "novelty": 1.37
+  }
+}

@@ -1,0 +1,729 @@
+{
+  "detected": {
+    "text_rich": {
+      "file": "incidents_structured.xlsx",
+      "reason": "has free-text columns ['Incident Details', 'Description', 'Solution']"
+    },
+    "structured": {
+      "file": "incidents_text.csv",
+      "reason": "has structured ITSM columns ['CI_Cat', 'CI_Subcat', 'Closure_Code', 'Impact', 'Open_Time', 'Priority', 'Urgency'] and no free-text column"
+    }
+  },
+  "text_rich": {
+    "rows": 150,
+    "columns": [
+      {
+        "column": "Media Asset",
+        "dtype": "object",
+        "nulls": 0,
+        "null_pct": 0.0,
+        "unique": 150,
+        "top_values": {
+          "MediaServer01": 1,
+          "MediaServer95": 1,
+          "MediaServer97": 1,
+          "MediaServer98": 1,
+          "MediaServer99": 1,
+          "MediaServer100": 1
+        }
+      },
+      {
+        "column": "Category",
+        "dtype": "object",
+        "nulls": 0,
+        "null_pct": 0.0,
+        "unique": 7,
+        "top_values": {
+          "Storage": 22,
+          "Application": 22,
+          "Security": 22,
+          "Performance": 21,
+          "Database": 21,
+          "Hardware": 21
+        }
+      },
+      {
+        "column": "Ticket ID",
+        "dtype": "object",
+        "nulls": 0,
+        "null_pct": 0.0,
+        "unique": 150,
+        "top_values": {
+          "TKT-1001": 1,
+          "TKT-1095": 1,
+          "TKT-1097": 1,
+          "TKT-1098": 1,
+          "TKT-1099": 1,
+          "TKT-1100": 1
+        }
+      },
+      {
+        "column": "Incident ID",
+        "dtype": "object",
+        "nulls": 0,
+        "null_pct": 0.0,
+        "unique": 150,
+        "top_values": {
+          "INC-5001": 1,
+          "INC-5095": 1,
+          "INC-5097": 1,
+          "INC-5098": 1,
+          "INC-5099": 1,
+          "INC-5100": 1
+        }
+      },
+      {
+        "column": "Incident Details",
+        "dtype": "object",
+        "nulls": 0,
+        "null_pct": 0.0,
+        "unique": 7,
+        "top_values": {
+          "Disk Space Alert": 22,
+          "Slow Delivery": 22,
+          "Encoding Crash": 22,
+          "Unauthorized Access Attempt": 21,
+          "High CPU Usage": 21,
+          "Database Timeout": 21
+        }
+      },
+      {
+        "column": "Description",
+        "dtype": "object",
+        "nulls": 0,
+        "null_pct": 0.0,
+        "unique": 7,
+        "top_values": {
+          "Storage exceeded threshold causing upload failures": 22,
+          "Media loading slowly due to cache miss": 22,
+          "Encoder crashed during media conversion": 22,
+          "Multiple failed login attempts detected": 21,
+          "Processing service consuming excessive CPU": 21,
+          "Queries timing out during peak usage": 21
+        }
+      },
+      {
+        "column": "Solution",
+        "dtype": "object",
+        "nulls": 0,
+        "null_pct": 0.0,
+        "unique": 7,
+        "top_values": {
+          "Archive old media files and expand storage volume": 22,
+          "Refresh CDN cache and optimize media compression": 22,
+          "Restart encoder service and update codec library": 22,
+          "Block IP and enforce multi-factor authentication": 21,
+          "Optimize processing parameters and restart service": 21,
+          "Add indexes and optimize query performance": 21
+        }
+      }
+    ],
+    "samples": [
+      {
+        "Media Asset": "MediaServer01",
+        "Category": "Storage",
+        "Ticket ID": "TKT-1001",
+        "Incident ID": "INC-5001",
+        "Incident Details": "Disk Space Alert",
+        "Description": "Storage exceeded threshold causing upload failures",
+        "Solution": "Archive old media files and expand storage volume"
+      },
+      {
+        "Media Asset": "MediaServer02",
+        "Category": "Application",
+        "Ticket ID": "TKT-1002",
+        "Incident ID": "INC-5002",
+        "Incident Details": "Slow Delivery",
+        "Description": "Media loading slowly due to cache miss",
+        "Solution": "Refresh CDN cache and optimize media compression"
+      },
+      {
+        "Media Asset": "MediaServer03",
+        "Category": "Security",
+        "Ticket ID": "TKT-1003",
+        "Incident ID": "INC-5003",
+        "Incident Details": "Encoding Crash",
+        "Description": "Encoder crashed during media conversion",
+        "Solution": "Restart encoder service and update codec library"
+      },
+      {
+        "Media Asset": "MediaServer04",
+        "Category": "Performance",
+        "Ticket ID": "TKT-1004",
+        "Incident ID": "INC-5004",
+        "Incident Details": "Unauthorized Access Attempt",
+        "Description": "Multiple failed login attempts detected",
+        "Solution": "Block IP and enforce multi-factor authentication"
+      },
+      {
+        "Media Asset": "MediaServer05",
+        "Category": "Database",
+        "Ticket ID": "TKT-1005",
+        "Incident ID": "INC-5005",
+        "Incident Details": "High CPU Usage",
+        "Description": "Processing service consuming excessive CPU",
+        "Solution": "Optimize processing parameters and restart service"
+      }
+    ],
+    "expected_vs_actual": {
+      "expected_and_present": [
+        "Incident Details",
+        "Description",
+        "Solution"
+      ],
+      "expected_but_missing": [
+        "description",
+        "resolution_notes"
+      ],
+      "present_but_not_expected": [
+        "Media Asset",
+        "Category",
+        "Ticket ID",
+        "Incident ID"
+      ]
+    }
+  },
+  "structured": {
+    "rows": 46606,
+    "columns": [
+      {
+        "column": "CI_Name",
+        "dtype": "object",
+        "nulls": 0,
+        "null_pct": 0.0,
+        "unique": 3019,
+        "top_values": {
+          "SUB000456": 3050,
+          "SBA000263": 2176,
+          "SBA000607": 1743,
+          "SBA000462": 1698,
+          "WBA000058": 1614,
+          "WBA000133": 1453
+        }
+      },
+      {
+        "column": "CI_Cat",
+        "dtype": "object",
+        "nulls": 111,
+        "null_pct": 0.24,
+        "unique": 12,
+        "top_values": {
+          "application": 32900,
+          "subapplication": 7782,
+          "computer": 3643,
+          "storage": 703,
+          "hardware": 442,
+          "software": 333
+        }
+      },
+      {
+        "column": "CI_Subcat",
+        "dtype": "object",
+        "nulls": 111,
+        "null_pct": 0.24,
+        "unique": 64,
+        "top_values": {
+          "Server Based Application": 18811,
+          "Web Based Application": 15311,
+          "Desktop Application": 3876,
+          "Laptop": 1921,
+          "SAP": 1199,
+          "Banking Device": 916
+        }
+      },
+      {
+        "column": "WBS",
+        "dtype": "object",
+        "nulls": 0,
+        "null_pct": 0.0,
+        "unique": 274,
+        "top_values": {
+          "WBS000073": 13342,
+          "WBS000091": 2500,
+          "WBS000263": 2283,
+          "WBS000072": 2197,
+          "WBS000271": 1186,
+          "WBS000095": 1102
+        }
+      },
+      {
+        "column": "Incident_ID",
+        "dtype": "object",
+        "nulls": 0,
+        "null_pct": 0.0,
+        "unique": 46606,
+        "top_values": {
+          "IM0000004": 1,
+          "IM0031350": 1,
+          "IM0031352": 1,
+          "IM0031353": 1,
+          "IM0031354": 1,
+          "IM0031355": 1
+        }
+      },
+      {
+        "column": "Status",
+        "dtype": "object",
+        "nulls": 0,
+        "null_pct": 0.0,
+        "unique": 2,
+        "top_values": {
+          "Closed": 46597,
+          "Work in progress": 9
+        }
+      },
+      {
+        "column": "Impact",
+        "dtype": "object",
+        "nulls": 0,
+        "null_pct": 0.0,
+        "unique": 6,
+        "top_values": {
+          "4": 22556,
+          "5": 16741,
+          "3": 5234,
+          "NS": 1380,
+          "2": 692,
+          "1": 3
+        }
+      },
+      {
+        "column": "Urgency",
+        "dtype": "object",
+        "nulls": 0,
+        "null_pct": 0.0,
+        "unique": 6,
+        "top_values": {
+          "4": 22588,
+          "5": 16779,
+          "3": 6536,
+          "2": 696,
+          "1": 6,
+          "5 - Very Low": 1
+        }
+      },
+      {
+        "column": "Priority",
+        "dtype": "float64",
+        "nulls": 1380,
+        "null_pct": 2.96,
+        "unique": 5,
+        "top_values": {
+          "4.0": 22717,
+          "5.0": 16486,
+          "3.0": 5323,
+          "nan": 1380,
+          "2.0": 697,
+          "1.0": 3
+        }
+      },
+      {
+        "column": "number_cnt",
+        "dtype": "float64",
+        "nulls": 0,
+        "null_pct": 0.0,
+        "unique": 46606,
+        "top_values": {
+          "0.601292279": 1,
+          "0.197703759": 1,
+          "0.289214738": 1,
+          "0.036985671": 1,
+          "0.905729916": 1,
+          "0.542876703": 1
+        }
+      },
+      {
+        "column": "Category",
+        "dtype": "object",
+        "nulls": 0,
+        "null_pct": 0.0,
+        "unique": 4,
+        "top_values": {
+          "incident": 37748,
+          "request for information": 8846,
+          "complaint": 11,
+          "request for change": 1
+        }
+      },
+      {
+        "column": "KB_number",
+        "dtype": "object",
+        "nulls": 0,
+        "null_pct": 0.0,
+        "unique": 1825,
+        "top_values": {
+          "KM0001106": 1106,
+          "KM0000940": 864,
+          "KM0001444": 790,
+          "KM0002043": 773,
+          "KM0001825": 725,
+          "KM0000226": 587
+        }
+      },
+      {
+        "column": "Alert_Status",
+        "dtype": "object",
+        "nulls": 0,
+        "null_pct": 0.0,
+        "unique": 1,
+        "top_values": {
+          "closed": 46606
+        }
+      },
+      {
+        "column": "No_of_Reassignments",
+        "dtype": "float64",
+        "nulls": 1,
+        "null_pct": 0.0,
+        "unique": 41,
+        "top_values": {
+          "0.0": 27468,
+          "1.0": 7268,
+          "2.0": 5378,
+          "3.0": 2191,
+          "4.0": 1606,
+          "5.0": 721
+        }
+      },
+      {
+        "column": "Open_Time",
+        "dtype": "object",
+        "nulls": 0,
+        "null_pct": 0.0,
+        "unique": 34636,
+        "top_values": {
+          "24-03-2014 08:54": 7,
+          "21-02-2014 15:01": 6,
+          "24-01-2014 09:37": 6,
+          "12/11/2013 11:04": 6,
+          "21-01-2014 11:49": 6,
+          "25-11-2013 10:52": 6
+        }
+      },
+      {
+        "column": "Reopen_Time",
+        "dtype": "object",
+        "nulls": 44322,
+        "null_pct": 95.1,
+        "unique": 2244,
+        "top_values": {
+          "nan": 44322,
+          "20-03-2014 08:43": 2,
+          "29-10-2013 15:57": 2,
+          "18-12-2013 10:39": 2,
+          "7/10/2013 15:35": 2,
+          "13-12-2013 10:39": 2
+        }
+      },
+      {
+        "column": "Resolved_Time",
+        "dtype": "object",
+        "nulls": 1780,
+        "null_pct": 3.82,
+        "unique": 33627,
+        "top_values": {
+          "nan": 1780,
+          "10/10/2013 12:53": 7,
+          "10/3/2014 9:42": 6,
+          "31-03-2014 09:20": 6,
+          "16-12-2013 09:47": 6,
+          "12/2/2014 10:59": 6
+        }
+      },
+      {
+        "column": "Close_Time",
+        "dtype": "object",
+        "nulls": 0,
+        "null_pct": 0.0,
+        "unique": 34528,
+        "top_values": {
+          "2/10/2013 15:20": 21,
+          "3/12/2013 9:55": 15,
+          "13-01-2014 15:09": 13,
+          "21-02-2014 15:52": 12,
+          "10/2/2014 12:29": 11,
+          "21-02-2014 14:35": 10
+        }
+      },
+      {
+        "column": "Handle_Time_hrs",
+        "dtype": "object",
+        "nulls": 1,
+        "null_pct": 0.0,
+        "unique": 30638,
+        "top_values": {
+          "0": 236,
+          "0,034444444": 23,
+          "0,018333333": 22,
+          "0,016666667": 19,
+          "0,021388889": 19,
+          "0,009722222": 19
+        }
+      },
+      {
+        "column": "Closure_Code",
+        "dtype": "object",
+        "nulls": 460,
+        "null_pct": 0.99,
+        "unique": 14,
+        "top_values": {
+          "Other": 16470,
+          "Software": 13027,
+          "User error": 3554,
+          "No error - works as designed": 3530,
+          "Hardware": 2999,
+          "Data": 2209
+        }
+      },
+      {
+        "column": "No_of_Related_Interactions",
+        "dtype": "float64",
+        "nulls": 114,
+        "null_pct": 0.24,
+        "unique": 49,
+        "top_values": {
+          "1.0": 43058,
+          "2.0": 2736,
+          "3.0": 429,
+          "4.0": 124,
+          "nan": 114,
+          "5.0": 30
+        }
+      },
+      {
+        "column": "Related_Interaction",
+        "dtype": "object",
+        "nulls": 0,
+        "null_pct": 0.0,
+        "unique": 43060,
+        "top_values": {
+          "#MULTIVALUE": 3434,
+          "#N/B": 114,
+          "SD0000007": 1,
+          "SD0095431": 1,
+          "SD0095433": 1,
+          "SD0095432": 1
+        }
+      },
+      {
+        "column": "No_of_Related_Incidents",
+        "dtype": "float64",
+        "nulls": 45384,
+        "null_pct": 97.38,
+        "unique": 24,
+        "top_values": {
+          "nan": 45384,
+          "1.0": 1057,
+          "2.0": 74,
+          "3.0": 20,
+          "4.0": 13,
+          "5.0": 8
+        }
+      },
+      {
+        "column": "No_of_Related_Changes",
+        "dtype": "float64",
+        "nulls": 46046,
+        "null_pct": 98.8,
+        "unique": 4,
+        "top_values": {
+          "nan": 46046,
+          "1.0": 536,
+          "2.0": 21,
+          "3.0": 2,
+          "9.0": 1
+        }
+      },
+      {
+        "column": "Related_Change",
+        "dtype": "object",
+        "nulls": 46046,
+        "null_pct": 98.8,
+        "unique": 232,
+        "top_values": {
+          "nan": 46046,
+          "C00003013": 110,
+          "C00014762": 78,
+          "#MULTIVALUE": 24,
+          "C00007098": 16,
+          "C00012714": 10
+        }
+      }
+    ],
+    "samples": [
+      {
+        "CI_Name": "SUB000508",
+        "CI_Cat": "subapplication",
+        "CI_Subcat": "Web Based Application",
+        "WBS": "WBS000162",
+        "Incident_ID": "IM0000004",
+        "Status": "Closed",
+        "Impact": "4",
+        "Urgency": "4",
+        "Priority": "4.0",
+        "number_cnt": "0.601292279",
+        "Category": "incident",
+        "KB_number": "KM0000553",
+        "Alert_Status": "closed",
+        "No_of_Reassignments": "26.0",
+        "Open_Time": "5/2/2012 13:32",
+        "Reopen_Time": "nan",
+        "Resolved_Time": "4/11/2013 13:50",
+        "Close_Time": "4/11/2013 13:51",
+        "Handle_Time_hrs": "3,87,16,91,111",
+        "Closure_Code": "Other",
+        "No_of_Related_Interactions": "1.0",
+        "Related_Interaction": "SD0000007",
+        "No_of_Related_Incidents": "2.0",
+        "No_of_Related_Changes": "nan",
+        "Related_Change": "nan"
+      },
+      {
+        "CI_Name": "WBA000124",
+        "CI_Cat": "application",
+        "CI_Subcat": "Web Based Application",
+        "WBS": "WBS000088",
+        "Incident_ID": "IM0000005",
+        "Status": "Closed",
+        "Impact": "3",
+        "Urgency": "3",
+        "Priority": "3.0",
+        "number_cnt": "0.415049969",
+        "Category": "incident",
+        "KB_number": "KM0000611",
+        "Alert_Status": "closed",
+        "No_of_Reassignments": "33.0",
+        "Open_Time": "12/3/2012 15:44",
+        "Reopen_Time": "2/12/2013 12:31",
+        "Resolved_Time": "2/12/2013 12:36",
+        "Close_Time": "2/12/2013 12:36",
+        "Handle_Time_hrs": "4,35,47,86,389",
+        "Closure_Code": "Software",
+        "No_of_Related_Interactions": "1.0",
+        "Related_Interaction": "SD0000011",
+        "No_of_Related_Incidents": "1.0",
+        "No_of_Related_Changes": "nan",
+        "Related_Change": "nan"
+      },
+      {
+        "CI_Name": "DTA000024",
+        "CI_Cat": "application",
+        "CI_Subcat": "Desktop Application",
+        "WBS": "WBS000092",
+        "Incident_ID": "IM0000006",
+        "Status": "Closed",
+        "Impact": "NS",
+        "Urgency": "3",
+        "Priority": "nan",
+        "number_cnt": "0.517551335",
+        "Category": "request for information",
+        "KB_number": "KM0000339",
+        "Alert_Status": "closed",
+        "No_of_Reassignments": "3.0",
+        "Open_Time": "29-03-2012 12:36",
+        "Reopen_Time": "nan",
+        "Resolved_Time": "13-01-2014 15:12",
+        "Close_Time": "13-01-2014 15:13",
+        "Handle_Time_hrs": "4,84,31,19,444",
+        "Closure_Code": "No error - works as designed",
+        "No_of_Related_Interactions": "1.0",
+        "Related_Interaction": "SD0000017",
+        "No_of_Related_Incidents": "nan",
+        "No_of_Related_Changes": "nan",
+        "Related_Change": "nan"
+      },
+      {
+        "CI_Name": "WBA000124",
+        "CI_Cat": "application",
+        "CI_Subcat": "Web Based Application",
+        "WBS": "WBS000088",
+        "Incident_ID": "IM0000011",
+        "Status": "Closed",
+        "Impact": "4",
+        "Urgency": "4",
+        "Priority": "4.0",
+        "number_cnt": "0.642927218",
+        "Category": "incident",
+        "KB_number": "KM0000611",
+        "Alert_Status": "closed",
+        "No_of_Reassignments": "13.0",
+        "Open_Time": "17-07-2012 11:49",
+        "Reopen_Time": "nan",
+        "Resolved_Time": "14-11-2013 09:31",
+        "Close_Time": "14-11-2013 09:31",
+        "Handle_Time_hrs": "4,32,18,33,333",
+        "Closure_Code": "Operator error",
+        "No_of_Related_Interactions": "1.0",
+        "Related_Interaction": "SD0000025",
+        "No_of_Related_Incidents": "nan",
+        "No_of_Related_Changes": "nan",
+        "Related_Change": "nan"
+      },
+      {
+        "CI_Name": "WBA000124",
+        "CI_Cat": "application",
+        "CI_Subcat": "Web Based Application",
+        "WBS": "WBS000088",
+        "Incident_ID": "IM0000012",
+        "Status": "Closed",
+        "Impact": "4",
+        "Urgency": "4",
+        "Priority": "4.0",
+        "number_cnt": "0.345258343",
+        "Category": "incident",
+        "KB_number": "KM0000611",
+        "Alert_Status": "closed",
+        "No_of_Reassignments": "2.0",
+        "Open_Time": "10/8/2012 11:01",
+        "Reopen_Time": "nan",
+        "Resolved_Time": "8/11/2013 13:55",
+        "Close_Time": "8/11/2013 13:55",
+        "Handle_Time_hrs": "3,38,39,03,333",
+        "Closure_Code": "Other",
+        "No_of_Related_Interactions": "1.0",
+        "Related_Interaction": "SD0000029",
+        "No_of_Related_Incidents": "nan",
+        "No_of_Related_Changes": "nan",
+        "Related_Change": "nan"
+      }
+    ],
+    "expected_vs_actual": {
+      "expected_and_present": [
+        "CI_Cat",
+        "CI_Subcat",
+        "Impact",
+        "Urgency",
+        "Priority",
+        "Status",
+        "Reopen_Time",
+        "No_of_Reassignments",
+        "Closure_Code",
+        "Open_Time",
+        "Resolved_Time",
+        "No_of_Related_Incidents",
+        "Related_Change"
+      ],
+      "expected_but_missing": [],
+      "present_but_not_expected": [
+        "CI_Name",
+        "WBS",
+        "Incident_ID",
+        "number_cnt",
+        "Category",
+        "KB_number",
+        "Alert_Status",
+        "Close_Time",
+        "Handle_Time_hrs",
+        "No_of_Related_Interactions",
+        "Related_Interaction",
+        "No_of_Related_Changes"
+      ]
+    }
+  },
+  "join_key_check": {
+    "text_rich_id_example": "INC-5001",
+    "structured_id_example": "IM0000004",
+    "overlapping_ids": 0,
+    "decision": "no shared identifier \u2014 sources are processed as two independent pipelines feeding one schema"
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "mode_labels": [
+    "Retrieval-only mode \u2014 LLM unavailable"
+  ],
+  "llm_synthesis": null,
+  "top_resolution": {
+    "strategy_key": "F001-S2",
+    "action": "Restarting the application service",
+    "step": "The memory leak in the application's session cache was resolved by restarting the application service. This reduced memory usage from 96% to 40%, resolving the issue.",
+    "strategy_label": "Application service was restarted temporarily",
+    "expected_observation": "This reduced memory usage from 96% to 40%",
+    "supporting_incidents": [
+      "IM0006370",
+      "IM0030212",
+      "IM0042466",
+      "IM0024005",
+      "IM0034210"
+    ],
+    "evidence": [
+      {
+        "incident_id": "IM0006370",
+        "relevance_confidence": 0.9612,
+        "influence_weight": 0.8,
+        "quality_tier": "high",
+        "text_provenance": "synthetic",
+        "note": "The memory leak in the application's session cache was resolved by restarting the application service. This reduced memory usage from 96% to 40%, resolving the issue.",
+        "duplicates": 0
+      },
+      {
+        "incident_id": "IM0030212",
+        "relevance_confidence": 0.9589,
+        "influence_weight": 0.74,
+        "quality_tier": "high",
+        "text_provenance": "synthetic",
+        "note": "Memory leak in the application\u2019s session cache caused the application to run out of heap space. The application service was recycled during a downtime window, resolving the immediate issue but leaving the leak unresolved.",
+        "duplicates": 0
+      },
+      {
+        "incident_id": "IM0042466",
+        "relevance_confidence": 0.9578,
+        "influence_weight": 0.74,
+        "quality_tier": "high",
+        "text_provenance": "synthetic",
+        "note": "The application's session cache had a memory leak, leading to high memory usage. We restarted the application pool, reducing memory usage from 96% to 40%, resolving the issue.",
+        "duplicates": 0
+      },
+      {
+        "incident_id": "IM0024005",
+        "relevance_confidence": 0.9545,
+        "influence_weight": 0.74,
+        "quality_tier": "high",
+        "text_provenance": "synthetic",
+        "note": "Memory leak in the application's session cache was identified as the root cause. The application service was recycled during a quiet period, which restored normal response times but is a temporary solution as the leak persists.",
+        "duplicates": 0
+      },
+      {
+        "incident_id": "IM0034210",
+        "relevance_confidence": 0.9438,
+        "influence_weight": 0.74,
+        "quality_tier": "high",
+        "text_provenance": "synthetic",
+        "note": "Memory leak in the application's session cache causing heap exhaustion. Service was recycled during a quiet period to mitigate the issue.",
+        "duplicates": 0
+      }
+    ],
+    "confidence": 0.4289,
+    "confidence_components": {
+      "max_relevance": 0.9612,
+      "agreement": 0.5578,
+      "provenance_factor": 0.8
+    },
+    "matched_family_strategy": true,
+    "confidence_basis": "max calibrated relevance \u00d7 evidence agreement \u00d7 provenance factor",
+    "evidence_provenance": {
+      "original": 0,
+      "synthetic": 5
+    },
+    "kind": "observed historical resolution",
+    "strategy_stats": {
+      "n_incidents": 78,
+      "reopen_rate": 0.0769,
+      "reopen_ci_low": 0.0357,
+      "reopen_ci_high": 0.1578,
+      "median_resolution_hours": 4.92,
+      "stats_supported": true,
+      "basis": "78 incidents with real Reopen_Time / timestamps / reassignment fields"
+    },
+    "safety": {
+      "destructive": false,
+      "destructive_phrase": null,
+      "disruptive": true,
+      "disruptive_phrase": "Restarting",
+      "allowed": true,
+      "requires_human_confirmation": true,
+      "notes": [
+        "Disruptive action ('Restarting'): perform in an agreed window / confirm impact with the service owner."
+      ],
+      "independent_sources": 5
+    }
+  },
+  "health_llm": {
+    "available": false,
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "reason": "LLM_API_KEY is not set",
+    "calls": 0,
+    "cache_hits": 0,
+    "mode": "Retrieval-only mode \u2014 LLM unavailable"
+  },
+  "agent_messages": [
+    {
+      "sender": "pattern_intelligence_agent",
+      "recipient": "diagnostic_agent",
+      "intent": "PATTERN_CONTEXT",
+      "summary": "Matched F001 (Application \u00b7 slow response \u2014 memory leak / heap exhaustion)",
+      "payload": {
+        "family_id": "F001",
+        "match_strength": 0.909
+      },
+      "at": "2026-09-28T04:14:20.339127"
+    },
+    {
+      "sender": "diagnostic_agent",
+      "recipient": "user",
+      "intent": "STEP_PROPOSED",
+      "summary": "Top resolution: Restarting the application service",
+      "payload": {
+        "strategy_key": "F001-S2",
+        "confidence": 0.4289
+      },
+      "at": "2026-09-28T04:14:20.341126"
+    }
+  ]
+}

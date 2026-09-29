@@ -1,0 +1,2466 @@
+{
+  "platt": {
+    "a": 0.4044990101217974,
+    "b": 0.6818506455651293,
+    "pairs": 1280,
+    "positive_rate": 0.8234
+  },
+  "novelty": {
+    "threshold_p_known": 0.4896,
+    "model_weights": {
+      "max_relevance_logit": 2.432,
+      "max_semantic": -0.124,
+      "centroid_similarity": 1.473,
+      "fingerprint_support": -0.558
+    },
+    "validation": {
+      "precision": 0.9048,
+      "recall": 1.0,
+      "f1": 0.95,
+      "false_novel_rate": 0.0156,
+      "false_known_rate": 0.0,
+      "tp": 19,
+      "fp": 2,
+      "fn": 0,
+      "tn": 126,
+      "n_known": 128,
+      "n_novel": 19,
+      "selection_rule": "max novel recall s.t. false-novel rate \u2264 2% (validation)"
+    },
+    "test": {
+      "precision": 0.9545,
+      "recall": 1.0,
+      "f1": 0.9767,
+      "false_novel_rate": 0.0078,
+      "false_known_rate": 0.0,
+      "tp": 21,
+      "fp": 1,
+      "fn": 0,
+      "tn": 128,
+      "n_known": 129,
+      "n_novel": 21
+    },
+    "test_by_style": {
+      "technical": {
+        "n": 43,
+        "flagged_novel": 0
+      },
+      "lay": {
+        "n": 43,
+        "flagged_novel": 0
+      },
+      "vague": {
+        "n": 43,
+        "flagged_novel": 1
+      },
+      "novel": {
+        "n": 17,
+        "flagged_novel": 17
+      },
+      "hard": {
+        "n": 4,
+        "flagged_novel": 4
+      }
+    },
+    "baseline_single_feature": {
+      "feature": "max_relevance_logit",
+      "validation": {
+        "precision": 0.9,
+        "recall": 0.9474,
+        "f1": 0.9231,
+        "false_novel_rate": 0.0156,
+        "false_known_rate": 0.0526,
+        "tp": 18,
+        "fp": 2,
+        "fn": 1,
+        "tn": 126,
+        "n_known": 128,
+        "n_novel": 19,
+        "selection_rule": "max novel recall s.t. false-novel rate \u2264 2% (validation)"
+      },
+      "test": {
+        "precision": 0.8947,
+        "recall": 0.8095,
+        "f1": 0.85,
+        "false_novel_rate": 0.0155,
+        "false_known_rate": 0.1905,
+        "tp": 17,
+        "fp": 2,
+        "fn": 4,
+        "tn": 127,
+        "n_known": 129,
+        "n_novel": 21
+      }
+    },
+    "test_sweep": [
+      {
+        "threshold": 0.05,
+        "precision": 1.0,
+        "recall": 0.8095,
+        "f1": 0.8947,
+        "false_novel_rate": 0.0,
+        "false_known_rate": 0.1905,
+        "tp": 17,
+        "fp": 0,
+        "fn": 4,
+        "tn": 129,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.1,
+        "precision": 1.0,
+        "recall": 0.8095,
+        "f1": 0.8947,
+        "false_novel_rate": 0.0,
+        "false_known_rate": 0.1905,
+        "tp": 17,
+        "fp": 0,
+        "fn": 4,
+        "tn": 129,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.15,
+        "precision": 0.9444,
+        "recall": 0.8095,
+        "f1": 0.8718,
+        "false_novel_rate": 0.0078,
+        "false_known_rate": 0.1905,
+        "tp": 17,
+        "fp": 1,
+        "fn": 4,
+        "tn": 128,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.2,
+        "precision": 0.9444,
+        "recall": 0.8095,
+        "f1": 0.8718,
+        "false_novel_rate": 0.0078,
+        "false_known_rate": 0.1905,
+        "tp": 17,
+        "fp": 1,
+        "fn": 4,
+        "tn": 128,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.25,
+        "precision": 0.9444,
+        "recall": 0.8095,
+        "f1": 0.8718,
+        "false_novel_rate": 0.0078,
+        "false_known_rate": 0.1905,
+        "tp": 17,
+        "fp": 1,
+        "fn": 4,
+        "tn": 128,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.3,
+        "precision": 0.95,
+        "recall": 0.9048,
+        "f1": 0.9268,
+        "false_novel_rate": 0.0078,
+        "false_known_rate": 0.0952,
+        "tp": 19,
+        "fp": 1,
+        "fn": 2,
+        "tn": 128,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.35,
+        "precision": 0.9545,
+        "recall": 1.0,
+        "f1": 0.9767,
+        "false_novel_rate": 0.0078,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 1,
+        "fn": 0,
+        "tn": 128,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.4,
+        "precision": 0.9545,
+        "recall": 1.0,
+        "f1": 0.9767,
+        "false_novel_rate": 0.0078,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 1,
+        "fn": 0,
+        "tn": 128,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.45,
+        "precision": 0.9545,
+        "recall": 1.0,
+        "f1": 0.9767,
+        "false_novel_rate": 0.0078,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 1,
+        "fn": 0,
+        "tn": 128,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.5,
+        "precision": 0.9545,
+        "recall": 1.0,
+        "f1": 0.9767,
+        "false_novel_rate": 0.0078,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 1,
+        "fn": 0,
+        "tn": 128,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.55,
+        "precision": 0.9545,
+        "recall": 1.0,
+        "f1": 0.9767,
+        "false_novel_rate": 0.0078,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 1,
+        "fn": 0,
+        "tn": 128,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.6,
+        "precision": 0.9545,
+        "recall": 1.0,
+        "f1": 0.9767,
+        "false_novel_rate": 0.0078,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 1,
+        "fn": 0,
+        "tn": 128,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.65,
+        "precision": 0.913,
+        "recall": 1.0,
+        "f1": 0.9545,
+        "false_novel_rate": 0.0155,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 2,
+        "fn": 0,
+        "tn": 127,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.7,
+        "precision": 0.913,
+        "recall": 1.0,
+        "f1": 0.9545,
+        "false_novel_rate": 0.0155,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 2,
+        "fn": 0,
+        "tn": 127,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.75,
+        "precision": 0.913,
+        "recall": 1.0,
+        "f1": 0.9545,
+        "false_novel_rate": 0.0155,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 2,
+        "fn": 0,
+        "tn": 127,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.8,
+        "precision": 0.913,
+        "recall": 1.0,
+        "f1": 0.9545,
+        "false_novel_rate": 0.0155,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 2,
+        "fn": 0,
+        "tn": 127,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.85,
+        "precision": 0.84,
+        "recall": 1.0,
+        "f1": 0.913,
+        "false_novel_rate": 0.031,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 4,
+        "fn": 0,
+        "tn": 125,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.9,
+        "precision": 0.7,
+        "recall": 1.0,
+        "f1": 0.8235,
+        "false_novel_rate": 0.0698,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 9,
+        "fn": 0,
+        "tn": 120,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.95,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1": 0.6667,
+        "false_novel_rate": 0.1628,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 21,
+        "fn": 0,
+        "tn": 108,
+        "n_known": 129,
+        "n_novel": 21
+      }
+    ],
+    "test_details": [
+      {
+        "query_id": "Q0002",
+        "query": "Data lagging, showing outdated information from previous day across affected users and systems.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9216,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 3.971,
+          "max_semantic": 0.5439,
+          "centroid_similarity": 0.4699,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0006",
+        "query": "Mortgage app showing old figures from yesterday. Update didn't work overnight.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9871,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.452,
+          "max_semantic": 0.7489,
+          "centroid_similarity": 0.5527,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0008",
+        "query": "Reports in teller app are empty today, looks like data didn't load.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.996,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 7.844,
+          "max_semantic": 0.8316,
+          "centroid_similarity": 0.6584,
+          "fingerprint_support": 0.725
+        }
+      },
+      {
+        "query_id": "Q0009",
+        "query": "Customer Onboarding Portal is blank today.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.98,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.127,
+          "max_semantic": 0.7111,
+          "centroid_similarity": 0.5224,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0010",
+        "query": "Loan origination system scheduler alert: Job chain failed with return code 8 on server at 02:14.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9981,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 9.073,
+          "max_semantic": 0.8212,
+          "centroid_similarity": 0.6754,
+          "fingerprint_support": 0.725
+        }
+      },
+      {
+        "query_id": "Q0011",
+        "query": "Branch teller app intermittently fails to save data, but service resumes on its own.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9869,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.276,
+          "max_semantic": 0.8049,
+          "centroid_similarity": 0.6067,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0015",
+        "query": "App freezes; can't make new transactions.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9047,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": -0.317,
+          "max_semantic": 0.7818,
+          "centroid_similarity": 0.5829,
+          "fingerprint_support": 0.183
+        }
+      },
+      {
+        "query_id": "Q0016",
+        "query": "Morning errors block accessing documents.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9306,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 2.605,
+          "max_semantic": 0.5761,
+          "centroid_similarity": 0.5439,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0018",
+        "query": "Morning CRM client records errors display \"request timed out\" on error pages, particularly in the early hours.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9972,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 7.329,
+          "max_semantic": 0.8127,
+          "centroid_similarity": 0.7289,
+          "fingerprint_support": 0.787
+        }
+      },
+      {
+        "query_id": "Q0019",
+        "query": "Mortgage app connection issues; server timeouts.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9778,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.571,
+          "max_semantic": 0.7319,
+          "centroid_similarity": 0.6451,
+          "fingerprint_support": 0.787
+        }
+      },
+      {
+        "query_id": "Q0021",
+        "query": "Symptom: Duplicate contract listings appear multiple times for certain customers on the Internet Banking portal.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9679,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.153,
+          "max_semantic": 0.6846,
+          "centroid_similarity": 0.5638,
+          "fingerprint_support": 0.514
+        }
+      },
+      {
+        "query_id": "Q0022",
+        "query": "HR site directs users to wrong old address info.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.979,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.721,
+          "max_semantic": 0.6255,
+          "centroid_similarity": 0.5727,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0023",
+        "query": "Incorrect client addresses displayed incorrectly in CRM, conflicting with updated local records only visible to me.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9882,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.82,
+          "max_semantic": 0.7849,
+          "centroid_similarity": 0.6349,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0024",
+        "query": "Customer reappears with duplicate contract entries upon attempting new loan creation in Loan Origination System.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9829,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.149,
+          "max_semantic": 0.7336,
+          "centroid_similarity": 0.585,
+          "fingerprint_support": 0.514
+        }
+      },
+      {
+        "query_id": "Q0026",
+        "query": "Bulk import changed addresses wrong way for some users, importing from wrong data column.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9951,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.873,
+          "max_semantic": 0.8182,
+          "centroid_similarity": 0.6342,
+          "fingerprint_support": 0.514
+        }
+      },
+      {
+        "query_id": "Q0027",
+        "query": "Customer addresses wrong in docs. Getting letters to outdated addresses.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9919,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.878,
+          "max_semantic": 0.7387,
+          "centroid_similarity": 0.6652,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0028",
+        "query": "Loan system errors: 312 wrong records lost link.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.989,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.893,
+          "max_semantic": 0.7606,
+          "centroid_similarity": 0.5968,
+          "fingerprint_support": 0.514
+        }
+      },
+      {
+        "query_id": "Q0029",
+        "query": "Bulk import updated incorrect customer addresses due to misaligned data columns for certain records.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9966,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.802,
+          "max_semantic": 0.7493,
+          "centroid_similarity": 0.6641,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0030",
+        "query": "Internet Banking shows wrong addresses for many users - they're listed under old ones.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9952,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.141,
+          "max_semantic": 0.7607,
+          "centroid_similarity": 0.6652,
+          "fingerprint_support": 0.514
+        }
+      },
+      {
+        "query_id": "Q0031",
+        "query": "Teller app is super slow and freezing for me and my co-workers.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9371,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.649,
+          "max_semantic": 0.7601,
+          "centroid_similarity": 0.5468,
+          "fingerprint_support": 0.809
+        }
+      },
+      {
+        "query_id": "Q0035",
+        "query": "Long garbage collection pauses and increasing old-gen heap size led to frequent freezing of Loan Origination System instances.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9964,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.573,
+          "max_semantic": 0.8414,
+          "centroid_similarity": 0.6055,
+          "fingerprint_support": 0.183
+        }
+      },
+      {
+        "query_id": "Q0036",
+        "query": "Document Management System is super slow, docs open really tight and freeze. Restarting fixes it for now but problem returns.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9147,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 3.828,
+          "max_semantic": 0.8065,
+          "centroid_similarity": 0.5549,
+          "fingerprint_support": 0.809
+        }
+      },
+      {
+        "query_id": "Q0039",
+        "query": "System slows down after restarts, stopping work for some users.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9765,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.756,
+          "max_semantic": 0.5998,
+          "centroid_similarity": 0.5835,
+          "fingerprint_support": 0.809
+        }
+      },
+      {
+        "query_id": "Q0040",
+        "query": "Payments processing slow, opening records takes time and screen freezes. Restart solves but issue comes back.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9939,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.2,
+          "max_semantic": 0.8043,
+          "centroid_similarity": 0.7513,
+          "fingerprint_support": 0.809
+        }
+      },
+      {
+        "query_id": "Q0041",
+        "query": "Engineer noted NullPointerException in new validation module of Loan Origination System after latest app release, impacting system functionality.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.992,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.503,
+          "max_semantic": 0.8644,
+          "centroid_similarity": 0.5215,
+          "fingerprint_support": 0.123
+        }
+      },
+      {
+        "query_id": "Q0044",
+        "query": "Branch teller application stopped printing branch teller overview post-update, previously functioning.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.993,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.3,
+          "max_semantic": 0.7583,
+          "centroid_similarity": 0.5978,
+          "fingerprint_support": 0.212
+        }
+      },
+      {
+        "query_id": "Q0047",
+        "query": "Can't print customer overview now; stopped working after update.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9705,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.286,
+          "max_semantic": 0.7381,
+          "centroid_similarity": 0.5332,
+          "fingerprint_support": 0.543
+        }
+      },
+      {
+        "query_id": "Q0048",
+        "query": "HR self-service glitch after update; synthetic transaction stopped.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9831,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.742,
+          "max_semantic": 0.7112,
+          "centroid_similarity": 0.5552,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0049",
+        "query": "Can't print customer onboarding overview after update. Worked before. Help?",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9929,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.293,
+          "max_semantic": 0.7348,
+          "centroid_similarity": 0.5513,
+          "fingerprint_support": 0.212
+        }
+      },
+      {
+        "query_id": "Q0050",
+        "query": "HR self-service portal API failed parsing updated payload in latest release, resulting in frontend failure.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9962,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 8.164,
+          "max_semantic": 0.8202,
+          "centroid_similarity": 0.5993,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0054",
+        "query": "Can't log into CRM now. Typing right info but still stuck on login page.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.8277,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 2.721,
+          "max_semantic": 0.7177,
+          "centroid_similarity": 0.5546,
+          "fingerprint_support": 0.96
+        }
+      },
+      {
+        "query_id": "Q0055",
+        "query": "System errors prevent loans from processing smoothly.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.8268,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 1.78,
+          "max_semantic": 0.648,
+          "centroid_similarity": 0.4878,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0056",
+        "query": "Can't log into branch teller app, keeps asking to try again.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9936,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 7.354,
+          "max_semantic": 0.8231,
+          "centroid_similarity": 0.6874,
+          "fingerprint_support": 0.96
+        }
+      },
+      {
+        "query_id": "Q0059",
+        "query": "Can't log into CRM to see records. Keep getting asked for login again.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.907,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.042,
+          "max_semantic": 0.7703,
+          "centroid_similarity": 0.5676,
+          "fingerprint_support": 0.96
+        }
+      },
+      {
+        "query_id": "Q0061",
+        "query": "Can't export files from payments service, they always come out blank.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9922,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.629,
+          "max_semantic": 0.749,
+          "centroid_similarity": 0.5929,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0062",
+        "query": "Incorrect usage led to misfunctioning of Loan Origination System features without observable errors in server logs.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9856,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.796,
+          "max_semantic": 0.7327,
+          "centroid_similarity": 0.5262,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0064",
+        "query": "Teller application lacks approval button, making request approval impossible.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9836,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.683,
+          "max_semantic": 0.7807,
+          "centroid_similarity": 0.566,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0066",
+        "query": "Can't export files from loan origination system. Colleagues having same issue.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9842,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.415,
+          "max_semantic": 0.7229,
+          "centroid_similarity": 0.5767,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0067",
+        "query": "Approval button vanished from risk dashboard; no time for detailed issues.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9712,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.346,
+          "max_semantic": 0.8431,
+          "centroid_similarity": 0.5308,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0069",
+        "query": "Customer unable to locate approval button for request validation within onboarding portal.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.994,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.758,
+          "max_semantic": 0.8123,
+          "centroid_similarity": 0.6167,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0072",
+        "query": "Teller app locking dates after submitting transactions. Can't change them now.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9952,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 7.103,
+          "max_semantic": 0.7914,
+          "centroid_similarity": 0.6217,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0073",
+        "query": "Mortgage advisory application fields lock post-submission, unlike observed elsewhere.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9564,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.885,
+          "max_semantic": 0.8296,
+          "centroid_similarity": 0.4659,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0074",
+        "query": "Payment fields lock upon submission, as per design, causing payments processing service to intermittently fail.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9904,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 3.485,
+          "max_semantic": 0.7175,
+          "centroid_similarity": 0.597,
+          "fingerprint_support": 0.0
+        }
+      },
+      {
+        "query_id": "Q0075",
+        "query": "Teller app locks date field post-submission, preventing changes; issue suspected but not confirmed.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9853,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 3.99,
+          "max_semantic": 0.7931,
+          "centroid_similarity": 0.6508,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0076",
+        "query": "Can't update loan date; submission locks it.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9864,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.542,
+          "max_semantic": 0.7747,
+          "centroid_similarity": 0.5892,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0079",
+        "query": "Mortgage app shows different rounding on summary vs details.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9901,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.547,
+          "max_semantic": 0.7419,
+          "centroid_similarity": 0.6461,
+          "fingerprint_support": 0.437
+        }
+      },
+      {
+        "query_id": "Q0080",
+        "query": "Can't update payment date; system glitch.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9751,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.245,
+          "max_semantic": 0.7406,
+          "centroid_similarity": 0.5418,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0081",
+        "query": "Self-service machines can't read cards in all branches after software update. Broken.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9994,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.135,
+          "max_semantic": 0.6686,
+          "centroid_similarity": 0.7477,
+          "fingerprint_support": 0.0
+        }
+      },
+      {
+        "query_id": "Q0085",
+        "query": "Self-service terminal fails to read all cards at branch location.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.998,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 7.708,
+          "max_semantic": 0.8299,
+          "centroid_similarity": 0.7395,
+          "fingerprint_support": 0.756
+        }
+      },
+      {
+        "query_id": "Q0086",
+        "query": "Server reported card reader failure, causing device to go offline.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9892,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.908,
+          "max_semantic": 0.6951,
+          "centroid_similarity": 0.6027,
+          "fingerprint_support": 0.756
+        }
+      },
+      {
+        "query_id": "Q0088",
+        "query": "Customer transactions halted due to reported card reader failure on branch Cash Device.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9956,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.509,
+          "max_semantic": 0.8357,
+          "centroid_similarity": 0.7149,
+          "fingerprint_support": 0.756
+        }
+      },
+      {
+        "query_id": "Q0089",
+        "query": "Cash machine error - can't use atm right now for customers.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.994,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.119,
+          "max_semantic": 0.638,
+          "centroid_similarity": 0.6319,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0090",
+        "query": "Branch cash machine card reader stopped working after update.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9972,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.652,
+          "max_semantic": 0.8277,
+          "centroid_similarity": 0.7522,
+          "fingerprint_support": 0.756
+        }
+      },
+      {
+        "query_id": "Q0091",
+        "query": "Profile loading too slow on my computer. It's taking over 5 mins and I think it's because of a big corrupt profile file (4GB).",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9981,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.955,
+          "max_semantic": 0.674,
+          "centroid_similarity": 0.7407,
+          "fingerprint_support": 0.269
+        }
+      },
+      {
+        "query_id": "Q0095",
+        "query": "Profile loading too slow - takes over 5 mins. Server thinks it's using a very old and big profile file.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9959,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.162,
+          "max_semantic": 0.6146,
+          "centroid_similarity": 0.6991,
+          "fingerprint_support": 0.269
+        }
+      },
+      {
+        "query_id": "Q0097",
+        "query": "Worker's desktop load index spiked to 10000, blocking new user session initiations.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9942,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.005,
+          "max_semantic": 0.7282,
+          "centroid_similarity": 0.6464,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0098",
+        "query": "Profile loading too slow; takes over 5 mins.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9986,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.097,
+          "max_semantic": 0.6167,
+          "centroid_similarity": 0.7602,
+          "fingerprint_support": 0.269
+        }
+      },
+      {
+        "query_id": "Q0099",
+        "query": "Profile loading extremely slow; takes over 5 mins.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9986,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.968,
+          "max_semantic": 0.6468,
+          "centroid_similarity": 0.7674,
+          "fingerprint_support": 0.269
+        }
+      },
+      {
+        "query_id": "Q0100",
+        "query": "CRM freezes, needs restarting.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9839,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.052,
+          "max_semantic": 0.7372,
+          "centroid_similarity": 0.5215,
+          "fingerprint_support": 0.183
+        }
+      },
+      {
+        "query_id": "Q0101",
+        "query": "Doc sys slow, lots of queries taking too long - db says many users' sessions are waiting for files to load.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9411,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 1.735,
+          "max_semantic": 0.6324,
+          "centroid_similarity": 0.591,
+          "fingerprint_support": 0.449
+        }
+      },
+      {
+        "query_id": "Q0104",
+        "query": "Awkward report shows slow query on transactions table.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.978,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 3.343,
+          "max_semantic": 0.7199,
+          "centroid_similarity": 0.6235,
+          "fingerprint_support": 0.449
+        }
+      },
+      {
+        "query_id": "Q0105",
+        "query": "Internet Banking is slow and times out in morning rush hours.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9842,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 2.824,
+          "max_semantic": 0.6834,
+          "centroid_similarity": 0.5757,
+          "fingerprint_support": 0.0
+        }
+      },
+      {
+        "query_id": "Q0106",
+        "query": "Customer search in payments service becomes slow and occasionally fails, taking longer than anticipated.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9967,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.335,
+          "max_semantic": 0.7696,
+          "centroid_similarity": 0.6787,
+          "fingerprint_support": 0.449
+        }
+      },
+      {
+        "query_id": "Q0107",
+        "query": "Risk reporting dashboard slow: full table scan in search query due to outdated optimizer statistics.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9956,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 7.734,
+          "max_semantic": 0.8353,
+          "centroid_similarity": 0.5949,
+          "fingerprint_support": 0.449
+        }
+      },
+      {
+        "query_id": "Q0109",
+        "query": "AWR report on server executes slowly, now performing full table scan on transactions table due to recent data load affecting execution plan.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9912,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.436,
+          "max_semantic": 0.8346,
+          "centroid_similarity": 0.6287,
+          "fingerprint_support": 0.449
+        }
+      },
+      {
+        "query_id": "Q0110",
+        "query": "CRM slow accessing records during busy morning - timeout issues.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9879,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.703,
+          "max_semantic": 0.7387,
+          "centroid_similarity": 0.6234,
+          "fingerprint_support": 0.449
+        }
+      },
+      {
+        "query_id": "Q0111",
+        "query": "System won't let me save any new entries.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9833,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.104,
+          "max_semantic": 0.5965,
+          "centroid_similarity": 0.5762,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0114",
+        "query": "Database reported ORA-01653 during monitoring: unable to extend USERS tablespace.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.995,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.695,
+          "max_semantic": 0.75,
+          "centroid_similarity": 0.565,
+          "fingerprint_support": 0.2
+        }
+      },
+      {
+        "query_id": "Q0115",
+        "query": "Can't save mortgage info. Getting a database error. Can't add new records.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9996,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 8.211,
+          "max_semantic": 0.8058,
+          "centroid_similarity": 0.7993,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0116",
+        "query": "Database crashed; unable to save data.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9924,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 3.7,
+          "max_semantic": 0.63,
+          "centroid_similarity": 0.6225,
+          "fingerprint_support": 0.085
+        }
+      },
+      {
+        "query_id": "Q0122",
+        "query": "Laptop won't turn on; needs BitLocker key.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9923,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.07,
+          "max_semantic": 0.7629,
+          "centroid_similarity": 0.7302,
+          "fingerprint_support": 1.0
+        }
+      },
+      {
+        "query_id": "Q0124",
+        "query": "Computer won't turn on at all. Showing black screen with blinking cursor.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9897,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 7.53,
+          "max_semantic": 0.73,
+          "centroid_similarity": 0.6373,
+          "fingerprint_support": 1.0
+        }
+      },
+      {
+        "query_id": "Q0125",
+        "query": "Laptop not starting after BIOS update. Showing black screen with blinking cursor.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9974,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 8.236,
+          "max_semantic": 0.8428,
+          "centroid_similarity": 0.7457,
+          "fingerprint_support": 1.0
+        }
+      },
+      {
+        "query_id": "Q0128",
+        "query": "Laptop boots but keeps asking for BitLocker key. Help?",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9585,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.147,
+          "max_semantic": 0.769,
+          "centroid_similarity": 0.6529,
+          "fingerprint_support": 1.0
+        }
+      },
+      {
+        "query_id": "Q0131",
+        "query": "Printing freezes; documents stuck in queue.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9959,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 3.985,
+          "max_semantic": 0.746,
+          "centroid_similarity": 0.7256,
+          "fingerprint_support": 0.304
+        }
+      },
+      {
+        "query_id": "Q0133",
+        "query": "Print spooler stopped working because of a broken print job. Print queue is full now.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9982,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.102,
+          "max_semantic": 0.7758,
+          "centroid_similarity": 0.7649,
+          "fingerprint_support": 0.543
+        }
+      },
+      {
+        "query_id": "Q0134",
+        "query": "Branch printer jammed - docs stuck in queue. Need to clean it or replace toner.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9928,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.255,
+          "max_semantic": 0.7046,
+          "centroid_similarity": 0.7107,
+          "fingerprint_support": 0.543
+        }
+      },
+      {
+        "query_id": "Q0135",
+        "query": "Branch printer fails to print documents.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9996,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 8.105,
+          "max_semantic": 0.8362,
+          "centroid_similarity": 0.8327,
+          "fingerprint_support": 0.543
+        }
+      },
+      {
+        "query_id": "Q0140",
+        "query": "Print problems at office branch. Spooler won't work right after updating printer driver.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9985,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.273,
+          "max_semantic": 0.7675,
+          "centroid_similarity": 0.7776,
+          "fingerprint_support": 0.543
+        }
+      },
+      {
+        "query_id": "Q0143",
+        "query": "Emails getting stuck in outbox. Can't send messages. Help?",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.999,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.672,
+          "max_semantic": 0.7685,
+          "centroid_similarity": 0.7597,
+          "fingerprint_support": 0.375
+        }
+      },
+      {
+        "query_id": "Q0147",
+        "query": "Can't send emails; they get stuck in outbox.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9996,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 8.308,
+          "max_semantic": 0.8079,
+          "centroid_similarity": 0.773,
+          "fingerprint_support": 0.375
+        }
+      },
+      {
+        "query_id": "Q0148",
+        "query": "Outlook cache issue due to mailbox quota exceeding, resulting in OST file growing to 48 GB.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9887,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.467,
+          "max_semantic": 0.736,
+          "centroid_similarity": 0.5614,
+          "fingerprint_support": 0.292
+        }
+      },
+      {
+        "query_id": "Q0153",
+        "query": "LAN port on server is slow - showing error messages, needs to be set to full speed.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.8709,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": -0.933,
+          "max_semantic": 0.5095,
+          "centroid_similarity": 0.5173,
+          "fingerprint_support": 0.0
+        }
+      },
+      {
+        "query_id": "Q0155",
+        "query": "Branch network goes down for a sec or two, apps keep disconnecting.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.997,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.822,
+          "max_semantic": 0.7796,
+          "centroid_similarity": 0.8064,
+          "fingerprint_support": 0.697
+        }
+      },
+      {
+        "query_id": "Q0159",
+        "query": "Network issues causing 5% packet loss to branch, affecting one team.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9984,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 7.692,
+          "max_semantic": 0.7679,
+          "centroid_similarity": 0.7419,
+          "fingerprint_support": 0.697
+        }
+      },
+      {
+        "query_id": "Q0161",
+        "query": "VPN keeps dropping connections every 10 mins for my work.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9954,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.501,
+          "max_semantic": 0.765,
+          "centroid_similarity": 0.7101,
+          "fingerprint_support": 0.775
+        }
+      },
+      {
+        "query_id": "Q0164",
+        "query": "Remote work VPN drops every 10 mins.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9958,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.481,
+          "max_semantic": 0.7643,
+          "centroid_similarity": 0.721,
+          "fingerprint_support": 0.775
+        }
+      },
+      {
+        "query_id": "Q0166",
+        "query": "Server couldn't agree on new security settings.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.1356,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -6.566,
+          "max_semantic": 0.4271,
+          "centroid_similarity": 0.5133,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0170",
+        "query": "Server-side site-to-site VPN tunnel experienced frequent disruptions, showing 14 consecutive down events in one hour.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9835,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.516,
+          "max_semantic": 0.7184,
+          "centroid_similarity": 0.6726,
+          "fingerprint_support": 0.775
+        }
+      },
+      {
+        "query_id": "Q0174",
+        "query": "Processing service experiences abnormally high CPU usage, impacting system performance.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9939,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 3.872,
+          "max_semantic": 0.6607,
+          "centroid_similarity": 0.7297,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0175",
+        "query": "Slow media loading observed due to cache miss, impacting delivery performance.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9923,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 0.505,
+          "max_semantic": 0.428,
+          "centroid_similarity": 0.9058,
+          "fingerprint_support": 0.809
+        }
+      },
+      {
+        "query_id": "Q0176",
+        "query": "Video stream for live broadcast is not working right now",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9208,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": -7.603,
+          "max_semantic": 0.4251,
+          "centroid_similarity": 0.8522,
+          "fingerprint_support": 0.0
+        }
+      },
+      {
+        "query_id": "Q0178",
+        "query": "SYNTAX_ERROR short dump in SAP Finance server due to unimported object referenced by a transported program.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.999,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 8.348,
+          "max_semantic": 0.8877,
+          "centroid_similarity": 0.8017,
+          "fingerprint_support": 0.85
+        }
+      },
+      {
+        "query_id": "Q0179",
+        "query": "Can't post in SAP Finance; system crashes on import.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9958,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.642,
+          "max_semantic": 0.8242,
+          "centroid_similarity": 0.8205,
+          "fingerprint_support": 0.85
+        }
+      },
+      {
+        "query_id": "Q0181",
+        "query": "Error: ABAP error in ST22 transaction. Happened after last night's data load. Server is down.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.995,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.077,
+          "max_semantic": 0.7778,
+          "centroid_similarity": 0.5932,
+          "fingerprint_support": 0.0
+        }
+      },
+      {
+        "query_id": "Q0183",
+        "query": "Can't post transactions in SAP Finance, keeps giving dump error since last night's update.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9986,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.979,
+          "max_semantic": 0.8817,
+          "centroid_similarity": 0.8256,
+          "fingerprint_support": 0.85
+        }
+      },
+      {
+        "query_id": "Q0188",
+        "query": "Using outdated credentials, scheduled task led to frequent lockouts for users on the Internet Banking portal.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9984,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.794,
+          "max_semantic": 0.8661,
+          "centroid_similarity": 0.7868,
+          "fingerprint_support": 0.702
+        }
+      },
+      {
+        "query_id": "Q0189",
+        "query": "Customer onboarding portal service account locked six times within an hour, triggering an automated alert.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9986,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 8.28,
+          "max_semantic": 0.864,
+          "centroid_similarity": 0.7372,
+          "fingerprint_support": 0.702
+        }
+      },
+      {
+        "query_id": "Q0192",
+        "query": "Scheduled task on server locked due to stale credentials, failing to update to new password post-revision.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.997,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.868,
+          "max_semantic": 0.7249,
+          "centroid_similarity": 0.6724,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0194",
+        "query": "Task can't start because old password is still used; need to fix it now.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9496,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.013,
+          "max_semantic": 0.6534,
+          "centroid_similarity": 0.5203,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0195",
+        "query": "Internet Banking couldn't log in after changing password; account locked repeatedly.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9952,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.037,
+          "max_semantic": 0.7505,
+          "centroid_similarity": 0.7092,
+          "fingerprint_support": 0.702
+        }
+      },
+      {
+        "query_id": "Q0196",
+        "query": "Internet banking account locked because old password left in scheduled task. Tech fixing it now.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9981,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.768,
+          "max_semantic": 0.8349,
+          "centroid_similarity": 0.7702,
+          "fingerprint_support": 0.702
+        }
+      },
+      {
+        "query_id": "Q0197",
+        "query": "Account lockout because server didn't update old password even after changing it. Some user accounts are locked now.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9982,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.402,
+          "max_semantic": 0.7737,
+          "centroid_similarity": 0.7856,
+          "fingerprint_support": 0.702
+        }
+      },
+      {
+        "query_id": "Q0198",
+        "query": "Got an error on customer onboarding saying \"not private.\" Hiding when trying to sign up new users.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9199,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.044,
+          "max_semantic": 0.7701,
+          "centroid_similarity": 0.4937,
+          "fingerprint_support": 0.95
+        }
+      },
+      {
+        "query_id": "Q0200",
+        "query": "Today, mortgage advisory app consistently displays \"Internet Not Secure\" due to TLS issues.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9797,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.009,
+          "max_semantic": 0.8268,
+          "centroid_similarity": 0.6345,
+          "fingerprint_support": 0.95
+        }
+      },
+      {
+        "query_id": "Q0201",
+        "query": "TLS handshakes failed intermittently between Mortgage Advisory server and backend services from midnight onwards.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9929,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.676,
+          "max_semantic": 0.8251,
+          "centroid_similarity": 0.7052,
+          "fingerprint_support": 0.95
+        }
+      },
+      {
+        "query_id": "Q0202",
+        "query": "Server won't work; connection fails with expired cert.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9879,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.534,
+          "max_semantic": 0.5921,
+          "centroid_similarity": 0.631,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0204",
+        "query": "Failed PKIX path validation on Internet Banking login, resulting in 'certificate expired' error upon backend call.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9954,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 7.738,
+          "max_semantic": 0.8809,
+          "centroid_similarity": 0.705,
+          "fingerprint_support": 0.95
+        }
+      },
+      {
+        "query_id": "Q0205",
+        "query": "Connection issues with onboarding portal all day.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9868,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.346,
+          "max_semantic": 0.7655,
+          "centroid_similarity": 0.6002,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0206",
+        "query": "Failed to log in; internet banking site broke.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9881,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.624,
+          "max_semantic": 0.7064,
+          "centroid_similarity": 0.5938,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0208",
+        "query": "App won't open; security blocks it.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9961,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 6.998,
+          "max_semantic": 0.7141,
+          "centroid_similarity": 0.6394,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0209",
+        "query": "Workstation applications were quarantined by endpoint agent post-policy update, blocking a required DLL file.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9996,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 7.798,
+          "max_semantic": 0.8379,
+          "centroid_similarity": 0.8061,
+          "fingerprint_support": 0.396
+        }
+      },
+      {
+        "query_id": "Q0212",
+        "query": "Oops, app needed DLL got caught in quarantine after policy change. Now it's not working properly. Help?",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9847,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 2.819,
+          "max_semantic": 0.8192,
+          "centroid_similarity": 0.6765,
+          "fingerprint_support": 0.396
+        }
+      },
+      {
+        "query_id": "Q0213",
+        "query": "Workstation application fails to load due to security block preventing its execution.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.991,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 3.558,
+          "max_semantic": 0.6675,
+          "centroid_similarity": 0.7066,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0217",
+        "query": "App stops working after update; blocked by security.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9926,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.98,
+          "max_semantic": 0.6936,
+          "centroid_similarity": 0.5992,
+          "fingerprint_support": 0.396
+        }
+      },
+      {
+        "query_id": "Q0221",
+        "query": "Slow Risk Reporting Dashboard post-monitoring agent update due to performance degradation.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9356,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.207,
+          "max_semantic": 0.6772,
+          "centroid_similarity": 0.4457,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0223",
+        "query": "Payments processing is super slow right now. Need help please.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.8731,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 2.749,
+          "max_semantic": 0.726,
+          "centroid_similarity": 0.5543,
+          "fingerprint_support": 0.809
+        }
+      },
+      {
+        "query_id": "Q0225",
+        "query": "Teller app on server is super slow today.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9849,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.818,
+          "max_semantic": 0.6984,
+          "centroid_similarity": 0.6052,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0228",
+        "query": "Failed to update portal last night; can't access customer info now.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9853,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 3.549,
+          "max_semantic": 0.5828,
+          "centroid_similarity": 0.6549,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0234",
+        "query": "Document Management System stopped working over weekend patch time.",
+        "label": "known",
+        "style": "lay",
+        "p_known": 0.9923,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.784,
+          "max_semantic": 0.741,
+          "centroid_similarity": 0.5201,
+          "fingerprint_support": 0.0
+        }
+      },
+      {
+        "query_id": "Q0236",
+        "query": "Payment issues since Monday morning.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9938,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 7.118,
+          "max_semantic": 0.4469,
+          "centroid_similarity": 0.572,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0238",
+        "query": "Insufficient space on shared drive prevents saving files.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9978,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 7.214,
+          "max_semantic": 0.799,
+          "centroid_similarity": 0.6904,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0239",
+        "query": "Since morning, application data volume uploads have failed for some users, causing data loss and system delays.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9873,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 4.243,
+          "max_semantic": 0.6431,
+          "centroid_similarity": 0.643,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0243",
+        "query": "Server crashed; logs filled up too fast.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.9139,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 0.926,
+          "max_semantic": 0.5685,
+          "centroid_similarity": 0.5023,
+          "fingerprint_support": 0.085
+        }
+      },
+      {
+        "query_id": "Q0247",
+        "query": "Upload failures for files to shared network folders observed; cannot complete uploads.",
+        "label": "known",
+        "style": "technical",
+        "p_known": 0.9918,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 5.69,
+          "max_semantic": 0.7032,
+          "centroid_similarity": 0.6255,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "Q0248",
+        "query": "Server switched ports erroring after maintenance, paths slow.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.8732,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 2.545,
+          "max_semantic": 0.5634,
+          "centroid_similarity": 0.5568,
+          "fingerprint_support": 0.833
+        }
+      },
+      {
+        "query_id": "Q0255",
+        "query": "Server slow; I/O lagged after two paths failed.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.8693,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 1.87,
+          "max_semantic": 0.5597,
+          "centroid_similarity": 0.5826,
+          "fingerprint_support": 0.833
+        }
+      },
+      {
+        "query_id": "Q0256",
+        "query": "Network slowdown impacts all tasks.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.6341,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 1.148,
+          "max_semantic": 0.4563,
+          "centroid_similarity": 0.48,
+          "fingerprint_support": 0.833
+        }
+      },
+      {
+        "query_id": "Q0257",
+        "query": "Computer struggles to fetch info from slow server storage.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.854,
+        "predicted": "known",
+        "features": {
+          "max_relevance_logit": 1.291,
+          "max_semantic": 0.5668,
+          "centroid_similarity": 0.5962,
+          "fingerprint_support": 0.833
+        }
+      },
+      {
+        "query_id": "NOVEL-003",
+        "query": "The UPS battery bank in the branch failed its self-test and the site is running without battery backup.",
+        "label": "novel",
+        "style": "novel",
+        "p_known": 0.2935,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -3.002,
+          "max_semantic": 0.3934,
+          "centroid_similarity": 0.4476,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "NOVEL-004",
+        "query": "Robotic tape library arm is jammed and the weekly offsite tape rotation cannot be performed.",
+        "label": "novel",
+        "style": "novel",
+        "p_known": 0.0047,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -11.093,
+          "max_semantic": 0.3728,
+          "centroid_similarity": 0.3759,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "NOVEL-006",
+        "query": "The satellite uplink for the disaster recovery site shows heavy rain fade and link margin below minimum.",
+        "label": "novel",
+        "style": "novel",
+        "p_known": 0.0051,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -8.749,
+          "max_semantic": 0.2775,
+          "centroid_similarity": 0.2747,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "NOVEL-009",
+        "query": "Leap second insertion caused the high-frequency trading engine to reject orders with timestamp errors.",
+        "label": "novel",
+        "style": "hard",
+        "p_known": 0.0201,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -7.963,
+          "max_semantic": 0.3798,
+          "centroid_similarity": 0.3791,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "NOVEL-010",
+        "query": "Elevator control system in the office tower sends fault notifications to the IT monitoring mailbox.",
+        "label": "novel",
+        "style": "novel",
+        "p_known": 0.0333,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -5.864,
+          "max_semantic": 0.4532,
+          "centroid_similarity": 0.3144,
+          "fingerprint_support": 0.375
+        }
+      },
+      {
+        "query_id": "NOVEL-011",
+        "query": "Digital signage screens in all branches display a test pattern after the content provider changed its feed URL.",
+        "label": "novel",
+        "style": "novel",
+        "p_known": 0.0162,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -6.646,
+          "max_semantic": 0.3909,
+          "centroid_similarity": 0.302,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "NOVEL-013",
+        "query": "The mainframe CICS region abends with ASRA when the new COBOL copybook is used in batch.",
+        "label": "novel",
+        "style": "hard",
+        "p_known": 0.0187,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -7.753,
+          "max_semantic": 0.4626,
+          "centroid_similarity": 0.2582,
+          "fingerprint_support": 0.0
+        }
+      },
+      {
+        "query_id": "NOVEL-016",
+        "query": "Smart building sensors flood the MQTT broker with retained messages and dashboards show stale temperatures.",
+        "label": "novel",
+        "style": "novel",
+        "p_known": 0.0114,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -7.697,
+          "max_semantic": 0.3435,
+          "centroid_similarity": 0.3108,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "NOVEL-017",
+        "query": "Our fax-to-mail gateway converts incoming faxes into blank PDF files.",
+        "label": "novel",
+        "style": "novel",
+        "p_known": 0.007,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -7.046,
+          "max_semantic": 0.3579,
+          "centroid_similarity": 0.2378,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "NOVEL-019",
+        "query": "Air quality sensors on the trading floor report CO2 above 2000 ppm and the ventilation system does not react.",
+        "label": "novel",
+        "style": "novel",
+        "p_known": 0.0006,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -10.635,
+          "max_semantic": 0.1982,
+          "centroid_similarity": 0.1483,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "NOVEL-021",
+        "query": "The branch coin-counting machine miscounts 2-euro coins after the calibration visit.",
+        "label": "novel",
+        "style": "novel",
+        "p_known": 0.0157,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -8.695,
+          "max_semantic": 0.4323,
+          "centroid_similarity": 0.3911,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "NOVEL-022",
+        "query": "The conference room video bar echoes remote participants in every meeting since the room was moved.",
+        "label": "novel",
+        "style": "novel",
+        "p_known": 0.009,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -9.323,
+          "max_semantic": 0.3264,
+          "centroid_similarity": 0.2473,
+          "fingerprint_support": 0.0
+        }
+      },
+      {
+        "query_id": "NOVEL-024",
+        "query": "Our speech-to-text transcription model for call center QA outputs text in the wrong language.",
+        "label": "novel",
+        "style": "novel",
+        "p_known": 0.0027,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -8.87,
+          "max_semantic": 0.2759,
+          "centroid_similarity": 0.2198,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "NOVEL-027",
+        "query": "The pneumatic tube system between the cash office and the vault is stuck with a carrier inside.",
+        "label": "novel",
+        "style": "novel",
+        "p_known": 0.0056,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -9.391,
+          "max_semantic": 0.3678,
+          "centroid_similarity": 0.3192,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "NOVEL-028",
+        "query": "The sprinkler control panel reports a pressure drop in zone 7 of the archive room.",
+        "label": "novel",
+        "style": "novel",
+        "p_known": 0.0025,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -9.043,
+          "max_semantic": 0.2979,
+          "centroid_similarity": 0.224,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "NOVEL-030",
+        "query": "A certificate transparency monitor detected a lookalike domain certificate issued for our brand.",
+        "label": "novel",
+        "style": "hard",
+        "p_known": 0.3136,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -0.17,
+          "max_semantic": 0.5983,
+          "centroid_similarity": 0.4481,
+          "fingerprint_support": 0.95
+        }
+      },
+      {
+        "query_id": "NOVEL-031",
+        "query": "The lobby's customer queue ticket dispenser prints the same ticket number repeatedly.",
+        "label": "novel",
+        "style": "novel",
+        "p_known": 0.2939,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -0.517,
+          "max_semantic": 0.5301,
+          "centroid_similarity": 0.3592,
+          "fingerprint_support": 0.543
+        }
+      },
+      {
+        "query_id": "NOVEL-035",
+        "query": "Gravity-fed coolant loop for the GPU cluster shows air bubbles and the pumps are cavitating.",
+        "label": "novel",
+        "style": "novel",
+        "p_known": 0.001,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -10.352,
+          "max_semantic": 0.2455,
+          "centroid_similarity": 0.1918,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "NOVEL-036",
+        "query": "The mailroom franking machine refuses to print postage because its postal licence expired.",
+        "label": "novel",
+        "style": "hard",
+        "p_known": 0.3378,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -0.481,
+          "max_semantic": 0.5509,
+          "centroid_similarity": 0.3783,
+          "fingerprint_support": 0.543
+        }
+      },
+      {
+        "query_id": "NOVEL-038",
+        "query": "The weather radar feed used by the facilities team stopped updating on the building operations screen.",
+        "label": "novel",
+        "style": "novel",
+        "p_known": 0.0076,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -9.537,
+          "max_semantic": 0.4449,
+          "centroid_similarity": 0.3602,
+          "fingerprint_support": 0.5
+        }
+      },
+      {
+        "query_id": "NOVEL-039",
+        "query": "The helicopter pad lighting controller on the head office roof does not switch on at dusk.",
+        "label": "novel",
+        "style": "novel",
+        "p_known": 0.0011,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -8.88,
+          "max_semantic": 0.2754,
+          "centroid_similarity": 0.1392,
+          "fingerprint_support": 0.5
+        }
+      }
+    ]
+  }
+}

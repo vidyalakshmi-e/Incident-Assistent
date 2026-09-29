@@ -1,0 +1,38 @@
+{
+  "query": "the system is slow",
+  "status": "awaiting_clarification",
+  "clarification": {
+    "field": "impact_scope",
+    "question": "Is this affecting a single user or multiple users?",
+    "options": [
+      "single user",
+      "multiple users",
+      "a whole team",
+      "the whole organization"
+    ],
+    "trigger": "low_confidence_vague",
+    "reason": "match confidence 0.33 < 0.45 and the report is short/vague",
+    "asked_at": "2026-09-28T04:14:19.765593",
+    "at_round": 0
+  },
+  "novelty": {
+    "verdict": "Known pattern \u2014 matched to historical incidents",
+    "is_novel": false,
+    "known_probability": 0.9704,
+    "threshold": 0.4896,
+    "features": {
+      "max_relevance_logit": 4.791,
+      "max_semantic": 0.552,
+      "centroid_similarity": 0.5998,
+      "fingerprint_support": 0.809
+    },
+    "contributions": {
+      "max_relevance_logit": 0.696,
+      "max_semantic": 0.087,
+      "centroid_similarity": 0.0,
+      "fingerprint_support": -0.631
+    },
+    "basis": "logistic model over 4 retrieval/fingerprint signals; weights and threshold fitted on the validation split of the labelled novelty set (see Evaluation \u2192 Novelty)",
+    "recommended_route": "historical resolution path"
+  }
+}

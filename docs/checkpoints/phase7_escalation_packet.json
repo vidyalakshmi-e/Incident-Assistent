@@ -1,0 +1,347 @@
+{
+  "packet_id": "ESC-d7a56c6e",
+  "created_at": "2026-09-28T04:14:19.658231",
+  "incident_id": "NEW-20260928041418-2FC5",
+  "session_id": "TS-5982059f79",
+  "reason": "clarification did not surface a new evidence-backed step",
+  "tier": "L2",
+  "tier_reasons": [
+    "guided troubleshooting exhausted without resolution"
+  ],
+  "tier_order": [
+    "L1",
+    "L2",
+    "L3"
+  ],
+  "suggested_team": "Application Support",
+  "suggested_expertise": "Application performance",
+  "routing_basis": "derived from the fingerprint's component and failure type (no assignment-group data exists in the source, so no individual-level expertise is claimed)",
+  "incident_summary": "The application is becoming slower and sometimes freezes when users try to open records. Restarting fixes it temporarily.",
+  "symptoms": [
+    "slow response",
+    "freeze / hang"
+  ],
+  "fingerprint": {
+    "values": {
+      "component": "Application",
+      "service": "Unknown",
+      "symptom": "slow response",
+      "failure_type": "performance degradation",
+      "trigger": "deployment / release",
+      "root_cause": "Unknown",
+      "environment": "Unknown",
+      "dependency": "Unknown",
+      "business_impact": "Degraded performance",
+      "impact_scope": "Unknown"
+    },
+    "provenance": {
+      "component": "derived",
+      "service": "missing",
+      "symptom": "derived",
+      "failure_type": "derived",
+      "trigger": "derived",
+      "root_cause": "missing",
+      "environment": "missing",
+      "dependency": "missing",
+      "business_impact": "derived",
+      "impact_scope": "missing"
+    },
+    "evidence": {
+      "symptom": "'slower'",
+      "failure_type": "symptom 'slow response'",
+      "component": "'application'",
+      "trigger": "engineer answer to clarifying question",
+      "business_impact": "rule: failure_type \u00d7 impact_scope (\u00d7 urgency)"
+    },
+    "symptoms": [
+      "slow response",
+      "freeze / hang"
+    ]
+  },
+  "metadata": {
+    "priority": "4",
+    "priority_source": "predicted from text",
+    "predicted_classification": {
+      "category": {
+        "value": "Application",
+        "probability": 0.7028,
+        "distribution": {
+          "Application": 0.703,
+          "Database": 0.039,
+          "Hardware": 0.057,
+          "Infrastructure": 0.068,
+          "Network": 0.039,
+          "Performance": 0.012,
+          "Security": 0.041,
+          "Storage": 0.042
+        },
+        "provenance": "derived (text classifier)"
+      },
+      "priority": {
+        "value": "4",
+        "probability": 0.3633,
+        "distribution": {
+          "2": 0.037,
+          "3": 0.337,
+          "4": 0.363,
+          "5": 0.263
+        },
+        "provenance": "derived (text classifier)"
+      },
+      "impact": {
+        "value": "4",
+        "probability": 0.3749,
+        "distribution": {
+          "2": 0.039,
+          "3": 0.251,
+          "4": 0.375,
+          "5": 0.335
+        },
+        "provenance": "derived (text classifier)"
+      },
+      "urgency": {
+        "value": "3",
+        "probability": 0.3685,
+        "distribution": {
+          "2": 0.035,
+          "3": 0.369,
+          "4": 0.354,
+          "5": 0.242
+        },
+        "provenance": "derived (text classifier)"
+      }
+    },
+    "predicted_resolution_time": {
+      "predicted_hours_median": 6.73,
+      "interval_p25_p75": [
+        1.79,
+        21.99
+      ],
+      "model": "HistGradientBoosting on log1p(hours) (+ quantile models)",
+      "test_metrics": {
+        "n_train": 35860,
+        "n_test": 8966,
+        "split": "time-based (latest 20% as test)",
+        "target": "resolution hours = Resolved_Time - Open_Time (recomputed from timestamps)",
+        "features": [
+          "ci_group",
+          "ci_subcategory",
+          "impact",
+          "urgency",
+          "priority",
+          "ticket_type",
+          "open_hour",
+          "open_weekday"
+        ],
+        "hours": {
+          "MAE": 47.46,
+          "RMSE": 100.57,
+          "R2": -0.0419,
+          "median_absolute_error": 16.49
+        },
+        "log_hours": {
+          "MAE": 1.4419,
+          "RMSE": 1.8109,
+          "R2": 0.0458
+        },
+        "baselines_log_hours": {
+          "global_median_MAE": 1.7208,
+          "global_median_R2": -0.1098,
+          "ci_subcategory_median_MAE": 1.6485,
+          "ci_subcategory_median_R2": -0.0401
+        },
+        "p25_p75_interval_coverage": 0.538
+      },
+      "features_used": {
+        "ci_group": "Unknown",
+        "ci_subcategory": "Unknown",
+        "impact": "Unknown",
+        "urgency": "Unknown",
+        "priority": "4",
+        "ticket_type": "incident",
+        "open_hour": "4",
+        "open_weekday": "0"
+      }
+    }
+  },
+  "checks_performed": [
+    "hybrid retrieval over the historical knowledge base",
+    "pattern matching \u2192 F001 Application \u00b7 slow response \u2014 memory leak / heap exhaustion (match strength 0.9094)",
+    "novelty check \u2192 Known pattern \u2014 matched to historical incidents",
+    "clarification (pre_escalation): 'Did this start after a recent deployment or configuration change?' \u2192 trigger = deployment / release"
+  ],
+  "clarification": {
+    "attempted": true,
+    "notes": [
+      {
+        "question": "Did this start after a recent deployment or configuration change?",
+        "trigger": "pre_escalation",
+        "answer": "yes, after a deployment / release",
+        "learned": "trigger = deployment / release"
+      }
+    ]
+  },
+  "resolution_attempt_history": [
+    {
+      "attempt_id": "ATT-5a1e5cd463",
+      "incident_id": "NEW-20260928041418-2FC5",
+      "session_id": "TS-5982059f79",
+      "round": 1,
+      "step_description": "Restarting the application service",
+      "strategy_key": "F001-S2",
+      "source_incident_ids": [
+        "IM0006370",
+        "IM0030212",
+        "IM0042466",
+        "IM0024005",
+        "IM0034210",
+        "IM0021128",
+        "IM0020152",
+        "IM0020628",
+        "IM0005882",
+        "IM0012299"
+      ],
+      "expected_observation": "This reduced memory usage from 96% to 40%",
+      "engineer_response": "FAILED",
+      "timestamp": "2026-09-28T04:14:19.074543",
+      "responded_at": "2026-09-28T04:14:19.083087",
+      "excluded_from_next_suggestion": true,
+      "confidence": 0.4345,
+      "notes": "The memory leak in the application's session cache was resolved by restarting the application service. This reduced memory usage from 96% to 40%, resolving the issue.\n[engineer] no change"
+    },
+    {
+      "attempt_id": "ATT-d9810a4efb",
+      "incident_id": "NEW-20260928041418-2FC5",
+      "session_id": "TS-5982059f79",
+      "round": 2,
+      "step_description": "We deployed the supplier's hotfix",
+      "strategy_key": "F001-S3",
+      "source_incident_ids": [
+        "IM0013194",
+        "IM0034372",
+        "IM0023994",
+        "IM0040519",
+        "IM0035225",
+        "IM0016687",
+        "IM0009442",
+        "IM0043790"
+      ],
+      "expected_observation": null,
+      "engineer_response": "FAILED",
+      "timestamp": "2026-09-28T04:14:19.191161",
+      "responded_at": "2026-09-28T04:14:19.195244",
+      "excluded_from_next_suggestion": true,
+      "confidence": 0.3664,
+      "notes": "The root cause was a memory leak in the session cache that was consuming the application's heap space. We deployed the supplier's hotfix, restarted the service, and monitored for two days without heap growth issues.\n[engineer] no change"
+    },
+    {
+      "attempt_id": "ATT-297169142f",
+      "incident_id": "NEW-20260928041418-2FC5",
+      "session_id": "TS-5982059f79",
+      "round": 3,
+      "step_description": "The vendor provided a patch which resolved the issue and kept heap usage stable over 48 hours",
+      "strategy_key": "F001-S1",
+      "source_incident_ids": [
+        "IM0016204",
+        "IM0034876",
+        "IM0041934",
+        "IM0046797",
+        "IM0032729",
+        "IM0043339",
+        "IM0037411",
+        "IM0025647",
+        "IM0046666",
+        "IM0006861",
+        "IM0014794",
+        "IM0019697",
+        "IM0041083",
+        "IM0044625",
+        "IM0036047",
+        "IM0021866"
+      ],
+      "expected_observation": "The vendor provided a patch which resolved the issue and kept heap usage stable over 48 hours",
+      "engineer_response": "FAILED",
+      "timestamp": "2026-09-28T04:14:19.299518",
+      "responded_at": "2026-09-28T04:14:19.304517",
+      "excluded_from_next_suggestion": true,
+      "confidence": 0.717,
+      "notes": "A memory leak in the application's session cache was identified, leading to object retention in the heap. The vendor provided a patch which resolved the issue and kept heap usage stable over 48 hours.\n[engineer] no change"
+    }
+  ],
+  "failed_approaches_do_not_repeat": [
+    "F001-S1",
+    "F001-S2",
+    "F001-S3"
+  ],
+  "retrieved_historical_incidents": [
+    {
+      "incident_id": "IM0006370",
+      "title": "Mortgage Advisory Application Slows Down",
+      "relevance_confidence": 0.9612,
+      "family": "F001",
+      "text_provenance": "synthetic"
+    },
+    {
+      "incident_id": "IM0030212",
+      "title": "Teller Application Slows Down",
+      "relevance_confidence": 0.9589,
+      "family": "F001",
+      "text_provenance": "synthetic"
+    },
+    {
+      "incident_id": "IM0042466",
+      "title": "Slow Document Management System",
+      "relevance_confidence": 0.9578,
+      "family": "F001",
+      "text_provenance": "synthetic"
+    },
+    {
+      "incident_id": "IM0024005",
+      "title": "Document Management System Slowdown",
+      "relevance_confidence": 0.9545,
+      "family": "F001",
+      "text_provenance": "synthetic"
+    },
+    {
+      "incident_id": "IM0013194",
+      "title": "Customer Onboarding Portal Slowness",
+      "relevance_confidence": 0.9532,
+      "family": "F001",
+      "text_provenance": "synthetic"
+    }
+  ],
+  "likely_root_cause": {
+    "statement": "memory leak / heap exhaustion",
+    "certainty": "likely",
+    "support": 5,
+    "of_retrieved": 5,
+    "share": 1.0,
+    "supporting_incidents": [
+      "IM0006370",
+      "IM0030212",
+      "IM0042466",
+      "IM0024005",
+      "IM0013194"
+    ],
+    "evidence_provenance": {
+      "synthetic": 5
+    },
+    "tag": "inferred",
+    "alternatives": {}
+  },
+  "family_outcome_history": {
+    "n_with_outcome": 235,
+    "stats_supported": true,
+    "reopen_rate": 0.0766,
+    "first_time_fix_rate": 0.9234,
+    "mean_reassignments": 1.16,
+    "median_resolution_hours": 15.95
+  },
+  "recommended_next_diagnostic_action": {
+    "action": "Increasing the heap size",
+    "kind": "untried historical approach",
+    "confidence": 0.0223,
+    "strategy_key": "F010-S3"
+  },
+  "mode_labels": []
+}

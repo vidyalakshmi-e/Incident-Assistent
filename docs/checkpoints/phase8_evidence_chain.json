@@ -1,0 +1,423 @@
+{
+  "subject": "analysis",
+  "query_understood": {
+    "original": "The application is becoming slower and sometimes freezes when users try to open records. Restarting fixes it temporarily.",
+    "expanded_query": "The application is becoming slower and sometimes freezes when users try to open records. Restarting fixes it temporarily. performance degradation high latency slow response time application freeze unresponsive hang memory leak resource exhaustion temporary workaround restart Application",
+    "technical_concepts": [
+      "performance degradation",
+      "high latency",
+      "slow response time",
+      "application freeze",
+      "unresponsive",
+      "hang",
+      "memory leak",
+      "resource exhaustion",
+      "temporary workaround restart"
+    ],
+    "matched_phrases": [
+      {
+        "phrase": "slower",
+        "maps_to": "slow response",
+        "concepts": [
+          "performance degradation",
+          "high latency",
+          "slow response time"
+        ]
+      },
+      {
+        "phrase": "freezes",
+        "maps_to": "freeze / hang",
+        "concepts": [
+          "application freeze",
+          "unresponsive",
+          "hang"
+        ]
+      },
+      {
+        "phrase": "Restarting fixes",
+        "maps_to": "restart-fixes-temporarily pattern",
+        "concepts": [
+          "memory leak",
+          "resource exhaustion",
+          "temporary workaround restart"
+        ]
+      }
+    ],
+    "hints": {
+      "component": "Application"
+    },
+    "token_count": 12,
+    "specificity": 0.7,
+    "is_vague": false,
+    "llm_expansion": [],
+    "llm_expansion_tag": null
+  },
+  "extracted_fingerprint": {
+    "values": {
+      "component": "Application",
+      "service": "Unknown",
+      "symptom": "slow response",
+      "failure_type": "performance degradation",
+      "trigger": "Unknown",
+      "root_cause": "Unknown",
+      "environment": "Unknown",
+      "dependency": "Unknown",
+      "business_impact": "Degraded performance",
+      "impact_scope": "Unknown"
+    },
+    "provenance": {
+      "component": "derived",
+      "service": "missing",
+      "symptom": "derived",
+      "failure_type": "derived",
+      "trigger": "missing",
+      "root_cause": "missing",
+      "environment": "missing",
+      "dependency": "missing",
+      "business_impact": "derived",
+      "impact_scope": "missing"
+    },
+    "evidence": {
+      "symptom": "'slower'",
+      "failure_type": "symptom 'slow response'",
+      "component": "'application'",
+      "business_impact": "rule: failure_type \u00d7 impact_scope (\u00d7 urgency)"
+    },
+    "symptoms": [
+      "slow response",
+      "freeze / hang"
+    ]
+  },
+  "matched_incident_family": {
+    "family_id": "F001",
+    "name": "Application \u00b7 slow response \u2014 memory leak / heap exhaustion",
+    "match_strength": 0.909,
+    "vote_share": 0.9457,
+    "max_relevance": 0.9612,
+    "centroid_similarity": 0.7078,
+    "supporting_incidents": [
+      "IM0006370",
+      "IM0030212",
+      "IM0042466",
+      "IM0024005",
+      "IM0013194",
+      "IM0023994",
+      "IM0034210",
+      "IM0034876",
+      "IM0041934"
+    ],
+    "runner_up": {
+      "family_id": "F010",
+      "name": "Application \u00b7 service unavailable \u2014 software fault (per closure code)",
+      "match_strength": 0.0515
+    },
+    "novelty": {
+      "verdict": "Known pattern \u2014 matched to historical incidents",
+      "is_novel": false,
+      "known_probability": 0.9941,
+      "threshold": 0.4896
+    }
+  },
+  "retrieved_incidents": [
+    {
+      "incident_id": "IM0006370",
+      "rank": 1,
+      "relevance_confidence": 0.9612,
+      "why_retrieved": "semantic rank 18 (cosine 0.70); BM25 rank 5 on terms applic, becom, freez, leak, memory, open; cross-encoder relevance 0.96",
+      "retrievers": [
+        "semantic",
+        "bm25"
+      ],
+      "matched_terms": [
+        "applic",
+        "becom",
+        "freez",
+        "leak",
+        "memory",
+        "open",
+        "record",
+        "restart"
+      ],
+      "matched_concepts": [
+        "application freeze",
+        "memory leak"
+      ],
+      "family": "F001",
+      "text_provenance": "synthetic",
+      "quality_tier": "high",
+      "duplicates_collapsed": 0
+    },
+    {
+      "incident_id": "IM0030212",
+      "rank": 2,
+      "relevance_confidence": 0.9589,
+      "why_retrieved": "semantic rank 31 (cosine 0.67); BM25 rank 31 on terms applic, fixe, freez, leak, memory, open; cross-encoder relevance 0.96",
+      "retrievers": [
+        "semantic",
+        "bm25"
+      ],
+      "matched_terms": [
+        "applic",
+        "fixe",
+        "freez",
+        "leak",
+        "memory",
+        "open",
+        "record",
+        "restart"
+      ],
+      "matched_concepts": [
+        "application freeze",
+        "memory leak"
+      ],
+      "family": "F001",
+      "text_provenance": "synthetic",
+      "quality_tier": "high",
+      "duplicates_collapsed": 0
+    },
+    {
+      "incident_id": "IM0042466",
+      "rank": 3,
+      "relevance_confidence": 0.9578,
+      "why_retrieved": "semantic rank 1 (cosine 0.79); BM25 rank 2 on terms applic, fixe, freez, high, leak, memory; cross-encoder relevance 0.96",
+      "retrievers": [
+        "semantic",
+        "bm25"
+      ],
+      "matched_terms": [
+        "applic",
+        "fixe",
+        "freez",
+        "high",
+        "leak",
+        "memory",
+        "open",
+        "record"
+      ],
+      "matched_concepts": [
+        "application freeze",
+        "memory leak"
+      ],
+      "family": "F001",
+      "text_provenance": "synthetic",
+      "quality_tier": "high",
+      "duplicates_collapsed": 0
+    },
+    {
+      "incident_id": "IM0024005",
+      "rank": 4,
+      "relevance_confidence": 0.9545,
+      "why_retrieved": "semantic rank 17 (cosine 0.70); BM25 rank 1 on terms applic, fixe, freez, leak, memory, record; cross-encoder relevance 0.95",
+      "retrievers": [
+        "semantic",
+        "bm25"
+      ],
+      "matched_terms": [
+        "applic",
+        "fixe",
+        "freez",
+        "leak",
+        "memory",
+        "record",
+        "response",
+        "restart"
+      ],
+      "matched_concepts": [
+        "slow response time",
+        "application freeze",
+        "memory leak"
+      ],
+      "family": "F001",
+      "text_provenance": "synthetic",
+      "quality_tier": "high",
+      "duplicates_collapsed": 0
+    },
+    {
+      "incident_id": "IM0013194",
+      "rank": 5,
+      "relevance_confidence": 0.9532,
+      "why_retrieved": "semantic rank 36 (cosine 0.67); BM25 rank 14 on terms applic, fixe, freez, leak, memory, open; cross-encoder relevance 0.95",
+      "retrievers": [
+        "semantic",
+        "bm25"
+      ],
+      "matched_terms": [
+        "applic",
+        "fixe",
+        "freez",
+        "leak",
+        "memory",
+        "open",
+        "record",
+        "restart"
+      ],
+      "matched_concepts": [
+        "application freeze",
+        "memory leak"
+      ],
+      "family": "F001",
+      "text_provenance": "synthetic",
+      "quality_tier": "high",
+      "duplicates_collapsed": 0
+    }
+  ],
+  "root_cause_evidence": {
+    "status": "computed",
+    "statement": "memory leak / heap exhaustion",
+    "certainty": "likely",
+    "share_of_retrieved": 1.0,
+    "supporting_incidents": [
+      "IM0006370",
+      "IM0030212",
+      "IM0042466",
+      "IM0024005",
+      "IM0013194"
+    ],
+    "fields": [
+      "IM0006370.fingerprint.root_cause \u2190 resolution notes: 'memory leak' (synthetic)",
+      "IM0030212.fingerprint.root_cause \u2190 resolution notes: 'Memory leak' (synthetic)",
+      "IM0042466.fingerprint.root_cause \u2190 resolution notes: 'session cache' (synthetic)",
+      "IM0024005.fingerprint.root_cause \u2190 resolution notes: 'Memory leak' (synthetic)",
+      "IM0013194.fingerprint.root_cause \u2190 resolution notes: 'memory leak' (synthetic)"
+    ],
+    "provenance_breakdown": {
+      "synthetic": 5
+    },
+    "note": "Root cause of a NEW incident is inferred from matched historical incidents; it is not observed."
+  },
+  "resolution_evidence": {
+    "status": "computed",
+    "recommended_action": "Restarting the application service",
+    "strategy_key": "F001-S2",
+    "kind": "observed historical resolution",
+    "supporting_incidents": [
+      "IM0006370",
+      "IM0030212",
+      "IM0042466",
+      "IM0024005",
+      "IM0034210"
+    ],
+    "evidence": [
+      {
+        "incident_id": "IM0006370",
+        "relevance_confidence": 0.9612,
+        "influence_weight": 0.8,
+        "text_provenance": "synthetic",
+        "quality_tier": "high"
+      },
+      {
+        "incident_id": "IM0030212",
+        "relevance_confidence": 0.9589,
+        "influence_weight": 0.74,
+        "text_provenance": "synthetic",
+        "quality_tier": "high"
+      },
+      {
+        "incident_id": "IM0042466",
+        "relevance_confidence": 0.9578,
+        "influence_weight": 0.74,
+        "text_provenance": "synthetic",
+        "quality_tier": "high"
+      },
+      {
+        "incident_id": "IM0024005",
+        "relevance_confidence": 0.9545,
+        "influence_weight": 0.74,
+        "text_provenance": "synthetic",
+        "quality_tier": "high"
+      },
+      {
+        "incident_id": "IM0034210",
+        "relevance_confidence": 0.9438,
+        "influence_weight": 0.74,
+        "text_provenance": "synthetic",
+        "quality_tier": "high"
+      }
+    ],
+    "confidence": 0.4289,
+    "confidence_components": {
+      "max_relevance": 0.9612,
+      "agreement": 0.5578,
+      "provenance_factor": 0.8
+    },
+    "confidence_basis": "max calibrated relevance \u00d7 evidence agreement \u00d7 provenance factor",
+    "evidence_provenance": {
+      "original": 0,
+      "synthetic": 5
+    },
+    "strategy_outcome_stats": {
+      "n_incidents": 78,
+      "reopen_rate": 0.0769,
+      "reopen_ci_low": 0.0357,
+      "reopen_ci_high": 0.1578,
+      "median_resolution_hours": 4.92,
+      "stats_supported": true,
+      "basis": "78 incidents with real Reopen_Time / timestamps / reassignment fields"
+    },
+    "safety": {
+      "destructive": false,
+      "destructive_phrase": null,
+      "disruptive": true,
+      "disruptive_phrase": "Restarting",
+      "allowed": true,
+      "requires_human_confirmation": true,
+      "notes": [
+        "Disruptive action ('Restarting'): perform in an agreed window / confirm impact with the service owner."
+      ],
+      "independent_sources": 5
+    }
+  },
+  "evidence_strength": {
+    "component_match": {
+      "value": 1.0,
+      "status": "computed",
+      "basis": "5/5 of the top retrieved incidents with a known component match 'Application'"
+    },
+    "symptom_match": {
+      "value": 1.0,
+      "status": "computed",
+      "basis": "5/5 of the top retrieved incidents with a known symptom match 'slow response'"
+    },
+    "environment_match": {
+      "value": null,
+      "status": "insufficient evidence",
+      "basis": "incident environment is Unknown"
+    },
+    "pattern_match": {
+      "value": 0.909,
+      "status": "computed",
+      "basis": "family vote share \u00d7 best relevance confidence"
+    }
+  },
+  "llm_inference": {
+    "available": false,
+    "label": "Retrieval-only mode \u2014 LLM unavailable",
+    "query_expansion": null,
+    "synthesis": null,
+    "validation": null,
+    "tag": "inferred (LLM) \u2014 not historical evidence"
+  },
+  "mode": {
+    "labels": [
+      "Retrieval-only mode \u2014 LLM unavailable"
+    ],
+    "embedder": "local:sentence-transformers/all-MiniLM-L6-v2",
+    "reranker": "local:cross-encoder/ms-marco-MiniLM-L-6-v2",
+    "notes": []
+  },
+  "completeness": {
+    "populated": [
+      "matched_incident_family",
+      "root_cause_evidence",
+      "resolution_evidence",
+      "evidence_strength.component_match",
+      "evidence_strength.symptom_match",
+      "evidence_strength.pattern_match"
+    ],
+    "insufficient": [
+      "evidence_strength.environment_match"
+    ],
+    "ratio": 0.857,
+    "complete_core": true
+  }
+}

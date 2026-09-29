@@ -1,0 +1,444 @@
+{
+  "original_row_count": {
+    "text_rich (Source A)": 150,
+    "structured (Source B)": 46606,
+    "total": 46756
+  },
+  "rows_modified_or_deleted": 0,
+  "augmented_synthetic_rows": {
+    "knowledge_base": 0,
+    "novel_probes (evaluation-only, not indexed)": 40,
+    "note": "No synthetic rows were added to the knowledge base. Generated text is attached to existing real Source B rows."
+  },
+  "derived_columns_added": [
+    "category (Source B, from CI_Subcat)",
+    "category (Source A, corrected from text)",
+    "category_conflict",
+    "ci_group",
+    "priority_consistent",
+    "severity",
+    "impact_scope",
+    "closure_class",
+    "resolution_hours",
+    "close_hours",
+    "handle_time_status",
+    "reopened",
+    "suggested_team",
+    "ticket_type (Source A)"
+  ],
+  "knowledge_base": {
+    "incidents": 3129,
+    "chunks": 3129,
+    "from_source_A_original_text": 150,
+    "from_source_B_with_synthetic_text": 2979,
+    "text_generators": {
+      "llm:Qwen/Qwen2.5-3B-Instruct": 2979,
+      "source": 150
+    },
+    "families_with_generated_text": [
+      "APP-BATCH-INTERFACE",
+      "APP-CONNPOOL",
+      "APP-DATA-QUALITY",
+      "APP-MEMLEAK",
+      "APP-RELEASE-REGRESSION",
+      "APP-SSO-AUTH",
+      "APP-USER-ERROR",
+      "APP-WORKS-AS-DESIGNED",
+      "BANK-DEVICE",
+      "CITRIX-SESSION",
+      "DB-SLOW-QUERY",
+      "DB-TABLESPACE-FULL",
+      "EUC-LAPTOP-DISK",
+      "EUC-PRINTER",
+      "MAIL-MAILBOX",
+      "NET-SWITCH-PORT",
+      "NET-VPN",
+      "SA-DATABASE-TIMEOUT",
+      "SA-DISK-SPACE-ALERT",
+      "SA-ENCODING-CRASH",
+      "SA-HIGH-CPU-USAGE",
+      "SA-SLOW-DELIVERY",
+      "SA-STREAMING-FAILURE",
+      "SA-UNAUTHORIZED-ACCESS-ATTEMPT",
+      "SAP-SHORT-DUMP",
+      "SEC-ACCOUNT-LOCKOUT",
+      "SEC-CERT-EXPIRY",
+      "SEC-ENDPOINT-BLOCK",
+      "SRV-CPU-RUNAWAY",
+      "SRV-PATCH-REBOOT",
+      "STOR-CAPACITY",
+      "STOR-SAN-PATH"
+    ],
+    "rows_per_family": {
+      "APP-RELEASE-REGRESSION": 220,
+      "SEC-CERT-EXPIRY": 220,
+      "APP-CONNPOOL": 220,
+      "DB-SLOW-QUERY": 220,
+      "APP-BATCH-INTERFACE": 220,
+      "SEC-ACCOUNT-LOCKOUT": 220,
+      "APP-MEMLEAK": 220,
+      "APP-SSO-AUTH": 220,
+      "APP-DATA-QUALITY": 173,
+      "SRV-PATCH-REBOOT": 155,
+      "SRV-CPU-RUNAWAY": 150,
+      "APP-USER-ERROR": 108,
+      "SEC-ENDPOINT-BLOCK": 91,
+      "APP-WORKS-AS-DESIGNED": 78,
+      "EUC-LAPTOP-DISK": 67,
+      "STOR-CAPACITY": 47,
+      "STOR-SAN-PATH": 43,
+      "CITRIX-SESSION": 42,
+      "NET-SWITCH-PORT": 40,
+      "NET-VPN": 40,
+      "DB-TABLESPACE-FULL": 40,
+      "BANK-DEVICE": 40,
+      "SAP-SHORT-DUMP": 40,
+      "EUC-PRINTER": 40,
+      "MAIL-MAILBOX": 25,
+      "SA-SLOW-DELIVERY": 22,
+      "SA-ENCODING-CRASH": 22,
+      "SA-DISK-SPACE-ALERT": 22,
+      "SA-STREAMING-FAILURE": 21,
+      "SA-DATABASE-TIMEOUT": 21,
+      "SA-HIGH-CPU-USAGE": 21,
+      "SA-UNAUTHORIZED-ACCESS-ATTEMPT": 21
+    },
+    "note_quality": {
+      "detailed": 2786,
+      "low": 343
+    },
+    "seeded_defects": {
+      "category_conflict (real)": 107,
+      "contradiction": 44
+    },
+    "text_field_ratio": {
+      "original": 450,
+      "synthetic": 8937,
+      "synthetic_pct": 95.21
+    }
+  },
+  "field_level_provenance_all_rows": {
+    "ticket_type": {
+      "original": 46606,
+      "derived": 150,
+      "synthetic": 0,
+      "missing": 0
+    },
+    "category": {
+      "original": 43,
+      "derived": 46405,
+      "synthetic": 0,
+      "missing": 308
+    },
+    "ci_name": {
+      "original": 46756,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 0
+    },
+    "ci_category": {
+      "original": 46495,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 261
+    },
+    "ci_subcategory": {
+      "original": 46495,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 261
+    },
+    "impact": {
+      "original": 46606,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "urgency": {
+      "original": 46606,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "priority": {
+      "original": 46606,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "severity": {
+      "original": 0,
+      "derived": 45376,
+      "synthetic": 0,
+      "missing": 1380
+    },
+    "impact_scope": {
+      "original": 0,
+      "derived": 45226,
+      "synthetic": 0,
+      "missing": 1530
+    },
+    "status": {
+      "original": 46606,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "closure_code": {
+      "original": 46606,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "closure_class": {
+      "original": 0,
+      "derived": 46606,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "open_time": {
+      "original": 46606,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "resolved_time": {
+      "original": 44826,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 1930
+    },
+    "reopen_time": {
+      "original": 2284,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 44472
+    },
+    "close_time": {
+      "original": 46606,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "resolution_hours": {
+      "original": 0,
+      "derived": 44826,
+      "synthetic": 0,
+      "missing": 1930
+    },
+    "reopened": {
+      "original": 0,
+      "derived": 46606,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "no_of_reassignments": {
+      "original": 46605,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 151
+    },
+    "title": {
+      "original": 150,
+      "derived": 0,
+      "synthetic": 2979,
+      "missing": 43627
+    },
+    "description": {
+      "original": 150,
+      "derived": 0,
+      "synthetic": 2979,
+      "missing": 43627
+    },
+    "resolution_notes": {
+      "original": 150,
+      "derived": 0,
+      "synthetic": 2979,
+      "missing": 43627
+    },
+    "suggested_team": {
+      "original": 0,
+      "derived": 46448,
+      "synthetic": 0,
+      "missing": 308
+    }
+  },
+  "cell_proportions_all_rows": {
+    "original": 64.73,
+    "derived": 34.31,
+    "synthetic": 0.95,
+    "missing_cells": 184762
+  },
+  "field_level_provenance_kb_rows": {
+    "ticket_type": {
+      "original": 2979,
+      "derived": 150,
+      "synthetic": 0,
+      "missing": 0
+    },
+    "category": {
+      "original": 43,
+      "derived": 3086,
+      "synthetic": 0,
+      "missing": 0
+    },
+    "ci_name": {
+      "original": 3129,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 0
+    },
+    "ci_category": {
+      "original": 2979,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "ci_subcategory": {
+      "original": 2979,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "impact": {
+      "original": 2979,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "urgency": {
+      "original": 2979,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "priority": {
+      "original": 2979,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "severity": {
+      "original": 0,
+      "derived": 3018,
+      "synthetic": 0,
+      "missing": 111
+    },
+    "impact_scope": {
+      "original": 0,
+      "derived": 2868,
+      "synthetic": 0,
+      "missing": 261
+    },
+    "status": {
+      "original": 2979,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "closure_code": {
+      "original": 2979,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "closure_class": {
+      "original": 0,
+      "derived": 2979,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "open_time": {
+      "original": 2979,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "resolved_time": {
+      "original": 2979,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "reopen_time": {
+      "original": 139,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 2990
+    },
+    "close_time": {
+      "original": 2979,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "resolution_hours": {
+      "original": 0,
+      "derived": 2979,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "reopened": {
+      "original": 0,
+      "derived": 2979,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "no_of_reassignments": {
+      "original": 2979,
+      "derived": 0,
+      "synthetic": 0,
+      "missing": 150
+    },
+    "title": {
+      "original": 150,
+      "derived": 0,
+      "synthetic": 2979,
+      "missing": 0
+    },
+    "description": {
+      "original": 150,
+      "derived": 0,
+      "synthetic": 2979,
+      "missing": 0
+    },
+    "resolution_notes": {
+      "original": 150,
+      "derived": 0,
+      "synthetic": 2979,
+      "missing": 0
+    },
+    "suggested_team": {
+      "original": 0,
+      "derived": 3129,
+      "synthetic": 0,
+      "missing": 0
+    }
+  },
+  "data_repairs": {
+    "timestamps_parsed_dayfirst": 46606,
+    "handle_time_status": {
+      "corrupted_digit_grouping": 31252,
+      "decimal_comma": 15097,
+      "unparseable": 256,
+      "missing": 1
+    },
+    "impact_not_set": 1380,
+    "priority_not_set": 1380,
+    "closure_code_not_set": 460,
+    "closure_code_translated_from_dutch": 11,
+    "related_interaction_placeholders": {
+      "False": 43058,
+      "True": 3548
+    },
+    "priority_matrix_inconsistent": 26,
+    "closed_without_resolved_time": 1780,
+    "source_A_category_conflicts": 107
+  },
+  "join": {
+    "text_rich_id_example": "INC-5001",
+    "structured_id_example": "IM0000004",
+    "overlapping_ids": 0,
+    "decision": "no shared identifier \u2014 sources are processed as two independent pipelines feeding one schema"
+  }
+}

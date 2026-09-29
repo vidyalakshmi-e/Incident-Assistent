@@ -1,0 +1,498 @@
+{
+  "sample_fingerprints": {
+    "INC-5001": {
+      "values": {
+        "component": "Storage",
+        "service": "Unknown",
+        "symptom": "storage full",
+        "failure_type": "resource exhaustion",
+        "trigger": "Unknown",
+        "root_cause": "storage capacity exhausted",
+        "environment": "Unknown",
+        "dependency": "Unknown",
+        "business_impact": "Service disruption from exhausted resources",
+        "impact_scope": "Unknown"
+      },
+      "provenance": {
+        "component": "derived",
+        "service": "missing",
+        "symptom": "derived",
+        "failure_type": "derived",
+        "trigger": "missing",
+        "root_cause": "derived",
+        "environment": "missing",
+        "dependency": "missing",
+        "business_impact": "derived",
+        "impact_scope": "missing"
+      },
+      "evidence": {
+        "symptom": "'Storage exceeded'",
+        "failure_type": "symptom 'storage full'",
+        "component": "'Disk Space'",
+        "root_cause": "resolution notes: 'Archive old media'",
+        "business_impact": "rule: failure_type \u00d7 impact_scope (\u00d7 urgency)"
+      },
+      "symptoms": [
+        "storage full"
+      ]
+    },
+    "INC-5002": {
+      "values": {
+        "component": "Media platform",
+        "service": "Unknown",
+        "symptom": "slow response",
+        "failure_type": "performance degradation",
+        "trigger": "Unknown",
+        "root_cause": "CDN cache miss",
+        "environment": "Unknown",
+        "dependency": "CDN",
+        "business_impact": "Degraded performance",
+        "impact_scope": "Unknown"
+      },
+      "provenance": {
+        "component": "derived",
+        "service": "missing",
+        "symptom": "derived",
+        "failure_type": "derived",
+        "trigger": "missing",
+        "root_cause": "derived",
+        "environment": "missing",
+        "dependency": "derived",
+        "business_impact": "derived",
+        "impact_scope": "missing"
+      },
+      "evidence": {
+        "symptom": "'Slow'",
+        "failure_type": "symptom 'slow response'",
+        "component": "'Media'",
+        "root_cause": "resolution notes: 'CDN'",
+        "dependency": "resolution notes: 'CDN'",
+        "business_impact": "rule: failure_type \u00d7 impact_scope (\u00d7 urgency)"
+      },
+      "symptoms": [
+        "slow response",
+        "slow media delivery"
+      ]
+    },
+    "INC-5003": {
+      "values": {
+        "component": "Media platform",
+        "service": "Unknown",
+        "symptom": "application error / crash",
+        "failure_type": "hard failure",
+        "trigger": "Unknown",
+        "root_cause": "encoder / codec failure",
+        "environment": "Unknown",
+        "dependency": "Unknown",
+        "business_impact": "Service unavailable",
+        "impact_scope": "Unknown"
+      },
+      "provenance": {
+        "component": "derived",
+        "service": "missing",
+        "symptom": "derived",
+        "failure_type": "derived",
+        "trigger": "missing",
+        "root_cause": "derived",
+        "environment": "missing",
+        "dependency": "missing",
+        "business_impact": "derived",
+        "impact_scope": "missing"
+      },
+      "evidence": {
+        "symptom": "'Crash'",
+        "failure_type": "symptom 'application error / crash'",
+        "component": "'Encoder'",
+        "root_cause": "resolution notes: 'codec'",
+        "business_impact": "rule: failure_type \u00d7 impact_scope (\u00d7 urgency)"
+      },
+      "symptoms": [
+        "application error / crash",
+        "encoder failure"
+      ]
+    }
+  },
+  "family": {
+    "family_id": "F005",
+    "name": "Application \u00b7 timeout \u2014 connection pool exhaustion",
+    "size": 211,
+    "signature": {
+      "component": {
+        "Application": 0.801,
+        "Database": 0.194,
+        "Media platform": 0.005
+      },
+      "symptom": {
+        "timeout": 0.787,
+        "Unknown": 0.104,
+        "application error / crash": 0.085,
+        "function not working": 0.024
+      },
+      "failure_type": {
+        "intermittent failure": 0.787,
+        "Unknown": 0.104,
+        "hard failure": 0.085,
+        "functional failure": 0.024
+      },
+      "trigger": {
+        "load / traffic peak": 0.531,
+        "Unknown": 0.403,
+        "deployment / release": 0.038,
+        "change (related change record)": 0.028
+      },
+      "root_cause": {
+        "connection pool exhaustion": 0.896,
+        "Unknown": 0.095,
+        "mailbox quota / corrupt OST": 0.005,
+        "SAP transport / program error": 0.005
+      },
+      "environment": {
+        "Unknown": 1.0
+      },
+      "dependency": {
+        "database": 0.664,
+        "Unknown": 0.194,
+        "database connection pool": 0.142
+      },
+      "impact_scope": {
+        "limited (few users)": 0.583,
+        "minimal (single user)": 0.218,
+        "team": 0.123,
+        "Unknown": 0.043
+      }
+    },
+    "cross_symptom": null,
+    "causal_chain": [
+      {
+        "stage": "trigger",
+        "statement": "load / traffic peak",
+        "share": 0.889,
+        "support": 126,
+        "coverage": 0.597,
+        "tags": {
+          "observed": 0.063,
+          "inferred": 0.937
+        }
+      },
+      {
+        "stage": "technical_failure",
+        "statement": "connection pool exhaustion",
+        "share": 0.99,
+        "support": 191,
+        "coverage": 0.905,
+        "tags": {
+          "inferred": 1.0
+        }
+      },
+      {
+        "stage": "symptom",
+        "statement": "211 member records (symptom text varies by incident)",
+        "share": 1.0,
+        "support": 211,
+        "coverage": 1.0,
+        "tags": {
+          "inferred": 1.0
+        }
+      },
+      {
+        "stage": "business_impact",
+        "statement": "Intermittent service disruption for a few users",
+        "share": 0.46,
+        "support": 211,
+        "coverage": 1.0,
+        "tags": {
+          "derived": 1.0
+        }
+      },
+      {
+        "stage": "resolution",
+        "statement": "211 member records (resolution text varies by incident)",
+        "share": 1.0,
+        "support": 211,
+        "coverage": 1.0,
+        "tags": {
+          "inferred": 1.0
+        }
+      },
+      {
+        "stage": "outcome",
+        "statement": "211 resolved; 8 reopened (3.8%)",
+        "share": 1.0,
+        "support": 211,
+        "coverage": 1.0,
+        "tags": {
+          "observed": 1.0
+        }
+      }
+    ],
+    "recurrence": {
+      "members": 211,
+      "members_with_timestamps": 211,
+      "provenance_note": "timestamps are original; family membership is derived from the incident text (synthetic for Source B rows)",
+      "status": "ok",
+      "first_seen": "2013-07-17 14:02:00",
+      "last_seen": "2014-03-31 11:40:00",
+      "monthly_counts": {
+        "2013-07": 1,
+        "2013-08": 1,
+        "2013-09": 7,
+        "2013-10": 34,
+        "2013-11": 52,
+        "2013-12": 25,
+        "2014-01": 32,
+        "2014-02": 30,
+        "2014-03": 29
+      },
+      "median_days_between": 0.32,
+      "recurring_cis": [
+        {
+          "ci_name": "WBA000058",
+          "incidents": 18,
+          "repeats_within_30d": 17
+        },
+        {
+          "ci_name": "SUB000456",
+          "incidents": 17,
+          "repeats_within_30d": 14
+        },
+        {
+          "ci_name": "WBA000011",
+          "incidents": 11,
+          "repeats_within_30d": 7
+        },
+        {
+          "ci_name": "SBA000607",
+          "incidents": 9,
+          "repeats_within_30d": 7
+        },
+        {
+          "ci_name": "WBA000133",
+          "incidents": 8,
+          "repeats_within_30d": 5
+        },
+        {
+          "ci_name": "DTA000616",
+          "incidents": 7,
+          "repeats_within_30d": 5
+        },
+        {
+          "ci_name": "SBA000462",
+          "incidents": 7,
+          "repeats_within_30d": 4
+        },
+        {
+          "ci_name": "SBA000834",
+          "incidents": 6,
+          "repeats_within_30d": 4
+        },
+        {
+          "ci_name": "WBA000144",
+          "incidents": 6,
+          "repeats_within_30d": 4
+        },
+        {
+          "ci_name": "DTA000016",
+          "incidents": 5,
+          "repeats_within_30d": 4
+        }
+      ],
+      "reopen_rate": 0.0379,
+      "finding": "Potential pattern requiring investigation: CI WBA000058 had 18 incidents in this family, 17 of them within 30 days of the previous one."
+    },
+    "strategies": [
+      {
+        "strategy_key": "F005-S1",
+        "pattern_id": "F005",
+        "label": "Increasing the database connection pool size",
+        "representative_note": "The issue was resolved by increasing the database connection pool size and increasing idle timeouts. The error rate has now dropped to zero.",
+        "representative_incident": "IM0019672",
+        "n_incidents": 80,
+        "share_of_documented": 0.432,
+        "closure_codes": {
+          "Software": 63,
+          "Other": 16,
+          "Unknown": 1
+        },
+        "text_provenance": "synthetic",
+        "example_incident_ids": [
+          "IM0000995",
+          "IM0001190",
+          "IM0001205",
+          "IM0002830",
+          "IM0002846",
+          "IM0003003",
+          "IM0003894",
+          "IM0005502"
+        ],
+        "n_with_outcome": 80,
+        "stats_supported": true,
+        "reopen_rate": 0.0125,
+        "reopen_ci_low": 0.0022,
+        "reopen_ci_high": 0.0675,
+        "median_resolution_hours": 2.69,
+        "mean_reassignments": 0.44,
+        "basis": "80 incidents with real Reopen_Time / timestamps / reassignment fields",
+        "undocumented_resolutions_in_family": 26,
+        "kind": "observed historical resolution"
+      },
+      {
+        "strategy_key": "F005-S2",
+        "pattern_id": "F005",
+        "label": "The application server was restarted to clear the pool and release connections",
+        "representative_note": "The application server was restarted to clear the pool and release connections; users are now able to access the system without issues.",
+        "representative_incident": "IM0029486",
+        "n_incidents": 41,
+        "share_of_documented": 0.222,
+        "closure_codes": {
+          "Other": 22,
+          "Software": 18,
+          "Unknown": 1
+        },
+        "text_provenance": "synthetic",
+        "example_incident_ids": [
+          "IM0000225",
+          "IM0001939",
+          "IM0003160",
+          "IM0005377",
+          "IM0005988",
+          "IM0006171",
+          "IM0006745",
+          "IM0008836"
+        ],
+        "n_with_outcome": 41,
+        "stats_supported": true,
+        "reopen_rate": 0.0488,
+        "reopen_ci_low": 0.0135,
+        "reopen_ci_high": 0.1614,
+        "median_resolution_hours": 24.13,
+        "mean_reassignments": 1.27,
+        "basis": "41 incidents with real Reopen_Time / timestamps / reassignment fields",
+        "undocumented_resolutions_in_family": 26,
+        "kind": "observed historical resolution"
+      },
+      {
+        "strategy_key": "F005-S3",
+        "pattern_id": "F005",
+        "label": "We fixed a connection leak in the application code",
+        "representative_note": "We fixed a connection leak in the application code by adding a missing connection close in a batch call. The hotfix has been deployed and the database connection pool is now stable.",
+        "representative_incident": "IM0016108",
+        "n_incidents": 40,
+        "share_of_documented": 0.216,
+        "closure_codes": {
+          "Software": 35,
+          "Other": 5
+        },
+        "text_provenance": "synthetic",
+        "example_incident_ids": [
+          "IM0000293",
+          "IM0000399",
+          "IM0000829",
+          "IM0001170",
+          "IM0002374",
+          "IM0003086",
+          "IM0003259",
+          "IM0003316"
+        ],
+        "n_with_outcome": 40,
+        "stats_supported": true,
+        "reopen_rate": 0.025,
+        "reopen_ci_low": 0.0044,
+        "reopen_ci_high": 0.1288,
+        "median_resolution_hours": 46.11,
+        "mean_reassignments": 2.4,
+        "basis": "40 incidents with real Reopen_Time / timestamps / reassignment fields",
+        "undocumented_resolutions_in_family": 26,
+        "kind": "observed historical resolution"
+      },
+      {
+        "strategy_key": "F005-S4",
+        "pattern_id": "F005",
+        "label": "Fixed",
+        "representative_note": "The connection leak in the export function was identified and fixed. The fix was deployed, ensuring that the application\u2019s database connection pool usage stays below 30%.",
+        "representative_incident": "IM0039865",
+        "n_incidents": 24,
+        "share_of_documented": 0.13,
+        "closure_codes": {
+          "Software": 19,
+          "Other": 5
+        },
+        "text_provenance": "synthetic",
+        "example_incident_ids": [
+          "IM0000784",
+          "IM0001502",
+          "IM0001993",
+          "IM0003092",
+          "IM0007114",
+          "IM0009075",
+          "IM0009943",
+          "IM0010223"
+        ],
+        "n_with_outcome": 24,
+        "stats_supported": true,
+        "reopen_rate": 0.0833,
+        "reopen_ci_low": 0.0232,
+        "reopen_ci_high": 0.2585,
+        "median_resolution_hours": 3.02,
+        "mean_reassignments": 0.71,
+        "basis": "24 incidents with real Reopen_Time / timestamps / reassignment fields",
+        "undocumented_resolutions_in_family": 26,
+        "kind": "observed historical resolution"
+      }
+    ]
+  },
+  "incident_causal_chain": {
+    "incident_id": "IM0000225",
+    "available": true,
+    "temporal_ordering": {
+      "tag": "observed",
+      "open_time": "2013-07-17 14:02:00",
+      "resolved_time": "2014-03-05 12:03:00",
+      "reopen_time": null
+    },
+    "links": [
+      {
+        "stage": "trigger",
+        "statement": "Change record C00001219 is linked to this incident (the link is recorded; whether it caused the incident is not)",
+        "tag": "observed",
+        "evidence": "Related_Change field"
+      },
+      {
+        "stage": "technical_failure",
+        "statement": "connection pool exhaustion",
+        "tag": "inferred",
+        "evidence": "resolution notes: 'connection leak'"
+      },
+      {
+        "stage": "symptom",
+        "statement": "Saving data in the HR self-service portal intermittently fails with a generic error; it works again after a few minutes.",
+        "tag": "inferred",
+        "evidence": "incident description (generated text)"
+      },
+      {
+        "stage": "business_impact",
+        "statement": "Service unavailable for a few users",
+        "tag": "derived",
+        "evidence": "Impact=4, Urgency=4 (ITIL fields)"
+      },
+      {
+        "stage": "resolution",
+        "statement": "The root cause of the issue was resolved by fixing a connection leak in the application code. The export function was identified as the problematic component that failed to close its database connection. After deployment [closure code: Software]",
+        "tag": "inferred",
+        "evidence": "resolution notes (generated text)"
+      },
+      {
+        "stage": "outcome",
+        "statement": "Resolved 5542.0 h after opening; not reopened; 4 reassignment(s)",
+        "tag": "observed",
+        "evidence": "Open_Time / Resolved_Time / Reopen_Time timestamps"
+      }
+    ],
+    "missing_stages": [],
+    "tag_counts": {
+      "observed": 2,
+      "inferred": 3,
+      "derived": 1
+    },
+    "chain_strength": 0.658
+  }
+}

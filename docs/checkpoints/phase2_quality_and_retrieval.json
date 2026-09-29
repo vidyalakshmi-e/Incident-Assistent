@@ -1,0 +1,108 @@
+{
+  "quality_samples": [
+    {
+      "incident_id": "IM0000012",
+      "resolution_notes": "Expired server certificate on WBA000124 caused issues. Certificate was renewed and installed, followed by a restart of the listener service, resolving the problem.",
+      "quality_score": 0.925,
+      "quality_tier": "high",
+      "quality_flags": "[]",
+      "quality_components": {
+        "resolution_detail": 0.85,
+        "completeness": 1.0,
+        "consistency": 1.0,
+        "outcome": 1.0
+      },
+      "influence_weight": 0.74
+    },
+    {
+      "incident_id": "IM0000034",
+      "resolution_notes": "Memory leak in the application's session cache was identified as the root cause, causing the heap to nearly exhaust. The application service was recycled during a quiet window, restoring normal response times but leaving the leak unresolved.",
+      "quality_score": 0.85,
+      "quality_tier": "high",
+      "quality_flags": "['reopened_after_fix']",
+      "quality_components": {
+        "resolution_detail": 0.85,
+        "completeness": 1.0,
+        "consistency": 1.0,
+        "outcome": 0.5
+      },
+      "influence_weight": 0.68
+    },
+    {
+      "incident_id": "INC-5001",
+      "resolution_notes": "Archive old media files and expand storage volume",
+      "quality_score": 0.5592,
+      "quality_tier": "medium",
+      "quality_flags": "[]",
+      "quality_components": {
+        "resolution_detail": 0.4633,
+        "completeness": 0.0,
+        "consistency": 1.0,
+        "outcome": 0.85
+      },
+      "influence_weight": 0.5592
+    },
+    {
+      "incident_id": "INC-5008",
+      "resolution_notes": "Archive old media files and expand storage volume",
+      "quality_score": 0.5592,
+      "quality_tier": "medium",
+      "quality_flags": "['exact_duplicate']",
+      "quality_components": {
+        "resolution_detail": 0.4633,
+        "completeness": 0.0,
+        "consistency": 1.0,
+        "outcome": 0.85
+      },
+      "influence_weight": 0.5592
+    },
+    {
+      "incident_id": "INC-5002",
+      "resolution_notes": "Refresh CDN cache and optimize media compression",
+      "quality_score": 0.3458,
+      "quality_tier": "low",
+      "quality_flags": "['category_text_conflict' 'resolution_inconsistent_with_similar']",
+      "quality_components": {
+        "resolution_detail": 0.4367,
+        "completeness": 0.0,
+        "consistency": 0.0,
+        "outcome": 0.85
+      },
+      "influence_weight": 0.3458
+    },
+    {
+      "incident_id": "INC-5003",
+      "resolution_notes": "Restart encoder service and update codec library",
+      "quality_score": 0.3458,
+      "quality_tier": "low",
+      "quality_flags": "['category_text_conflict' 'resolution_inconsistent_with_similar']",
+      "quality_components": {
+        "resolution_detail": 0.4367,
+        "completeness": 0.0,
+        "consistency": 0.0,
+        "outcome": 0.85
+      },
+      "influence_weight": 0.3458
+    }
+  ],
+  "test_retrieval": [
+    {
+      "incident_id": "IM0010320",
+      "title": "Branch Teller Application Timeout Errors",
+      "relevance": 0.9618,
+      "why": "semantic rank 35 (cosine 0.56); BM25 rank 9 on terms connection, database, during, hour, peak, request; cross-encoder relevance 0.96"
+    },
+    {
+      "incident_id": "IM0008332",
+      "title": "Payments Processing Timeout Exception",
+      "relevance": 0.959,
+      "why": "semantic rank 24 (cosine 0.58); BM25 rank 13 on terms connection, database, during, exhaustion, hour, peak; cross-encoder relevance 0.96"
+    },
+    {
+      "incident_id": "IM0035079",
+      "title": "HR Self-Service Portal Error Rate",
+      "relevance": 0.9574,
+      "why": "BM25 rank 1 on terms connection, database, during, exhaustion, hour, peak; cross-encoder relevance 0.96"
+    }
+  ]
+}

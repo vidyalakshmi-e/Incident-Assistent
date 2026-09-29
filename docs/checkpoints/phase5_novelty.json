@@ -1,0 +1,66 @@
+{
+  "threshold_p_known": 0.4896,
+  "model_weights": {
+    "max_relevance_logit": 2.432,
+    "max_semantic": -0.124,
+    "centroid_similarity": 1.473,
+    "fingerprint_support": -0.558
+  },
+  "validation": {
+    "precision": 0.9048,
+    "recall": 1.0,
+    "f1": 0.95,
+    "false_novel_rate": 0.0156,
+    "false_known_rate": 0.0,
+    "tp": 19,
+    "fp": 2,
+    "fn": 0,
+    "tn": 126,
+    "n_known": 128,
+    "n_novel": 19,
+    "selection_rule": "max novel recall s.t. false-novel rate \u2264 2% (validation)"
+  },
+  "test": {
+    "precision": 0.9545,
+    "recall": 1.0,
+    "f1": 0.9767,
+    "false_novel_rate": 0.0078,
+    "false_known_rate": 0.0,
+    "tp": 21,
+    "fp": 1,
+    "fn": 0,
+    "tn": 128,
+    "n_known": 129,
+    "n_novel": 21
+  },
+  "baseline_single_feature": {
+    "feature": "max_relevance_logit",
+    "validation": {
+      "precision": 0.9,
+      "recall": 0.9474,
+      "f1": 0.9231,
+      "false_novel_rate": 0.0156,
+      "false_known_rate": 0.0526,
+      "tp": 18,
+      "fp": 2,
+      "fn": 1,
+      "tn": 126,
+      "n_known": 128,
+      "n_novel": 19,
+      "selection_rule": "max novel recall s.t. false-novel rate \u2264 2% (validation)"
+    },
+    "test": {
+      "precision": 0.8947,
+      "recall": 0.8095,
+      "f1": 0.85,
+      "false_novel_rate": 0.0155,
+      "false_known_rate": 0.1905,
+      "tp": 17,
+      "fp": 2,
+      "fn": 4,
+      "tn": 127,
+      "n_known": 129,
+      "n_novel": 21
+    }
+  }
+}

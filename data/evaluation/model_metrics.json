@@ -1,0 +1,425 @@
+{
+  "resolution_time": {
+    "n_train": 35860,
+    "n_test": 8966,
+    "split": "time-based (latest 20% as test)",
+    "target": "resolution hours = Resolved_Time - Open_Time (recomputed from timestamps)",
+    "features": [
+      "ci_group",
+      "ci_subcategory",
+      "impact",
+      "urgency",
+      "priority",
+      "ticket_type",
+      "open_hour",
+      "open_weekday"
+    ],
+    "hours": {
+      "MAE": 47.46,
+      "RMSE": 100.57,
+      "R2": -0.0419,
+      "median_absolute_error": 16.49
+    },
+    "log_hours": {
+      "MAE": 1.4419,
+      "RMSE": 1.8109,
+      "R2": 0.0458
+    },
+    "baselines_log_hours": {
+      "global_median_MAE": 1.7208,
+      "global_median_R2": -0.1098,
+      "ci_subcategory_median_MAE": 1.6485,
+      "ci_subcategory_median_R2": -0.0401
+    },
+    "p25_p75_interval_coverage": 0.538
+  },
+  "fix_accuracy": {
+    "n_train": 35860,
+    "n_test": 8966,
+    "split": "stratified random 80/20",
+    "target": "reopened (Reopen_Time present) - real label",
+    "features": [
+      "ci_group",
+      "ci_subcategory",
+      "impact",
+      "urgency",
+      "priority",
+      "ticket_type",
+      "closure_class",
+      "log_resolution_hours",
+      "no_of_reassignments"
+    ],
+    "ROC_AUC": 0.826,
+    "PR_AUC": 0.2239,
+    "brier": 0.0422,
+    "base_rate": 0.0495,
+    "top_decile_reopen_rate": 0.2243,
+    "top_decile_lift": 4.53
+  },
+  "text_classifiers": {
+    "category": {
+      "n_train": 2346,
+      "n_test": 783,
+      "accuracy": 0.963,
+      "macro_precision": 0.8273,
+      "macro_recall": 0.8809,
+      "macro_f1": 0.8446,
+      "weighted_f1": 0.9654,
+      "majority_class_baseline_accuracy": 0.8391,
+      "labels": [
+        "Application",
+        "Database",
+        "Hardware",
+        "Infrastructure",
+        "Network",
+        "Performance",
+        "Security",
+        "Storage"
+      ],
+      "confusion_matrix": [
+        [
+          641,
+          0,
+          0,
+          3,
+          0,
+          0,
+          13,
+          0
+        ],
+        [
+          0,
+          15,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          37,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          0,
+          5,
+          0,
+          0,
+          0,
+          6
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          18,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          11,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          12,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          15
+        ]
+      ],
+      "per_class": {
+        "Application": {
+          "precision": 0.995,
+          "recall": 0.976,
+          "f1": 0.985,
+          "support": 657
+        },
+        "Database": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 15
+        },
+        "Hardware": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 37
+        },
+        "Infrastructure": {
+          "precision": 0.5,
+          "recall": 0.385,
+          "f1": 0.435,
+          "support": 13
+        },
+        "Network": {
+          "precision": 0.947,
+          "recall": 0.947,
+          "f1": 0.947,
+          "support": 19
+        },
+        "Performance": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 11
+        },
+        "Security": {
+          "precision": 0.462,
+          "recall": 0.857,
+          "f1": 0.6,
+          "support": 14
+        },
+        "Storage": {
+          "precision": 0.714,
+          "recall": 0.882,
+          "f1": 0.789,
+          "support": 17
+        }
+      },
+      "label_provenance": "category: derived (CI_Subcat mapping / corrected text category); priority/impact/urgency: original Source B fields",
+      "caveat": "Source B text is synthetic and was conditioned on these fields; scores are optimistic relative to real free text."
+    },
+    "priority": {
+      "n_train": 2150,
+      "n_test": 717,
+      "accuracy": 0.5621,
+      "macro_precision": 0.4462,
+      "macro_recall": 0.5454,
+      "macro_f1": 0.4768,
+      "weighted_f1": 0.5739,
+      "majority_class_baseline_accuracy": 0.622,
+      "labels": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "confusion_matrix": [
+        [
+          7,
+          2,
+          1,
+          1
+        ],
+        [
+          4,
+          50,
+          38,
+          14
+        ],
+        [
+          10,
+          61,
+          276,
+          99
+        ],
+        [
+          3,
+          17,
+          64,
+          70
+        ]
+      ],
+      "per_class": {
+        "2": {
+          "precision": 0.292,
+          "recall": 0.636,
+          "f1": 0.4,
+          "support": 11
+        },
+        "3": {
+          "precision": 0.385,
+          "recall": 0.472,
+          "f1": 0.424,
+          "support": 106
+        },
+        "4": {
+          "precision": 0.728,
+          "recall": 0.619,
+          "f1": 0.669,
+          "support": 446
+        },
+        "5": {
+          "precision": 0.38,
+          "recall": 0.455,
+          "f1": 0.414,
+          "support": 154
+        }
+      },
+      "label_provenance": "category: derived (CI_Subcat mapping / corrected text category); priority/impact/urgency: original Source B fields",
+      "caveat": "Source B text is synthetic and was conditioned on these fields; scores are optimistic relative to real free text."
+    },
+    "impact": {
+      "n_train": 2150,
+      "n_test": 717,
+      "accuracy": 0.5704,
+      "macro_precision": 0.4626,
+      "macro_recall": 0.5436,
+      "macro_f1": 0.4912,
+      "weighted_f1": 0.5815,
+      "majority_class_baseline_accuracy": 0.6206,
+      "labels": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "confusion_matrix": [
+        [
+          7,
+          1,
+          1,
+          2
+        ],
+        [
+          4,
+          47,
+          37,
+          16
+        ],
+        [
+          7,
+          67,
+          285,
+          86
+        ],
+        [
+          1,
+          22,
+          64,
+          70
+        ]
+      ],
+      "per_class": {
+        "2": {
+          "precision": 0.368,
+          "recall": 0.636,
+          "f1": 0.467,
+          "support": 11
+        },
+        "3": {
+          "precision": 0.343,
+          "recall": 0.452,
+          "f1": 0.39,
+          "support": 104
+        },
+        "4": {
+          "precision": 0.736,
+          "recall": 0.64,
+          "f1": 0.685,
+          "support": 445
+        },
+        "5": {
+          "precision": 0.402,
+          "recall": 0.446,
+          "f1": 0.423,
+          "support": 157
+        }
+      },
+      "label_provenance": "category: derived (CI_Subcat mapping / corrected text category); priority/impact/urgency: original Source B fields",
+      "caveat": "Source B text is synthetic and was conditioned on these fields; scores are optimistic relative to real free text."
+    },
+    "urgency": {
+      "n_train": 2233,
+      "n_test": 745,
+      "accuracy": 0.5423,
+      "macro_precision": 0.4587,
+      "macro_recall": 0.5481,
+      "macro_f1": 0.4874,
+      "weighted_f1": 0.5537,
+      "majority_class_baseline_accuracy": 0.596,
+      "labels": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "confusion_matrix": [
+        [
+          7,
+          1,
+          2,
+          1
+        ],
+        [
+          5,
+          69,
+          38,
+          19
+        ],
+        [
+          7,
+          96,
+          256,
+          85
+        ],
+        [
+          1,
+          22,
+          64,
+          72
+        ]
+      ],
+      "per_class": {
+        "2": {
+          "precision": 0.35,
+          "recall": 0.636,
+          "f1": 0.452,
+          "support": 11
+        },
+        "3": {
+          "precision": 0.367,
+          "recall": 0.527,
+          "f1": 0.433,
+          "support": 131
+        },
+        "4": {
+          "precision": 0.711,
+          "recall": 0.577,
+          "f1": 0.637,
+          "support": 444
+        },
+        "5": {
+          "precision": 0.407,
+          "recall": 0.453,
+          "f1": 0.429,
+          "support": 159
+        }
+      },
+      "label_provenance": "category: derived (CI_Subcat mapping / corrected text category); priority/impact/urgency: original Source B fields",
+      "caveat": "Source B text is synthetic and was conditioned on these fields; scores are optimistic relative to real free text."
+    }
+  }
+}

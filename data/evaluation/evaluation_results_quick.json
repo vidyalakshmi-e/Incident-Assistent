@@ -1,0 +1,1346 @@
+{
+  "run_id": "EVAL-dbb1f633",
+  "created_at": "2026-09-27T18:21:12.885367",
+  "dataset_fingerprint": "96fc055f43a596d1",
+  "seed": 42,
+  "query_set": {
+    "test/known": 12,
+    "test/novel": 12,
+    "validation/known": 12,
+    "validation/novel": 12
+  },
+  "query_generator": {
+    "llm:Qwen/Qwen2.5-3B-Instruct": 24,
+    "seeded probe": 24
+  },
+  "components": {
+    "embedder": "local:sentence-transformers/all-MiniLM-L6-v2",
+    "reranker": "local:cross-encoder/ms-marco-MiniLM-L-6-v2",
+    "llm": {
+      "available": false,
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "reason": "LLM_API_KEY is not set",
+      "calls": 0,
+      "cache_hits": 0
+    }
+  },
+  "retrieval": {
+    "n_queries": 24,
+    "configs": {
+      "bm25_only": {
+        "MRR": 0.7993,
+        "P@1": 0.7083,
+        "R@1": 0.0034,
+        "Hit@1": 0.7083,
+        "nDCG@1": 0.4306,
+        "P@3": 0.7361,
+        "R@3": 0.0105,
+        "Hit@3": 0.875,
+        "nDCG@3": 0.4617,
+        "P@5": 0.75,
+        "R@5": 0.0179,
+        "Hit@5": 0.9167,
+        "nDCG@5": 0.475,
+        "P@10": 0.7542,
+        "R@10": 0.0359,
+        "Hit@10": 0.9583,
+        "nDCG@10": 0.4634
+      },
+      "semantic_only": {
+        "MRR": 0.8583,
+        "P@1": 0.8333,
+        "R@1": 0.004,
+        "Hit@1": 0.8333,
+        "nDCG@1": 0.5,
+        "P@3": 0.7917,
+        "R@3": 0.0113,
+        "Hit@3": 0.8333,
+        "nDCG@3": 0.5016,
+        "P@5": 0.7833,
+        "R@5": 0.0187,
+        "Hit@5": 0.9167,
+        "nDCG@5": 0.4884,
+        "P@10": 0.7208,
+        "R@10": 0.0345,
+        "Hit@10": 0.9583,
+        "nDCG@10": 0.4549
+      },
+      "hybrid_rrf": {
+        "MRR": 0.9062,
+        "P@1": 0.875,
+        "R@1": 0.0042,
+        "Hit@1": 0.875,
+        "nDCG@1": 0.5972,
+        "P@3": 0.8056,
+        "R@3": 0.0115,
+        "Hit@3": 0.9167,
+        "nDCG@3": 0.5441,
+        "P@5": 0.8,
+        "R@5": 0.019,
+        "Hit@5": 0.9583,
+        "nDCG@5": 0.5138,
+        "P@10": 0.775,
+        "R@10": 0.0369,
+        "Hit@10": 0.9583,
+        "nDCG@10": 0.4921
+      },
+      "hybrid_rrf_rerank": {
+        "MRR": 0.8646,
+        "P@1": 0.8333,
+        "R@1": 0.004,
+        "Hit@1": 0.8333,
+        "nDCG@1": 0.5556,
+        "P@3": 0.8472,
+        "R@3": 0.0121,
+        "Hit@3": 0.875,
+        "nDCG@3": 0.5376,
+        "P@5": 0.8333,
+        "R@5": 0.0198,
+        "Hit@5": 0.9167,
+        "nDCG@5": 0.4902,
+        "P@10": 0.8208,
+        "R@10": 0.039,
+        "Hit@10": 0.9167,
+        "nDCG@10": 0.4752
+      },
+      "hybrid_rerank_no_query_translation": {
+        "MRR": 0.8472,
+        "P@1": 0.7917,
+        "R@1": 0.0038,
+        "Hit@1": 0.7917,
+        "nDCG@1": 0.5694,
+        "P@3": 0.8194,
+        "R@3": 0.0117,
+        "Hit@3": 0.9167,
+        "nDCG@3": 0.5278,
+        "P@5": 0.7833,
+        "R@5": 0.0187,
+        "Hit@5": 0.9167,
+        "nDCG@5": 0.4759,
+        "P@10": 0.7708,
+        "R@10": 0.0368,
+        "Hit@10": 0.9167,
+        "nDCG@10": 0.4651
+      }
+    },
+    "main_config": "hybrid_rrf_rerank",
+    "bootstrap_95ci_main": {
+      "MRR": [
+        0.7292,
+        0.9688
+      ],
+      "nDCG@10": [
+        0.3818,
+        0.563
+      ],
+      "P@5": [
+        0.7,
+        0.9333
+      ],
+      "Hit@5": [
+        0.7917,
+        1.0
+      ]
+    },
+    "by_query_style": {
+      "lay": {
+        "MRR": 1.0,
+        "P@5": 1.0,
+        "Hit@5": 1.0,
+        "nDCG@10": 0.5108
+      },
+      "technical": {
+        "MRR": 1.0,
+        "P@5": 0.9714,
+        "Hit@5": 1.0,
+        "nDCG@10": 0.5918
+      },
+      "vague": {
+        "MRR": 0.7045,
+        "P@5": 0.6545,
+        "Hit@5": 0.8182,
+        "nDCG@10": 0.3816
+      }
+    },
+    "relevance": "graded: 2 = same ground-truth scenario AND resolution strategy as the source incident, 1 = same scenario; source incident excluded; exact duplicates collapsed (canonical only)",
+    "recall_note": "R@K divides by ALL relevant incidents of the scenario (often 40-220), so it is small by construction; P@K / Hit@K / MRR / nDCG are the informative ranking metrics."
+  },
+  "rag": {
+    "mode": "retrieval-only (no LLM key configured)",
+    "n_queries": 12,
+    "context_precision@5": 0.8824,
+    "context_recall": 0.875,
+    "faithfulness": {
+      "value": 1.0,
+      "basis": "retrieval-only answers are extractive (the recommended step is copied verbatim from a historical note), so faithfulness is 1.0 by construction; see llm_mode for generated text"
+    },
+    "answer_relevancy_embedding": 0.3303,
+    "family_accuracy@1": 0.9167,
+    "resolution_strategy_accuracy@1": 0.4167,
+    "confidence_vs_accuracy": {
+      "(0.25, 0.5]": {
+        "n": 4,
+        "strategy_accuracy": 0.25
+      },
+      "(0.5, 0.75]": {
+        "n": 6,
+        "strategy_accuracy": 0.667
+      },
+      "(0.75, 1.0]": {
+        "n": 2,
+        "strategy_accuracy": 0.0
+      }
+    },
+    "by_style": {
+      "lay": {
+        "context_precision@5": 1.0,
+        "context_recall": 1.0,
+        "strategy_correct@1": 0.0
+      },
+      "technical": {
+        "context_precision@5": 1.0,
+        "context_recall": 0.9,
+        "strategy_correct@1": 0.8
+      },
+      "vague": {
+        "context_precision@5": 0.7178,
+        "context_recall": 0.8,
+        "strategy_correct@1": 0.2
+      }
+    },
+    "ragas_non_llm": {
+      "status": "computed",
+      "n": 12,
+      "non_llm_context_precision_with_reference": 0.4236,
+      "non_llm_context_recall": 0.3167,
+      "note": "RAGAS non-LLM metrics compare contexts by string similarity (Levenshtein); paraphrased notes of the same strategy score low, so these are conservative lexical measures."
+    },
+    "ragas_llm_metrics": {
+      "status": "not computed \u2014 requires an LLM judge (set LLM_API_KEY); faithfulness / answer relevancy for generated text are measured in llm_mode below"
+    },
+    "definitions": {
+      "context_precision@5": "RAGAS rank-aware formula with ground-truth relevance (same scenario)",
+      "context_recall": "share of reference facts {root-cause scenario, resolution strategy} present in the top-5 contexts",
+      "resolution_strategy_accuracy@1": "the top recommendation's supporting incidents mostly share the source incident's scenario AND strategy (the fix that actually resolved it)"
+    }
+  },
+  "rag_llm_mode": {
+    "status": "not run (pass --llm-local N, or configure LLM_API_KEY)"
+  },
+  "classification": {
+    "category": {
+      "n_train": 2346,
+      "n_test": 783,
+      "accuracy": 0.963,
+      "macro_precision": 0.8273,
+      "macro_recall": 0.8809,
+      "macro_f1": 0.8446,
+      "weighted_f1": 0.9654,
+      "majority_class_baseline_accuracy": 0.8391,
+      "labels": [
+        "Application",
+        "Database",
+        "Hardware",
+        "Infrastructure",
+        "Network",
+        "Performance",
+        "Security",
+        "Storage"
+      ],
+      "confusion_matrix": [
+        [
+          641,
+          0,
+          0,
+          3,
+          0,
+          0,
+          13,
+          0
+        ],
+        [
+          0,
+          15,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          37,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          0,
+          5,
+          0,
+          0,
+          0,
+          6
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          18,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          11,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          12,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          15
+        ]
+      ],
+      "per_class": {
+        "Application": {
+          "precision": 0.995,
+          "recall": 0.976,
+          "f1": 0.985,
+          "support": 657
+        },
+        "Database": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 15
+        },
+        "Hardware": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 37
+        },
+        "Infrastructure": {
+          "precision": 0.5,
+          "recall": 0.385,
+          "f1": 0.435,
+          "support": 13
+        },
+        "Network": {
+          "precision": 0.947,
+          "recall": 0.947,
+          "f1": 0.947,
+          "support": 19
+        },
+        "Performance": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 11
+        },
+        "Security": {
+          "precision": 0.462,
+          "recall": 0.857,
+          "f1": 0.6,
+          "support": 14
+        },
+        "Storage": {
+          "precision": 0.714,
+          "recall": 0.882,
+          "f1": 0.789,
+          "support": 17
+        }
+      },
+      "label_provenance": "category: derived (CI_Subcat mapping / corrected text category); priority/impact/urgency: original Source B fields",
+      "caveat": "Source B text is synthetic and was conditioned on these fields; scores are optimistic relative to real free text."
+    },
+    "priority": {
+      "n_train": 2150,
+      "n_test": 717,
+      "accuracy": 0.5621,
+      "macro_precision": 0.4462,
+      "macro_recall": 0.5454,
+      "macro_f1": 0.4768,
+      "weighted_f1": 0.5739,
+      "majority_class_baseline_accuracy": 0.622,
+      "labels": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "confusion_matrix": [
+        [
+          7,
+          2,
+          1,
+          1
+        ],
+        [
+          4,
+          50,
+          38,
+          14
+        ],
+        [
+          10,
+          61,
+          276,
+          99
+        ],
+        [
+          3,
+          17,
+          64,
+          70
+        ]
+      ],
+      "per_class": {
+        "2": {
+          "precision": 0.292,
+          "recall": 0.636,
+          "f1": 0.4,
+          "support": 11
+        },
+        "3": {
+          "precision": 0.385,
+          "recall": 0.472,
+          "f1": 0.424,
+          "support": 106
+        },
+        "4": {
+          "precision": 0.728,
+          "recall": 0.619,
+          "f1": 0.669,
+          "support": 446
+        },
+        "5": {
+          "precision": 0.38,
+          "recall": 0.455,
+          "f1": 0.414,
+          "support": 154
+        }
+      },
+      "label_provenance": "category: derived (CI_Subcat mapping / corrected text category); priority/impact/urgency: original Source B fields",
+      "caveat": "Source B text is synthetic and was conditioned on these fields; scores are optimistic relative to real free text."
+    },
+    "impact": {
+      "n_train": 2150,
+      "n_test": 717,
+      "accuracy": 0.5704,
+      "macro_precision": 0.4626,
+      "macro_recall": 0.5436,
+      "macro_f1": 0.4912,
+      "weighted_f1": 0.5815,
+      "majority_class_baseline_accuracy": 0.6206,
+      "labels": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "confusion_matrix": [
+        [
+          7,
+          1,
+          1,
+          2
+        ],
+        [
+          4,
+          47,
+          37,
+          16
+        ],
+        [
+          7,
+          67,
+          285,
+          86
+        ],
+        [
+          1,
+          22,
+          64,
+          70
+        ]
+      ],
+      "per_class": {
+        "2": {
+          "precision": 0.368,
+          "recall": 0.636,
+          "f1": 0.467,
+          "support": 11
+        },
+        "3": {
+          "precision": 0.343,
+          "recall": 0.452,
+          "f1": 0.39,
+          "support": 104
+        },
+        "4": {
+          "precision": 0.736,
+          "recall": 0.64,
+          "f1": 0.685,
+          "support": 445
+        },
+        "5": {
+          "precision": 0.402,
+          "recall": 0.446,
+          "f1": 0.423,
+          "support": 157
+        }
+      },
+      "label_provenance": "category: derived (CI_Subcat mapping / corrected text category); priority/impact/urgency: original Source B fields",
+      "caveat": "Source B text is synthetic and was conditioned on these fields; scores are optimistic relative to real free text."
+    },
+    "urgency": {
+      "n_train": 2233,
+      "n_test": 745,
+      "accuracy": 0.5423,
+      "macro_precision": 0.4587,
+      "macro_recall": 0.5481,
+      "macro_f1": 0.4874,
+      "weighted_f1": 0.5537,
+      "majority_class_baseline_accuracy": 0.596,
+      "labels": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "confusion_matrix": [
+        [
+          7,
+          1,
+          2,
+          1
+        ],
+        [
+          5,
+          69,
+          38,
+          19
+        ],
+        [
+          7,
+          96,
+          256,
+          85
+        ],
+        [
+          1,
+          22,
+          64,
+          72
+        ]
+      ],
+      "per_class": {
+        "2": {
+          "precision": 0.35,
+          "recall": 0.636,
+          "f1": 0.452,
+          "support": 11
+        },
+        "3": {
+          "precision": 0.367,
+          "recall": 0.527,
+          "f1": 0.433,
+          "support": 131
+        },
+        "4": {
+          "precision": 0.711,
+          "recall": 0.577,
+          "f1": 0.637,
+          "support": 444
+        },
+        "5": {
+          "precision": 0.407,
+          "recall": 0.453,
+          "f1": 0.429,
+          "support": 159
+        }
+      },
+      "label_provenance": "category: derived (CI_Subcat mapping / corrected text category); priority/impact/urgency: original Source B fields",
+      "caveat": "Source B text is synthetic and was conditioned on these fields; scores are optimistic relative to real free text."
+    }
+  },
+  "resolution_time": {
+    "n_train": 35860,
+    "n_test": 8966,
+    "split": "time-based (latest 20% as test)",
+    "target": "resolution hours = Resolved_Time - Open_Time (recomputed from timestamps)",
+    "features": [
+      "ci_group",
+      "ci_subcategory",
+      "impact",
+      "urgency",
+      "priority",
+      "ticket_type",
+      "open_hour",
+      "open_weekday"
+    ],
+    "hours": {
+      "MAE": 47.46,
+      "RMSE": 100.57,
+      "R2": -0.0419,
+      "median_absolute_error": 16.49
+    },
+    "log_hours": {
+      "MAE": 1.4419,
+      "RMSE": 1.8109,
+      "R2": 0.0458
+    },
+    "baselines_log_hours": {
+      "global_median_MAE": 1.7208,
+      "global_median_R2": -0.1098,
+      "ci_subcategory_median_MAE": 1.6485,
+      "ci_subcategory_median_R2": -0.0401
+    },
+    "p25_p75_interval_coverage": 0.538
+  },
+  "fix_accuracy": {
+    "n_train": 35860,
+    "n_test": 8966,
+    "split": "stratified random 80/20",
+    "target": "reopened (Reopen_Time present) - real label",
+    "features": [
+      "ci_group",
+      "ci_subcategory",
+      "impact",
+      "urgency",
+      "priority",
+      "ticket_type",
+      "closure_class",
+      "log_resolution_hours",
+      "no_of_reassignments"
+    ],
+    "ROC_AUC": 0.826,
+    "PR_AUC": 0.2239,
+    "brier": 0.0422,
+    "base_rate": 0.0495,
+    "top_decile_reopen_rate": 0.2243,
+    "top_decile_lift": 4.53
+  },
+  "causal_chains": {
+    "incidents": 3129,
+    "chains_available": 2979,
+    "chains_withheld_no_timestamps": 150,
+    "tag_distribution": {
+      "derived": 3696,
+      "observed": 3359,
+      "inferred": 9070
+    },
+    "rule_conformance": {
+      "available_iff_timestamps": 1.0,
+      "symptom_tag_matches_text_provenance": 1.0,
+      "outcome_links_observed": 1.0,
+      "observed_triggers_backed_by_related_change": 1.0
+    },
+    "example": {
+      "incident_id": "IM0000034",
+      "available": true,
+      "temporal_ordering": {
+        "tag": "observed",
+        "open_time": "2012-12-10 14:44:00",
+        "resolved_time": "2014-03-28 14:20:00",
+        "reopen_time": "2014-02-11 14:50:00"
+      },
+      "links": [
+        {
+          "stage": "technical_failure",
+          "statement": "memory leak / heap exhaustion",
+          "tag": "inferred",
+          "evidence": "resolution notes: 'Memory leak'"
+        },
+        {
+          "stage": "symptom",
+          "statement": "Long garbage-collection pauses and old-gen heap growth observed on WBA000082; risk reporting dashboard freezes.",
+          "tag": "inferred",
+          "evidence": "incident description (generated text)"
+        },
+        {
+          "stage": "business_impact",
+          "statement": "Degraded performance for a single user",
+          "tag": "derived",
+          "evidence": "Impact=5, Urgency=5 (ITIL fields)"
+        },
+        {
+          "stage": "resolution",
+          "statement": "Memory leak in the application's session cache was identified as the root cause, causing the heap to nearly exhaust. The application service was recycled during a quiet window, restoring normal response times but leaving [closure code: Other]",
+          "tag": "inferred",
+          "evidence": "resolution notes (generated text)"
+        },
+        {
+          "stage": "outcome",
+          "statement": "Resolved 11351.6 h after opening; reopened on 2014-02-11 14:50 (fix did not hold); 5 reassignment(s)",
+          "tag": "observed",
+          "evidence": "Open_Time / Resolved_Time / Reopen_Time timestamps"
+        }
+      ],
+      "missing_stages": [
+        "trigger"
+      ],
+      "tag_counts": {
+        "inferred": 3,
+        "derived": 1,
+        "observed": 1
+      },
+      "chain_strength": 0.492
+    }
+  },
+  "quality_manager": {
+    "low_quality_notes": {
+      "flagged": 343,
+      "seeded": 343,
+      "true_positives": 343,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "seeded_contradictions": {
+      "flagged": 164,
+      "seeded": 44,
+      "true_positives": 26,
+      "precision": 0.1585,
+      "recall": 0.5909
+    },
+    "real_source_A_category_conflicts_flagged": 107,
+    "exact_duplicates_flagged": 143,
+    "near_duplicates_flagged": 394,
+    "tiers": {
+      "high": 2623,
+      "medium": 327,
+      "low": 179
+    },
+    "mean_score_by_text_provenance": {
+      "original": 0.4014,
+      "synthetic": 0.8563
+    }
+  },
+  "novelty": {
+    "threshold_p_known": 0.4892,
+    "weights": {
+      "max_relevance_logit": 2.435,
+      "max_semantic": -0.122,
+      "centroid_similarity": 1.469,
+      "fingerprint_support": -0.558
+    },
+    "validation": {
+      "precision": 0.9048,
+      "recall": 1.0,
+      "f1": 0.95,
+      "false_novel_rate": 0.0156,
+      "false_known_rate": 0.0,
+      "tp": 19,
+      "fp": 2,
+      "fn": 0,
+      "tn": 126,
+      "n_known": 128,
+      "n_novel": 19,
+      "selection_rule": "max novel recall s.t. false-novel rate \u2264 2% (validation)"
+    },
+    "test": {
+      "precision": 0.9545,
+      "recall": 1.0,
+      "f1": 0.9767,
+      "false_novel_rate": 0.0078,
+      "false_known_rate": 0.0,
+      "tp": 21,
+      "fp": 1,
+      "fn": 0,
+      "tn": 128,
+      "n_known": 129,
+      "n_novel": 21
+    },
+    "test_by_style": {
+      "technical": {
+        "n": 43,
+        "flagged_novel": 0
+      },
+      "lay": {
+        "n": 43,
+        "flagged_novel": 0
+      },
+      "vague": {
+        "n": 43,
+        "flagged_novel": 1
+      },
+      "novel": {
+        "n": 17,
+        "flagged_novel": 17
+      },
+      "hard": {
+        "n": 4,
+        "flagged_novel": 4
+      }
+    },
+    "baseline_single_feature": {
+      "feature": "max_relevance_logit",
+      "validation": {
+        "precision": 0.9,
+        "recall": 0.9474,
+        "f1": 0.9231,
+        "false_novel_rate": 0.0156,
+        "false_known_rate": 0.0526,
+        "tp": 18,
+        "fp": 2,
+        "fn": 1,
+        "tn": 126,
+        "n_known": 128,
+        "n_novel": 19,
+        "selection_rule": "max novel recall s.t. false-novel rate \u2264 2% (validation)"
+      },
+      "test": {
+        "precision": 0.8947,
+        "recall": 0.8095,
+        "f1": 0.85,
+        "false_novel_rate": 0.0155,
+        "false_known_rate": 0.1905,
+        "tp": 17,
+        "fp": 2,
+        "fn": 4,
+        "tn": 127,
+        "n_known": 129,
+        "n_novel": 21
+      }
+    },
+    "test_sweep": [
+      {
+        "threshold": 0.05,
+        "precision": 1.0,
+        "recall": 0.8095,
+        "f1": 0.8947,
+        "false_novel_rate": 0.0,
+        "false_known_rate": 0.1905,
+        "tp": 17,
+        "fp": 0,
+        "fn": 4,
+        "tn": 129,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.1,
+        "precision": 1.0,
+        "recall": 0.8095,
+        "f1": 0.8947,
+        "false_novel_rate": 0.0,
+        "false_known_rate": 0.1905,
+        "tp": 17,
+        "fp": 0,
+        "fn": 4,
+        "tn": 129,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.15,
+        "precision": 0.9444,
+        "recall": 0.8095,
+        "f1": 0.8718,
+        "false_novel_rate": 0.0078,
+        "false_known_rate": 0.1905,
+        "tp": 17,
+        "fp": 1,
+        "fn": 4,
+        "tn": 128,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.2,
+        "precision": 0.9444,
+        "recall": 0.8095,
+        "f1": 0.8718,
+        "false_novel_rate": 0.0078,
+        "false_known_rate": 0.1905,
+        "tp": 17,
+        "fp": 1,
+        "fn": 4,
+        "tn": 128,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.25,
+        "precision": 0.9444,
+        "recall": 0.8095,
+        "f1": 0.8718,
+        "false_novel_rate": 0.0078,
+        "false_known_rate": 0.1905,
+        "tp": 17,
+        "fp": 1,
+        "fn": 4,
+        "tn": 128,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.3,
+        "precision": 0.95,
+        "recall": 0.9048,
+        "f1": 0.9268,
+        "false_novel_rate": 0.0078,
+        "false_known_rate": 0.0952,
+        "tp": 19,
+        "fp": 1,
+        "fn": 2,
+        "tn": 128,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.35,
+        "precision": 0.9545,
+        "recall": 1.0,
+        "f1": 0.9767,
+        "false_novel_rate": 0.0078,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 1,
+        "fn": 0,
+        "tn": 128,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.4,
+        "precision": 0.9545,
+        "recall": 1.0,
+        "f1": 0.9767,
+        "false_novel_rate": 0.0078,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 1,
+        "fn": 0,
+        "tn": 128,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.45,
+        "precision": 0.9545,
+        "recall": 1.0,
+        "f1": 0.9767,
+        "false_novel_rate": 0.0078,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 1,
+        "fn": 0,
+        "tn": 128,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.5,
+        "precision": 0.9545,
+        "recall": 1.0,
+        "f1": 0.9767,
+        "false_novel_rate": 0.0078,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 1,
+        "fn": 0,
+        "tn": 128,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.55,
+        "precision": 0.9545,
+        "recall": 1.0,
+        "f1": 0.9767,
+        "false_novel_rate": 0.0078,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 1,
+        "fn": 0,
+        "tn": 128,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.6,
+        "precision": 0.9545,
+        "recall": 1.0,
+        "f1": 0.9767,
+        "false_novel_rate": 0.0078,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 1,
+        "fn": 0,
+        "tn": 128,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.65,
+        "precision": 0.913,
+        "recall": 1.0,
+        "f1": 0.9545,
+        "false_novel_rate": 0.0155,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 2,
+        "fn": 0,
+        "tn": 127,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.7,
+        "precision": 0.913,
+        "recall": 1.0,
+        "f1": 0.9545,
+        "false_novel_rate": 0.0155,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 2,
+        "fn": 0,
+        "tn": 127,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.75,
+        "precision": 0.913,
+        "recall": 1.0,
+        "f1": 0.9545,
+        "false_novel_rate": 0.0155,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 2,
+        "fn": 0,
+        "tn": 127,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.8,
+        "precision": 0.913,
+        "recall": 1.0,
+        "f1": 0.9545,
+        "false_novel_rate": 0.0155,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 2,
+        "fn": 0,
+        "tn": 127,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.85,
+        "precision": 0.84,
+        "recall": 1.0,
+        "f1": 0.913,
+        "false_novel_rate": 0.031,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 4,
+        "fn": 0,
+        "tn": 125,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.9,
+        "precision": 0.7,
+        "recall": 1.0,
+        "f1": 0.8235,
+        "false_novel_rate": 0.0698,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 9,
+        "fn": 0,
+        "tn": 120,
+        "n_known": 129,
+        "n_novel": 21
+      },
+      {
+        "threshold": 0.95,
+        "precision": 0.5122,
+        "recall": 1.0,
+        "f1": 0.6774,
+        "false_novel_rate": 0.155,
+        "false_known_rate": 0.0,
+        "tp": 21,
+        "fp": 20,
+        "fn": 0,
+        "tn": 109,
+        "n_known": 129,
+        "n_novel": 21
+      }
+    ],
+    "test_errors": [
+      {
+        "query_id": "Q0166",
+        "query": "Server couldn't agree on new security settings.",
+        "label": "known",
+        "style": "vague",
+        "p_known": 0.1355,
+        "predicted": "novel",
+        "features": {
+          "max_relevance_logit": -6.566,
+          "max_semantic": 0.4271,
+          "centroid_similarity": 0.5133,
+          "fingerprint_support": 0.5
+        }
+      }
+    ],
+    "platt": {
+      "a": 0.4047600878857554,
+      "b": 0.6811667049491935,
+      "pairs": 1280,
+      "positive_rate": 0.8234
+    }
+  },
+  "troubleshooting": {
+    "n_sessions": 12,
+    "resolution_rate": 0.5833,
+    "first_step_success_rate": 0.4167,
+    "average_steps_to_resolution": 1.571,
+    "escalation_rate": 0.4167,
+    "novel_route_rate": 0.0,
+    "clarification_rate": 0.5833,
+    "max_clarifications_in_a_session": 1,
+    "by_style": {
+      "lay": {
+        "resolution_rate": 1.0,
+        "avg_steps": 3.0
+      },
+      "technical": {
+        "resolution_rate": 0.8,
+        "avg_steps": 1.4
+      },
+      "vague": {
+        "resolution_rate": 0.2,
+        "avg_steps": 2.6
+      }
+    },
+    "simulated_engineer": "a step WORKS iff the majority (scenario, strategy) of its supporting incidents equals the source incident's ground truth; clarifying questions are answered from the source incident's fingerprint when known, otherwise declined",
+    "round_cap": 3
+  },
+  "correlation": {
+    "selected_similarity_threshold": 0.9,
+    "selection": "max F1(precision, burst recall) on validation streams",
+    "validation_sweep": {
+      "0.4": {
+        "correlation_precision": 0.5,
+        "burst_detection_recall": 1.0,
+        "f1": 0.6667,
+        "noise_only_false_alert_rate": 0.0
+      },
+      "0.45": {
+        "correlation_precision": 0.5,
+        "burst_detection_recall": 1.0,
+        "f1": 0.6667,
+        "noise_only_false_alert_rate": 0.0
+      },
+      "0.5": {
+        "correlation_precision": 1.0,
+        "burst_detection_recall": 1.0,
+        "f1": 1.0,
+        "noise_only_false_alert_rate": 0.0
+      },
+      "0.55": {
+        "correlation_precision": 1.0,
+        "burst_detection_recall": 1.0,
+        "f1": 1.0,
+        "noise_only_false_alert_rate": 0.0
+      },
+      "0.6": {
+        "correlation_precision": 1.0,
+        "burst_detection_recall": 1.0,
+        "f1": 1.0,
+        "noise_only_false_alert_rate": 0.0
+      },
+      "0.65": {
+        "correlation_precision": 1.0,
+        "burst_detection_recall": 1.0,
+        "f1": 1.0,
+        "noise_only_false_alert_rate": 0.0
+      },
+      "0.7": {
+        "correlation_precision": 1.0,
+        "burst_detection_recall": 1.0,
+        "f1": 1.0,
+        "noise_only_false_alert_rate": 0.0
+      },
+      "0.75": {
+        "correlation_precision": 1.0,
+        "burst_detection_recall": 1.0,
+        "f1": 1.0,
+        "noise_only_false_alert_rate": 0.0
+      },
+      "0.8": {
+        "correlation_precision": 1.0,
+        "burst_detection_recall": 1.0,
+        "f1": 1.0,
+        "noise_only_false_alert_rate": 0.0
+      },
+      "0.85": {
+        "correlation_precision": 1.0,
+        "burst_detection_recall": 1.0,
+        "f1": 1.0,
+        "noise_only_false_alert_rate": 0.0
+      },
+      "0.9": {
+        "correlation_precision": 1.0,
+        "burst_detection_recall": 1.0,
+        "f1": 1.0,
+        "noise_only_false_alert_rate": 0.0
+      }
+    },
+    "test": {
+      "bursts": 2,
+      "burst_detection_recall": 1.0,
+      "alerts": 2,
+      "correlation_precision": 1.0,
+      "false_correlation_rate": 0.0,
+      "noise_only_streams": 1,
+      "noise_only_false_alert_rate": 0.0,
+      "detection_latency_minutes": {
+        "n": 2,
+        "mean": 6.5,
+        "median": 6.5,
+        "p95": 8.75
+      },
+      "burst_tickets_needed_to_alert": {
+        "n": 2,
+        "mean": 2.5,
+        "median": 2.5,
+        "p95": 2.95
+      },
+      "f1": 1.0
+    },
+    "window_minutes": 30,
+    "min_incidents": 2,
+    "stream_design": "per scenario: 3 differently-worded tickets at t=0/4/9 min + 3 unrelated tickets at random times in a 30-min window; plus noise-only streams of 6 unrelated tickets"
+  },
+  "evidence_chain": {
+    "known": {
+      "n": 12,
+      "complete_core_rate": 1.0,
+      "mean_completeness": 0.7498,
+      "insufficient_field_counts": {
+        "evidence_strength.symptom_match": 6,
+        "evidence_strength.environment_match": 12,
+        "evidence_strength.component_match": 3
+      }
+    },
+    "novel": {
+      "n": 12,
+      "complete_core_rate": 1.0,
+      "mean_completeness": 0.6663,
+      "insufficient_field_counts": {
+        "evidence_strength.component_match": 7,
+        "evidence_strength.symptom_match": 9,
+        "evidence_strength.environment_match": 12
+      }
+    },
+    "definition": "a recommendation's evidence object is 'complete' when family match, root-cause evidence and resolution evidence are all populated from real data (not 'insufficient evidence'); evidence-strength values are counted separately"
+  },
+  "latency": {
+    "device": "cuda:NVIDIA GeForce RTX 4070 Ti",
+    "stages_ms": {
+      "query_processing": {
+        "n": 24,
+        "mean": 0.0,
+        "median": 0.0,
+        "p95": 0.0
+      },
+      "embedding": {
+        "n": 24,
+        "mean": 8.6387,
+        "median": 8.245,
+        "p95": 11.6285
+      },
+      "vector_search": {
+        "n": 24,
+        "mean": 16.6475,
+        "median": 16.475,
+        "p95": 17.7845
+      },
+      "bm25": {
+        "n": 24,
+        "mean": 7.6125,
+        "median": 6.965,
+        "p95": 11.7745
+      },
+      "hybrid_fusion": {
+        "n": 24,
+        "mean": 0.0638,
+        "median": 0.06,
+        "p95": 0.087
+      },
+      "reranking": {
+        "n": 24,
+        "mean": 39.5233,
+        "median": 37.52,
+        "p95": 44.362
+      },
+      "resolution_ranking": {
+        "n": 12,
+        "mean": 1.2868,
+        "median": 1.1977,
+        "p95": 1.7978
+      },
+      "evidence_chain_assembly": {
+        "n": 12,
+        "mean": 0.1747,
+        "median": 0.1568,
+        "p95": 0.2707
+      },
+      "end_to_end_retrieval_pipeline": {
+        "n": 24,
+        "mean": 72.4858,
+        "median": 69.56,
+        "p95": 80.526
+      },
+      "llm_generation": {
+        "note": "0 ms \u2014 retrieval-only mode (no LLM configured)"
+      }
+    }
+  },
+  "eval_step_seconds": {
+    "retrieval": 6.4,
+    "rag": 3.2,
+    "causal_chains": 0.3,
+    "quality_manager": 0.0,
+    "novelty": 0.0,
+    "troubleshooting": 2.7,
+    "correlation": 2.0,
+    "evidence_chain": 1.8
+  },
+  "total_seconds": 39.8
+}

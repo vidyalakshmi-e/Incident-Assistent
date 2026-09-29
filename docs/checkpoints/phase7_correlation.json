@@ -1,0 +1,69 @@
+{
+  "burst_alerts": [
+    {
+      "alert_id": "CORR-8fd616fb",
+      "members": [
+        "NEW-20260928041419-D4DF",
+        "NEW-20260928041419-B672"
+      ],
+      "size": 2,
+      "first_seen": "2026-09-28T04:14:19.770643",
+      "detected_at": "2026-09-28T04:18:19.770643",
+      "detection_latency_s": 240.0,
+      "family_id": "F005",
+      "shared_fields": {
+        "symptom": "timeout",
+        "failure_type": "intermittent failure"
+      },
+      "mean_similarity": 0.3109,
+      "message": "Possible single ongoing incident: 2 related tickets within 4 min",
+      "framing": "possible correlation \u2014 confirm before merging tickets"
+    }
+  ],
+  "burst_events": [
+    {
+      "incident_id": "NEW-20260928041419-B672",
+      "received_at": "2026-09-28T04:14:19.770643",
+      "text": "Customer search in the CRM is timing out for everyone on the second floor",
+      "family_id": "F005",
+      "family_match": 0.4294,
+      "family_basis": "retrieval evidence",
+      "fingerprint": {
+        "symptom": "timeout",
+        "failure_type": "intermittent failure",
+        "business_impact": "Intermittent service disruption across the organization",
+        "impact_scope": "organization-wide"
+      }
+    },
+    {
+      "incident_id": "NEW-20260928041419-D4DF",
+      "received_at": "2026-09-28T04:18:19.770643",
+      "text": "Reports keep loading forever and then fail with a timeout, started this morning",
+      "family_id": "F005",
+      "family_match": 0.832,
+      "family_basis": "retrieval evidence",
+      "fingerprint": {
+        "symptom": "timeout",
+        "failure_type": "intermittent failure",
+        "trigger": "load / traffic peak",
+        "business_impact": "Intermittent service disruption"
+      }
+    },
+    {
+      "incident_id": "NEW-20260928041419-9C0E",
+      "received_at": "2026-09-28T04:23:19.770643",
+      "text": "Database alert: average query time above 30 seconds, sessions waiting, CRM search very slow",
+      "family_id": "F004",
+      "family_match": 0.9715,
+      "family_basis": "retrieval evidence",
+      "fingerprint": {
+        "component": "Database",
+        "symptom": "slow response",
+        "failure_type": "performance degradation",
+        "dependency": "database",
+        "business_impact": "Degraded performance"
+      }
+    }
+  ],
+  "noise_alerts": []
+}

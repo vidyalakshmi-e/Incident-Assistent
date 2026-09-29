@@ -1,0 +1,32 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font-size",
+        "value": "16.5px",
+        "createdAt": "2026-09-28T09:24:48.861Z",
+        "reason": "builder: rail brand wordmark size, pre-existing and passed the finish review; a one-off, not a ramp step"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "6px",
+        "createdAt": "2026-09-28T09:25:26.792Z",
+        "reason": "builder: custom scrollbar thumb (a browser surface), pre-existing; not a component shape"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "23px",
+        "createdAt": "2026-09-28T09:27:21.854Z",
+        "reason": "builder: pre-existing subhead size (clarification question, correlation alert message), passed the finish review; missing from the documented ramp"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "16px",
+        "createdAt": "2026-09-28T09:27:21.942Z",
+        "reason": "builder: pre-existing reading size, passed the finish review; missing from the documented ramp"
+      }
+    ]
+  }
+}

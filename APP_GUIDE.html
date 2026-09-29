@@ -1,0 +1,1390 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Intelligence: the plain-English guide</title>
+<style>
+:root{
+  --bg:#f6f7f9; --panel:#ffffff; --ink:#15181f; --ink2:#454c5c; --ink3:#6b7385; --line:#dfe3ea; --line2:#c9cfda;
+  --blue:#2456d6; --blue-soft:#e7eefc; --blue-ink:#163a94;
+  --red:#c4322d; --red-soft:#fbe9e8; --amber:#a86400; --amber-soft:#fdf1dc; --green:#1a7a4b; --green-soft:#e3f5ea;
+  --code:#f0f2f6; --shadow:0 1px 2px rgba(20,24,31,.06),0 6px 20px -12px rgba(20,24,31,.25);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1218; --panel:#171b23; --ink:#eef1f6; --ink2:#b7bfce; --ink3:#8b94a7; --line:#272d3a; --line2:#374056;
+    --blue:#6c96ff; --blue-soft:#1b2745; --blue-ink:#a9c1ff;
+    --red:#ff7a72; --red-soft:#3a1c1b; --amber:#f0b04a; --amber-soft:#3a2c12; --green:#5fd394; --green-soft:#15301f;
+    --code:#1e2330; --shadow:none; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1218; --panel:#171b23; --ink:#eef1f6; --ink2:#b7bfce; --ink3:#8b94a7; --line:#272d3a; --line2:#374056;
+  --blue:#6c96ff; --blue-soft:#1b2745; --blue-ink:#a9c1ff;
+  --red:#ff7a72; --red-soft:#3a1c1b; --amber:#f0b04a; --amber-soft:#3a2c12; --green:#5fd394; --green-soft:#15301f;
+  --code:#1e2330; --shadow:none; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--blue)}
+code,pre,kbd{font-family:ui-monospace,SFMono-Regular,Consolas,Menlo,monospace}
+code{background:var(--code);padding:.1em .38em;border-radius:4px;font-size:.88em}
+pre{background:var(--code);padding:14px 16px;border-radius:8px;overflow-x:auto;font-size:13.5px;line-height:1.55;margin:10px 0;border:1px solid var(--line)}
+pre code{background:none;padding:0}
+kbd{background:var(--panel);border:1px solid var(--line2);border-bottom-width:2px;border-radius:5px;padding:1px 6px;font-size:.85em}
+h1,h2,h3,h4{line-height:1.25;margin:0}
+h2{font-size:1.7rem;margin-bottom:6px}
+h3{font-size:1.2rem;margin:26px 0 8px}
+h4{font-size:1rem;margin:16px 0 6px}
+p{margin:.55em 0}
+.layout{display:grid;grid-template-columns:262px minmax(0,1fr);min-height:100vh}
+aside.nav{position:sticky;top:0;height:100vh;overflow-y:auto;padding:22px 16px;border-right:1px solid var(--line);background:var(--panel)}
+aside.nav .brand{font-weight:800;font-size:1.02rem;line-height:1.25}
+aside.nav .brand small{display:block;font-weight:500;color:var(--ink3);font-size:.78rem;margin-top:2px}
+aside.nav ol{list-style:none;margin:18px 0 0;padding:0}
+aside.nav a{display:flex;gap:9px;align-items:center;padding:7px 10px;border-radius:7px;color:var(--ink2);text-decoration:none;font-size:.93rem}
+aside.nav a:hover{background:var(--code)}
+aside.nav a.on{background:var(--blue-soft);color:var(--blue-ink);font-weight:700}
+aside.nav .n{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--code);font-size:.72rem;font-weight:700;color:var(--ink2)}
+aside.nav a.on .n{background:var(--blue);color:#fff}
+.themebtn{margin-top:18px;width:100%;padding:8px;border:1px solid var(--line2);background:var(--panel);color:var(--ink);border-radius:8px;cursor:pointer;font:inherit;font-size:.88rem}
+main{padding:34px clamp(18px,4vw,56px) 90px;max-width:1120px;width:100%}
+section{margin-top:64px}
+section:first-of-type{margin-top:0}
+.lede{color:var(--ink2);font-size:1.05rem;max-width:74ch}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow)}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:.78rem;font-weight:700;letter-spacing:.01em;vertical-align:middle}
+.p-blue{background:var(--blue-soft);color:var(--blue-ink)}
+.p-red{background:var(--red-soft);color:var(--red)}
+.p-amber{background:var(--amber-soft);color:var(--amber)}
+.p-green{background:var(--green-soft);color:var(--green)}
+.p-gray{background:var(--code);color:var(--ink2)}
+.callout{border-left:4px solid var(--blue);background:var(--blue-soft);padding:12px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+.callout.warn{border-color:var(--amber);background:var(--amber-soft)}
+.callout.bad{border-color:var(--red);background:var(--red-soft)}
+.callout.ok{border-color:var(--green);background:var(--green-soft)}
+.callout b:first-child{display:block;margin-bottom:2px}
+table{width:100%;border-collapse:collapse;font-size:.93rem;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th,td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--code);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink2)}
+tr:last-child td{border-bottom:0}
+.tw{overflow-x:auto;margin:10px 0}
+details{border:1px solid var(--line);border-radius:10px;background:var(--panel);margin:8px 0}
+details>summary{cursor:pointer;padding:11px 14px;font-weight:650;list-style:none;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--ink3);transition:transform .15s}
+details[open]>summary::before{transform:rotate(90deg)}
+details>.body{padding:2px 16px 14px}
+.hero{background:linear-gradient(135deg,var(--blue-soft),var(--panel));border:1px solid var(--line);border-radius:16px;padding:28px 30px}
+.hero h1{font-size:clamp(1.7rem,3.4vw,2.5rem);margin-bottom:8px}
+.steps{counter-reset:s;list-style:none;padding:0;margin:10px 0}
+.steps li{counter-increment:s;position:relative;padding:6px 0 6px 40px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:6px;width:27px;height:27px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-weight:700;font-size:.85rem}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:4px 14px;margin:8px 0;font-size:.95rem}
+.kv dt{color:var(--ink3);font-weight:600}
+.kv dd{margin:0}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:14px 0}
+.flow .box{flex:1 1 150px;background:var(--panel);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;font-size:.88rem;position:relative}
+.flow .box b{display:block;font-size:.72rem;color:var(--blue);text-transform:uppercase;letter-spacing:.06em}
+.flow .arrow{align-self:center;color:var(--ink3);font-size:1.2rem}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0;align-items:center}
+.filters input[type=search]{flex:1 1 260px;padding:10px 12px;border:1px solid var(--line2);border-radius:9px;background:var(--panel);color:var(--ink);font:inherit}
+.chip{border:1px solid var(--line2);background:var(--panel);color:var(--ink2);padding:6px 12px;border-radius:99px;cursor:pointer;font:inherit;font-size:.86rem}
+.chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.btnitem summary .lbl{background:var(--ink);color:var(--panel);padding:2px 10px;border-radius:6px;font-size:.86rem;font-weight:700}
+.btnitem summary .scr{font-size:.78rem;color:var(--ink3);font-weight:600;margin-left:auto}
+.btnitem .row{display:grid;grid-template-columns:130px 1fr;gap:4px 14px;padding:7px 0;border-top:1px dashed var(--line)}
+.btnitem .row:first-child{border-top:0}
+.btnitem .row .k{font-size:.76rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3);font-weight:700;padding-top:2px}
+.mock{border:1px solid var(--line2);border-radius:12px;overflow:hidden;background:var(--panel);font-size:.9rem}
+.mock .bar{padding:14px 16px;color:#fff;display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+.mock .bar.blue{background:#2456d6}.mock .bar.red{background:#c4322d}
+.mock .bar b{font-size:1.25rem}
+.mock .sec{padding:12px 16px;border-top:1px solid var(--line)}
+.n1{display:inline-grid;place-items:center;width:21px;height:21px;border-radius:50%;background:var(--amber);color:#fff;font-size:.72rem;font-weight:800;margin-right:6px;vertical-align:middle;flex:none}
+.legend{counter-reset:l;list-style:none;padding:0;margin:14px 0}
+.legend li{padding:6px 0 6px 34px;position:relative;border-bottom:1px solid var(--line)}
+.legend li::before{counter-increment:l;content:counter(l);position:absolute;left:0;top:7px;width:22px;height:22px;border-radius:50%;background:var(--amber);color:#fff;display:grid;place-items:center;font-size:.75rem;font-weight:800}
+.lab{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.lab .card h3{margin-top:0}
+.lab label{display:block;font-size:.88rem;color:var(--ink2);margin-top:12px}
+.lab input[type=range]{width:100%}
+.big{font-size:2rem;font-weight:800;line-height:1.1}
+.meter{height:12px;background:var(--code);border-radius:99px;overflow:hidden;position:relative;margin:8px 0}
+.meter i{display:block;height:100%;background:var(--blue);width:0}
+.meter u{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink)}
+.sim button,.btn{font:inherit;border:1px solid var(--line2);background:var(--panel);color:var(--ink);padding:8px 14px;border-radius:9px;cursor:pointer;font-weight:650}
+.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn.danger{background:var(--red);color:#fff;border-color:var(--red)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.track{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.track .node{flex:1 1 130px;border:1px solid var(--line2);border-radius:10px;padding:8px 10px;font-size:.84rem;background:var(--panel)}
+.track .node.failed{border-color:var(--red);background:var(--red-soft);text-decoration:line-through;color:var(--ink3)}
+.track .node.worked{border-color:var(--green);background:var(--green-soft)}
+.track .node.cur{border-color:var(--blue);background:var(--blue-soft)}
+.track .node.open{border-style:dashed;color:var(--ink3)}
+.track .node.ask{border-color:var(--amber);background:var(--amber-soft)}
+.track .node.esc{border-color:var(--ink);background:var(--amber-soft);font-weight:700}
+.progress{height:10px;background:var(--code);border-radius:99px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--green);width:0;transition:width .2s}
+.tc td:first-child{white-space:nowrap;font-weight:700}
+.tc tr.done td{opacity:.55}
+.tc input[type=checkbox]{width:18px;height:18px;accent-color:var(--green)}
+.sm{font-size:.86rem;color:var(--ink3)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.toc-mini{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.toc-mini a{padding:6px 12px;border:1px solid var(--line2);border-radius:99px;text-decoration:none;font-size:.88rem;color:var(--ink2);background:var(--panel)}
+.tip{color:var(--ink3);font-size:.86rem}
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr}
+  aside.nav{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+  aside.nav ol{display:flex;flex-wrap:wrap;gap:4px}
+  .btnitem .row,.kv{grid-template-columns:1fr}
+}
+@media print{aside.nav{display:none}.layout{display:block}details{break-inside:avoid}details>*{display:block}}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<aside class="nav" aria-label="Sections">
+  <div class="brand">Incident Intelligence<small>Plain-English guide · desktop web app + API</small></div>
+  <ol id="navlist">
+    <li><a href="#start"><span class="n">1</span>Start here</a></li>
+    <li><a href="#ways"><span class="n">2</span>Ways to show, test, understand</a></li>
+    <li><a href="#picture"><span class="n">3</span>The big picture</a></li>
+    <li><a href="#buttons"><span class="n">4</span>Every button explained</a></li>
+    <li><a href="#responses"><span class="n">5</span>Reading the responses</a></li>
+    <li><a href="#lab"><span class="n">6</span>Try it: interactive lab</a></li>
+    <li><a href="#tests"><span class="n">7</span>Test cases (tick them off)</a></li>
+    <li><a href="#auto"><span class="n">8</span>Automated tests</a></li>
+    <li><a href="#numbers"><span class="n">9</span>The report card</a></li>
+    <li><a href="#faq"><span class="n">10</span>Limits &amp; FAQ</a></li>
+    <li><a href="#glossary"><span class="n">11</span>Glossary</a></li>
+  </ol>
+  <button class="themebtn" id="themebtn" type="button">Theme: auto (click to change)</button>
+</aside>
+
+<main>
+
+<!-- =============================================================== 1 START -->
+<section id="start">
+  <div class="hero">
+    <span class="pill p-blue">Plain-English guide</span>
+    <h1>What is this app, and how do I show, test and understand it?</h1>
+    <p class="lede">When something breaks at work ("the app is slow", "I can't log in"), a support engineer wants four answers
+    fast: <b>has this happened before? what fixed it? what should I try first? who takes over if it fails?</b>
+    This app answers by comparing the new problem with a library of <b>3,130 past incidents</b>, recommending <b>one</b> first step
+    with the proof behind it, guiding the engineer step by step, and learning from every fix.</p>
+  </div>
+
+  <div class="grid g3" style="margin-top:18px">
+    <div class="card"><h4>1. Evidence before opinion</h4><p class="sm">Every recommendation lists the past incidents that back it. Nothing is a bare claim.</p></div>
+    <div class="card"><h4>2. "I don't know" is an answer</h4><p class="sm">If nothing similar exists it says <span class="pill p-red">Novel incident</span> and does <b>not</b> invent a fix.</p></div>
+    <div class="card"><h4>3. A human stays in charge</h4><p class="sm">It never touches a real system. Risky steps (restart, delete) are marked "needs human confirmation".</p></div>
+  </div>
+
+  <h3>How to use this page</h3>
+  <ul>
+    <li><b>New to the project?</b> Read section 3, then do the 10-minute click tour in section 2.</li>
+    <li><b>"What does this button do?"</b> Go to section 4 and type the button's name in the search box.</li>
+    <li><b>"What does this result mean?"</b> Section 5 shows the screen with numbered callouts, and explains every field of the response.</li>
+    <li><b>Want to prove it works?</b> Section 7 has about 90 test cases with a tick box each; your ticks are remembered in this browser.</li>
+    <li><b>Want to play with the maths?</b> Section 6 has small calculators (confidence, grade, novelty, tier, quality gate) and a troubleshooting simulator.</li>
+  </ul>
+
+  <div class="callout warn"><b>How much of this was actually checked?</b>
+    <span class="pill p-green">Observed</span> = I ran it against your live API on 2026-09-29 and copied the real result.
+    <span class="pill p-gray">Code</span> = read from the source code or automated tests but not clicked by hand.
+    Every test case is labelled, so you know how far to trust it. Numbers move slightly as the library grows, so compare the
+    <i>verdict and grade</i>, not the fourth decimal.</div>
+
+  <h3>Start the app (two terminals, both in the project folder)</h3>
+  <div class="two">
+    <div class="card"><b>Terminal 1: the engine (API)</b>
+<pre><code>venv\Scripts\activate
+uvicorn backend.main:app --port 8000</code></pre>
+      <p class="sm">Wait for <code>Application startup complete</code> (about a minute the first time, while models load).
+      Your folder has <code>venv</code>, not <code>.venv</code>.</p></div>
+    <div class="card"><b>Terminal 2: the screens (website)</b>
+<pre><code>cd web
+npm install     # first time only
+npm run dev</code></pre>
+      <p class="sm">Open <a href="http://localhost:3000">http://localhost:3000</a> on a laptop or desktop
+      (at least 1200 px wide; there is no phone layout).</p></div>
+  </div>
+  <div class="callout ok"><b>Is it healthy?</b> Open <a href="http://localhost:8000/health">localhost:8000/health</a>. When I checked:
+    <code>status: ok</code>, search index <code>3130 vectors</code>, local embeddings + local re-ranker, <b>3,130 records, 30 families</b>,
+    tiers <code>L1, L2, L3</code>, and an AI writer available (<code>gpt-4o-mini</code>, so an AI key is set on this machine).
+    If the engine is off, every screen says <i>"Could not load this view."</i> and the menu's status panel shows <i>API offline</i>.</div>
+</section>
+
+<!-- =============================================================== 2 WAYS -->
+<section id="ways">
+  <h2>2. Different ways to show, test and understand the project</h2>
+  <p class="lede">Pick the way that suits your audience. They go from "just watch" to "poke at the internals".</p>
+
+  <div class="toc-mini">
+    <a href="#way1">A. 10-minute click tour</a><a href="#way2">B. Change-one-thing experiments</a>
+    <a href="#way3">C. Swagger (API page)</a><a href="#way4">D. Copy-paste commands</a>
+    <a href="#way5">E. Break it on purpose</a><a href="#way6">F. Automated tests</a>
+    <a href="#way7">G. Recorded outputs and reports</a>
+  </div>
+
+  <h3 id="way1">A. The 10-minute click tour <span class="pill p-blue">best for a demo</span></h3>
+  <ol class="steps">
+    <li><b>Assistant → "Memory leak" → Analyze.</b> Blue <i>Known pattern</i> bar, family F001, first step "Restarting the application service", confidence about 0.45 shown as a sum, grade <b>Good</b>.</li>
+    <li><b>Assistant → "Tape robot (unseen)" → Analyze.</b> Red <i>Novel incident</i> bar, no fix, grade <b>Poor</b>. This is the honesty moment.</li>
+    <li><b>Assistant → Memory leak → Start guided troubleshooting → Start troubleshooting.</b> Click <b>It failed</b> three times. Watch the step get crossed out each time.</li>
+    <li>After the third failure the app asks <b>one</b> question ("Did this start after a recent deployment or configuration change?"). Answer it. Nothing new is found, so it <b>escalates</b> to L2.</li>
+    <li><b>Escalations.</b> Open the new item, read the hand-off packet (failed steps crossed out), type what fixed it (10+ characters), click <b>Mark resolved</b>.</li>
+    <li><b>Knowledge base.</b> See whether the fix was added, or is waiting under <i>Manual review</i>.</li>
+    <li><b>Patterns → F001.</b> Show the family, its fixes and how often each was reopened.</li>
+    <li><b>Evaluation.</b> Click the five presets one by one: Good, Fair, Poor, Poor, Poor.</li>
+  </ol>
+  <p class="tip">Heads-up: this tour creates real records in the demo database (an incident, a session, an escalation, maybe a knowledge-base entry).</p>
+
+  <h3 id="way2">B. Change-one-thing experiments <span class="pill p-blue">best for understanding</span></h3>
+  <p>Take one report and change one thing. The differences teach you how the app thinks.</p>
+  <div class="tw"><table>
+    <tr><th>Experiment</th><th>Do this</th><th>Watch this change</th><th>Why</th></tr>
+    <tr><td>Specific vs vague</td><td>Analyze "Memory leak", then "Vague report"</td><td>Grade <b>Good 0.84 → Fair 0.60</b>; fix confidence <b>0.45 → 0.30</b>; a tip says "Vague wording"</td><td>Fewer details means weaker agreement among past incidents.</td></tr>
+    <tr><td>Known vs new</td><td>Analyze "Login loop", then "Tape robot"</td><td>Blue bar (P(known) 0.90) vs red bar (0.006); fix shown vs no fix</td><td>P(known) is compared with the cut-off 0.4896.</td></tr>
+    <tr><td>Not even IT</td><td>Evaluation → "Unrelated" and "Gibberish"</td><td>Poor, score under 0.01, note "No IT symptom, component or trigger was recognised"</td><td>Nothing in the library resembles it.</td></tr>
+    <tr><td>Short but clear</td><td>Evaluation → type <code>printer broken</code></td><td>Still <b>Good 0.90</b>, with a tip to add detail</td><td>A short query that clearly matches a family can still score high.</td></tr>
+    <tr><td>Add known facts</td><td>Assistant → open <i>Known facts</i>, set Environment = Production, Scope = organization-wide, Analyze</td><td>Those values appear in "What the system extracted" instead of Unknown <span class="pill p-gray">Code</span></td><td>What you know is passed as hints and overrides guessing.</td></tr>
+    <tr><td>Restart vs driver</td><td>Compare fixes for "Memory leak" and "Printer queue"</td><td>Restart shows <b>Needs human confirmation</b>; "Reinstalling the correct printer driver" does not</td><td>"Restart" is a disruptive word; the safety check flags it.</td></tr>
+    <tr><td>Fail vs succeed</td><td>Two troubleshooting sessions: fail x3 vs "It worked" on step 1</td><td>Escalated vs Resolved (postmortem button appears)</td><td>The loop ends in one of two ways.</td></tr>
+    <tr><td>Burst vs noise</td><td>API: simulate <code>vpn-storm</code> then <code>unrelated-noise</code></td><td>1 alert (3 tickets) vs 0 alerts</td><td>Related tickets within 30 minutes are linked.</td></tr>
+  </table></div>
+
+  <h3 id="way3">C. Swagger: the API's own test page <span class="pill p-blue">best for developers</span></h3>
+  <p>Open <a href="http://localhost:8000/docs">http://localhost:8000/docs</a>. Every endpoint is listed with an example body. Click an endpoint, then <b>Try it out</b>, then <b>Execute</b>.
+  You see the raw JSON response (section 5 explains it). Start with <code>GET /health</code>, then <code>POST /incidents/search</code>.</p>
+  <div class="callout warn"><b>Which calls leave records behind?</b>
+    <b>Safe (read-only):</b> <code>GET /health</code>, <code>/patterns</code>, <code>/kb/quality</code>, <code>/kb/evolution</code>, <code>/escalations</code>, <code>POST /incidents/search</code>, <code>/incidents/resolve</code>, <code>/incidents/triage</code>, <code>/evaluation/query</code>.
+    <b>Write to the demo database:</b> <code>/incidents/analyze</code> (new <code>NEW-…</code> incident), <code>/incidents/troubleshoot</code> start, <code>/incidents/simulate</code> (simulated incidents), <code>/incidents/feedback</code>, <code>/postmortem</code>, <code>/incidents/escalate</code>, <code>/escalations/{id}/resolve</code>, <code>/kb/evolve</code>, <code>/kb/review/{id}</code>.</div>
+
+  <h3 id="way4">D. Copy-paste commands (Windows PowerShell)</h3>
+<pre><code># 1. Is the engine healthy?
+Invoke-RestMethod http://localhost:8000/health
+
+# 2. Grade a query (read-only)
+$b = @{ text = "The application is becoming slower and sometimes freezes when users try to open records. Restarting fixes it temporarily." } | ConvertTo-Json
+(Invoke-RestMethod -Method Post -Uri http://localhost:8000/evaluation/query -ContentType "application/json" -Body $b).evaluation
+
+# 3. Search and read the verdict (read-only)
+$b = @{ query = "Robotic tape library arm is jammed"; top_k = 3 } | ConvertTo-Json
+(Invoke-RestMethod -Method Post -Uri http://localhost:8000/incidents/search -ContentType "application/json" -Body $b).novelty
+
+# 4. Ranked top fix (read-only)
+$b = @{ text = "Nothing comes out of the printer, documents stay in the queue" } | ConvertTo-Json
+(Invoke-RestMethod -Method Post -Uri http://localhost:8000/incidents/resolve -ContentType "application/json" -Body $b).top_resolution
+
+# 5. Live correlation: three VPN tickets (writes simulated incidents)
+$b = @{ preset = "vpn-storm"; reset = $true } | ConvertTo-Json
+(Invoke-RestMethod -Method Post -Uri http://localhost:8000/incidents/simulate -ContentType "application/json" -Body $b).alerts</code></pre>
+  <p class="tip">With <code>curl.exe</code>: <code>curl.exe -X POST http://localhost:8000/incidents/search -H "Content-Type: application/json" -d "{\"query\":\"printer queue stuck\",\"top_k\":3}"</code></p>
+
+  <h3 id="way5">E. Break it on purpose <span class="pill p-blue">best for proving the safety nets</span></h3>
+  <div class="tw"><table>
+    <tr><th>You do</th><th>You should see</th></tr>
+    <tr><td>Stop Terminal 1 (the engine) and refresh the website</td><td>"Could not load this view." on every page; status panel says <b>API offline</b> with the start command</td></tr>
+    <tr><td>Leave <code>LLM_API_KEY</code> blank (or set <code>LLM_PROVIDER=none</code>) and restart the engine</td><td>Amber band <b>"Retrieval-only mode: LLM unavailable"</b>; fix text is copied word-for-word from a past note; no "LLM synthesis" panel</td></tr>
+    <tr><td>Set <code>EMBEDDING_PROVIDER=openai</code> with no key</td><td>App still starts; falls back to the local model; <code>/health</code> shows the reason</td></tr>
+    <tr><td>Set <code>RERANKER_PROVIDER=none</code></td><td>Label <b>unreranked</b>; confidence shows <b>"undetermined"</b>; verdict bar says <b>Undetermined</b></td></tr>
+    <tr><td>Make the vector store unreachable</td><td>Label <b>keyword-only</b>; results still appear; verdict undetermined</td></tr>
+    <tr><td>Set <code>ESCALATION_TIERS=L2,L3</code></td><td>Tier order follows your setting (menu status shows it)</td></tr>
+  </table></div>
+  <p class="tip">These are proven by automated tests too (section 8). Change <code>.env</code> only when you are ready to restart the engine.</p>
+
+  <h3 id="way6">F. Automated tests</h3>
+<pre><code>venv\Scripts\python.exe -m pytest -m "not integration"   # 46 quick tests, about 3 seconds, no models needed
+venv\Scripts\python.exe -m pytest                         # all 64 (needs the built data and models)</code></pre>
+  <p>I ran the 46 quick ones: <b>all passed</b>. Tests use a temporary database, so they never touch your demo data.</p>
+
+  <h3 id="way7">G. Recorded outputs and reports (nothing to run)</h3>
+  <div class="tw"><table>
+    <tr><th>File</th><th>What you can see in it</th></tr>
+    <tr><td><code>docs/checkpoints/phase6_troubleshooting_trace.json</code></td><td>A real 3-fail session: each step, confidence, the pre-escalation question, the escalation to L2</td></tr>
+    <tr><td><code>docs/checkpoints/phase6_clarification_example.json</code></td><td>"the system is slow" triggers the scope question (confidence 0.33 &lt; 0.45)</td></tr>
+    <tr><td><code>docs/checkpoints/phase7_escalation_packet.json</code></td><td>A complete hand-off packet</td></tr>
+    <tr><td><code>docs/checkpoints/phase7_correlation.json</code></td><td>A correlation alert with members, latency and shared fields</td></tr>
+    <tr><td><code>docs/checkpoints/phase8_evidence_chain.json</code></td><td>The full "why" trail for the memory-leak query</td></tr>
+    <tr><td><code>docs/checkpoints/phase8_kb_evolution_cycle.json</code></td><td>Postmortem and knowledge-base update for a resolved incident</td></tr>
+    <tr><td><code>docs/checkpoints/phase5_novelty.json</code></td><td>Novelty model weights, threshold and test-set results</td></tr>
+    <tr><td><code>docs/EVALUATION.md</code>, <code>DATASET_REPORT.md</code>, <code>LATENCY.md</code>, <code>FALLBACKS.md</code>, <code>DESIGN.md</code>, <code>ARCHITECTURE.md</code></td><td>The full report card, data facts, speeds, fallback table, design reasons, diagrams</td></tr>
+  </table></div>
+</section>
+
+<!-- =============================================================== 3 PICTURE -->
+<section id="picture">
+  <h2>3. The big picture</h2>
+  <p class="lede">Three floors: data prepared once, an engine that answers questions, and the screens you click.</p>
+
+  <div class="grid g3">
+    <div class="card"><span class="pill p-gray">Floor 1 · prepared once</span><h4>The library</h4>
+      <p class="sm">Two raw files (46,606 real tickets) are cleaned, given AI-written text where text was missing, quality-checked,
+      grouped into <b>30 families</b> and indexed for search.</p></div>
+    <div class="card"><span class="pill p-blue">Floor 2 · the engine (port 8000)</span><h4>FastAPI + three agents</h4>
+      <p class="sm">Understand → search → re-rank → fingerprint → family → known/novel → one fix → safety → explain. Plus troubleshooting, escalation, correlation and learning.</p></div>
+    <div class="card"><span class="pill p-green">Floor 3 · the screens (port 3000)</span><h4>Next.js website</h4>
+      <p class="sm">Assistant, Troubleshooting, Escalations, Novel incidents, Patterns, Knowledge base, Feedback, Evaluation. (An older Streamlit app also exists.)</p></div>
+  </div>
+
+  <h3>What happens when you press Analyze</h3>
+  <div class="flow">
+    <div class="box"><b>1 Understand</b>"restart fixes it temporarily" + slow + freeze → <i>memory leak</i></div><span class="arrow">→</span>
+    <div class="box"><b>2 Search</b>by meaning + by keywords, merged (RRF)</div><span class="arrow">→</span>
+    <div class="box"><b>3 Re-rank</b>a sharper model → relevance %</div><span class="arrow">→</span>
+    <div class="box"><b>4 Fingerprint</b>component, symptom, trigger, scope…</div>
+  </div>
+  <div class="flow">
+    <div class="box"><b>5 Family</b>closest of the 30 families</div><span class="arrow">→</span>
+    <div class="box"><b>6 Known or novel?</b>P(known) vs cut-off <code>0.4896</code></div><span class="arrow">→</span>
+    <div class="box"><b>7 One fix</b>group past fixes, score, compute confidence</div><span class="arrow">→</span>
+    <div class="box"><b>8 Safety</b>destructive? disruptive? enough sources?</div><span class="arrow">→</span>
+    <div class="box"><b>9 Explain + grade</b>evidence chain, Good/Fair/Poor</div>
+  </div>
+
+  <details><summary>Why each step exists</summary><div class="body">
+    <ul>
+      <li><b>Understand:</b> people don't write like log files. "Takes forever" becomes <i>performance degradation</i> so the search finds tickets that say "heap exhausted". A report is "vague" if it has 9 or fewer meaningful words or a specificity score under 0.4.</li>
+      <li><b>Two searches:</b> meaning-search handles paraphrases but can miss exact codes ("ZX-99"); keyword search is the opposite. Both return 50 candidates; <b>Reciprocal Rank Fusion</b> (k = 60) merges by <i>rank</i> because their scores are on different scales. 22 identical tickets count as <b>one</b> piece of evidence.</li>
+      <li><b>Re-rank:</b> a cross-encoder reads your text and each candidate together (top 30), and its score is calibrated into "how likely is this truly relevant?" (the percentage you see).</li>
+      <li><b>Known or novel:</b> four real signals (best re-ranker score, best meaning similarity, closeness to a family centre, share of that family sharing your symptom) are blended into P(known). The cut-off 0.4896 was chosen to catch as many genuinely new incidents as possible while wrongly calling a known one "novel" no more than 2% of the time. With degraded search the verdict is <b>Undetermined</b>.</li>
+      <li><b>One fix:</b> past fixes are grouped into <i>strategies</i>. Poor notes ("closed", "fixed") are skipped. If a family matches strongly (0.5+), its own strategies get a boost so the next suggestion after a failure is another way of fixing the <i>same</i> problem.</li>
+      <li><b>Safety:</b> destructive words need 2+ independent past sources and human confirmation; disruptive words (restart, failover…) carry a confirm-with-owner note.</li>
+    </ul></div></details>
+
+  <h3>The life of one incident</h3>
+<pre><code>  (1) Report it ──► (2) Analyze ──► known or novel? which family? first fix?
+                                        │
+                     ┌──────────────────┴───────────────────┐
+              KNOWN PATTERN                            NOVEL INCIDENT
+                     │                                       │
+        (3) Guided troubleshooting                  "No playbook": fresh
+            try a step                              investigation, escalate
+          WORKED / FAILED / NOT SURE                          │
+            │        │                                        │
+            │   next-best step (never a failed one again)     │
+            │        │                                        │
+            │   3 fails? → ONE question → ONE more try        │
+            │        └──────────────► (4) ESCALATE ◄──────────┘
+            │                          hand-off packet → L2/L3 fixes it
+            ▼                                   ▼
+   (5) LEARN: quality check ("is this note good enough?")
+        good enough (≥ 0.55)            not good enough
+        added to the library            waits for a person:
+        (searchable at once)            Approve / Reject</code></pre>
+
+  <h3>The confidence number, worked out</h3>
+  <div class="two">
+    <div class="card">
+<pre><code>confidence = best relevance × agreement × provenance factor
+
+Real example ("Memory leak" preset):
+   0.9612   ×   0.5856   ×   0.8   =  0.4503
+  (best match   (58.6% of the   (evidence is AI-written,
+   is 96%        evidence backs    so it counts ×0.8)
+   relevant)     this strategy)</code></pre></div>
+    <div class="card"><b>Why it can never reach 1.0</b>
+      <p class="sm">About 95% of the library text is AI-written, so the provenance factor is almost always 0.8. That caps confidence near <b>0.80</b> on purpose. It is never guessed by an AI; if results were not re-ranked it shows <i>"undetermined"</i>.
+      Printer example: 0.977 × 0.911 × 0.8 = <b>0.712</b>. Vague example: 0.739 × 0.509 × 0.8 = <b>0.301</b>.</p></div>
+  </div>
+</section>
+
+<!-- =============================================================== 4 BUTTONS -->
+<section id="buttons">
+  <h2>4. Every button and control, explained</h2>
+  <p class="lede">"When I press this, what happens, what do I see, and why?" Type in the box or pick a screen. Click a row to open it.</p>
+  <div class="filters">
+    <input type="search" id="bq" placeholder="Search buttons: e.g. Analyze, It failed, Approve, theme…" aria-label="Search buttons">
+    <span id="bfilters"></span>
+  </div>
+  <p class="sm" id="bcount"></p>
+  <div id="blist"></div>
+</section>
+
+<!-- =============================================================== 5 RESPONSES -->
+<section id="responses">
+  <h2>5. Reading the responses</h2>
+  <p class="lede">What you see on screen, and what the raw API answer looks like. Values are real ones from your system unless marked as an example.</p>
+
+  <h3>5.1 The Assistant result, with callouts</h3>
+  <div class="two" style="align-items:start">
+    <div class="mock" aria-label="Mock of the assistant result">
+      <div class="bar blue">
+        <div><span class="n1">1</span><b>Known pattern</b><br><small>Matched to historical incidents.</small></div>
+        <div><span class="n1">2</span>memory leak / heap exhaustion<br><small>Family F001, match strength 0.98</small></div>
+        <div style="text-align:right"><span class="n1">3</span><b>0.998</b><br><small>P(known), above threshold 0.490</small></div>
+      </div>
+      <div class="sec"><span class="n1">4</span><b>Query evaluation</b> <span class="pill p-green">Good</span> 0.841 · <u>Details</u></div>
+      <div class="sec"><span class="n1">5</span><b style="font-size:1.1rem">Restarting the application service</b><br>
+        <span class="sm">Recommended first step · strategy F001-S2</span></div>
+      <div class="sec"><span class="n1">6</span><b>0.45</b> = 0.96 × 0.59 × 0.80 &nbsp;<span class="sm">best relevance × agreement × provenance</span></div>
+      <div class="sec"><span class="n1">7</span>Backed by 5 historical incidents · <span class="pill p-amber">5 synthetic</span> <span class="pill p-gray">0 original</span></div>
+      <div class="sec" style="background:var(--amber-soft)"><span class="n1">8</span><b>Needs human confirmation before you act.</b> Restarting is disruptive.</div>
+      <div class="sec"><span class="n1">9</span><button class="btn primary" type="button" tabindex="-1">Start guided troubleshooting</button> <button class="btn" type="button" tabindex="-1">Rate this recommendation</button></div>
+      <div class="sec"><span class="n1">10</span>How the report was read · What the system extracted · Pattern family · Likely root cause · Triage · <u>Why did the system recommend this?</u></div>
+    </div>
+    <div>
+      <ol class="legend">
+        <li><b>The verdict.</b> Blue = known pattern, red = novel, dark = undetermined. This is always read first.</li>
+        <li><b>The family</b> the incident belongs to (a link) and how strongly it matches (0 to 1).</li>
+        <li><b>P(known):</b> the chance this is a known problem, next to the tested cut-off 0.490. Above = known.</li>
+        <li><b>Query evaluation:</b> a one-line grade of how well the library can answer this query. <i>Details</i> opens the Evaluation page.</li>
+        <li><b>The one recommended first step.</b> Taken from the best-supported past fix, never generated from thin air.</li>
+        <li><b>Confidence shown as a sum</b>, so you can see where it came from. Below 0.45 on a vague report triggers a clarifying question in Troubleshooting.</li>
+        <li><b>The proof:</b> past incidents behind it (each is a link) and how many are AI-written (synthetic) vs real (original).</li>
+        <li><b>Safety note.</b> Present for disruptive or destructive actions. Absent for the printer driver fix.</li>
+        <li><b>Next actions.</b> Start guided troubleshooting (carries your report over) or rate the recommendation.</li>
+        <li><b>The detail below:</b> how each phrase was mapped to a technical idea, the extracted fingerprint, the family, the likely root cause (always tagged <i>inferred</i>), predicted category/priority/impact/urgency with their probabilities, and the full evidence chain fold-out.</li>
+      </ol>
+      <div class="callout"><b>When the bar is red (novel)</b>The fix area becomes <i>"Route to fresh investigation"</i>: no historical fix is recommended, a proposed tier and team are shown, and there are buttons <i>Open a troubleshooting session</i> and <i>How novelty is decided</i>. The nearest analogs are shown for transparency only.</div>
+    </div>
+  </div>
+
+  <h3>5.2 What the Analyze answer (<code>POST /incidents/analyze</code>) contains</h3>
+  <div class="tw"><table>
+    <tr><th>Field</th><th>Real value or shape</th><th>In plain words</th></tr>
+    <tr><td><code>incident_id</code></td><td>e.g. <code>NEW-20260929050559-7666</code></td><td>The ID of this analysis (a new record). The digits are the UTC time it was made: year, month, day, hour, minute, second.</td></tr>
+    <tr><td><code>novelty</code></td><td><code>is_novel: false, known_probability: 0.998, threshold: 0.4896, verdict, features, contributions</code></td><td>The known/novel decision. <code>is_novel: null</code> means undetermined (degraded search).</td></tr>
+    <tr><td><code>pattern_family</code></td><td><code>F001, match_strength 0.985, vote_share, size</code></td><td>Which family, how strongly, and its size.</td></tr>
+    <tr><td><code>top_resolution</code></td><td><code>action, step, strategy_key, confidence, confidence_components, supporting_incidents, safety, strategy_stats, expected_observation</code></td><td>The one recommended fix and everything behind it. <code>null</code> for a novel incident.</td></tr>
+    <tr><td><code>likely_root_cause</code></td><td><code>status: "computed", statement, certainty: "likely", share_of_retrieved: 1.0</code></td><td>Inferred from the retrieved incidents. Or <code>"insufficient evidence"</code>.</td></tr>
+    <tr><td><code>classification</code></td><td>category, priority, impact, urgency, each with <code>value</code>, <code>probability</code>, <code>distribution</code></td><td>Text-based predictions, always labelled "derived (text classifier)".</td></tr>
+    <tr><td><code>fingerprint</code></td><td>10 fields with provenance and evidence phrases</td><td>The incident's ID card. Unknown stays <code>Unknown</code>.</td></tr>
+    <tr><td><code>evidence_chain</code></td><td>see 5.4</td><td>The "why" trail.</td></tr>
+    <tr><td><code>query_evaluation</code></td><td><code>score, grade, label, components[4], notes, bands</code></td><td>The Good/Fair/Poor grade and its four parts.</td></tr>
+    <tr><td><code>escalation_proposal</code></td><td>tier, suggested_team, routing_basis</td><td>Only for novel incidents: where to route it.</td></tr>
+    <tr><td><code>mode_labels</code></td><td><code>["Retrieval-only mode — LLM unavailable"]</code> (or empty)</td><td>Banner text for degraded modes.</td></tr>
+    <tr><td><code>llm_synthesis</code></td><td>text, or <code>null</code></td><td>Optional AI-written summary, always kept separate from the evidence.</td></tr>
+    <tr><td><code>agent_messages</code></td><td>who told whom what</td><td>The hand-offs between the Pattern, Diagnostic and Escalation agents.</td></tr>
+  </table></div>
+
+  <h3>5.3 What one retrieved incident looks like (<code>POST /incidents/search</code>)</h3>
+  <div class="tw"><table>
+    <tr><th>Field</th><th>Real example</th><th>Meaning</th></tr>
+    <tr><td><code>scores.semantic_similarity</code> / <code>semantic_rank</code></td><td>0.5179 / rank 15</td><td>How close in meaning, and its place in the meaning-search.</td></tr>
+    <tr><td><code>scores.bm25_score</code> / <code>bm25_rank</code></td><td>17.64 / rank 6</td><td>Keyword match strength and place.</td></tr>
+    <tr><td><code>scores.rrf_score</code></td><td>0.02848</td><td>The merged score used to pick the top 30 for re-ranking.</td></tr>
+    <tr><td><code>scores.relevance_confidence</code></td><td>0.7391</td><td>The calibrated "how likely is this truly relevant". Shown as relevance.</td></tr>
+    <tr><td><code>provenance</code></td><td>title/description/resolution: <b>synthetic</b>; priority, urgency: <b>original</b></td><td>Where each field came from.</td></tr>
+    <tr><td><code>quality</code></td><td>score 0.925, tier high, influence_weight 0.74</td><td>How much this record's fix is trusted. (Quality × provenance factor.)</td></tr>
+    <tr><td><code>why_retrieved</code></td><td>"semantic rank 15 (cosine 0.52); BM25 rank 6 on terms applic, degrad, response, slow…; cross-encoder relevance 0.74"</td><td>A plain sentence on why it was returned. Terms look chopped because they are <i>stemmed</i>.</td></tr>
+    <tr><td><code>duplicates_collapsed</code></td><td>0 (10+ for the encoder-crash example)</td><td>How many identical copies were merged into this one.</td></tr>
+  </table></div>
+
+  <h3>5.4 The evidence chain, field by field</h3>
+  <div class="tw"><table>
+    <tr><th>Block</th><th>Real example</th><th>Meaning</th></tr>
+    <tr><td><code>query_understood</code></td><td>matched "slower" → slow response; "freezes" → freeze/hang; "Restarting fixes" → restart-fixes-temporarily pattern → concepts <i>memory leak, resource exhaustion</i></td><td>How your words were translated. The Assistant highlights these phrases in your text.</td></tr>
+    <tr><td><code>extracted_fingerprint</code></td><td>component Application <i>(derived)</i>, symptom slow response <i>(derived)</i>, root_cause Unknown <i>(missing)</i></td><td>Each field with its source and the phrase it came from.</td></tr>
+    <tr><td><code>matched_incident_family</code></td><td>F001, match 0.909, vote share 0.946, runner-up F010 at 0.05</td><td>Best family and how far ahead it is of the second.</td></tr>
+    <tr><td><code>retrieved_incidents</code></td><td>IM0006370 rank 1, relevance 0.961, retrievers semantic+bm25</td><td>The evidence list, each with why it was retrieved.</td></tr>
+    <tr><td><code>root_cause_evidence</code></td><td>"memory leak / heap exhaustion", certainty <b>likely</b>, 5 of 5 agree, note "inferred, not observed"</td><td>Likely ≥ 60% agree; possible ≥ 30%; weak otherwise.</td></tr>
+    <tr><td><code>resolution_evidence</code></td><td>Restart, strategy F001-S2, 78 real incidents, reopened <b>7.7%</b> (95% range 3.6–15.8%), median <b>4.9 h</b></td><td>How this fix has really performed historically (shown only with 20+ real outcomes).</td></tr>
+    <tr><td><code>evidence_strength</code></td><td>component 1.0, symptom 1.0, pattern 0.909, environment <b>insufficient evidence</b></td><td>Each is a computed 0–1 number or an honest "insufficient evidence".</td></tr>
+    <tr><td><code>llm_inference</code></td><td>available: false, label "Retrieval-only mode"</td><td>Anything an AI added, kept apart and tagged "not historical evidence".</td></tr>
+    <tr><td><code>completeness</code></td><td>ratio 0.857, complete_core: true</td><td>How many parts were filled from real data.</td></tr>
+  </table></div>
+
+  <h3>5.5 The troubleshooting session answer (<code>POST /incidents/troubleshoot</code>)</h3>
+  <div class="tw"><table>
+    <tr><th>Field</th><th>Values you can get</th><th>Meaning</th></tr>
+    <tr><td><code>session.status</code></td><td><span class="pill p-blue">active</span> <span class="pill p-amber">awaiting_clarification</span> <span class="pill p-green">resolved</span> <span class="pill p-amber">escalated</span> <span class="pill p-red">novel</span> (and briefly <code>escalation_requested</code>)</td><td>Where the session is. The page shows "In progress", "One question first", "Resolved", "Escalated", "Novel incident".</td></tr>
+    <tr><td><code>round</code> / <code>max_rounds</code></td><td>2 / 3</td><td>"Round 2 of 3".</td></tr>
+    <tr><td><code>current_step</code></td><td>action, step, confidence, attempt_id, expected_observation, safety</td><td>The step waiting for your answer. Only present while active.</td></tr>
+    <tr><td><code>clarification</code></td><td>field, question, options, trigger, reason</td><td>The one question, and why it is being asked.</td></tr>
+    <tr><td><code>attempts[]</code></td><td>engineer_response: PENDING / WORKED / FAILED / UNKNOWN; <code>excluded_from_next_suggestion</code></td><td>The formal attempt log. FAILED means never suggested again.</td></tr>
+    <tr><td><code>alternatives</code>, <code>excluded_strategies</code></td><td>up to 3 next options; the banned list</td><td>What could come next, and what is off the table.</td></tr>
+    <tr><td><code>escalation</code> / <code>escalation_resolution</code></td><td>the packet / how L2 closed it</td><td>Filled after escalation / after L2 resolves it.</td></tr>
+    <tr><td><code>events[]</code></td><td>session_started, step_suggested, attempt_response, pre_escalation_check, clarification_asked…</td><td>The timeline in the fold-out.</td></tr>
+  </table></div>
+
+  <h3>5.6 The escalation packet (real, from the recorded 3-fail session)</h3>
+  <div class="tw"><table>
+    <tr><th>Field</th><th>Real value</th><th>Meaning</th></tr>
+    <tr><td><code>tier</code> / <code>tier_reasons</code></td><td><b>L2</b> / "guided troubleshooting exhausted without resolution"</td><td>Where it goes and why. Each reason lifts the tier by one.</td></tr>
+    <tr><td><code>suggested_team</code> / <code>suggested_expertise</code></td><td>Application Support / Application performance</td><td>From the fingerprint's component. No person is ever named.</td></tr>
+    <tr><td><code>checks_performed</code></td><td>retrieval, pattern match, novelty check, clarification</td><td>What was already done.</td></tr>
+    <tr><td><code>resolution_attempt_history</code>, <code>failed_approaches_do_not_repeat</code></td><td>3 attempts, keys F001-S1..S3</td><td>Everything tried, so L2 does not repeat it.</td></tr>
+    <tr><td><code>likely_root_cause</code></td><td>with certainty and support count</td><td>Or "insufficient evidence".</td></tr>
+    <tr><td><code>recommended_next_diagnostic_action</code></td><td>an untried historical step, or "system guidance (not from historical evidence)"</td><td>Never disguises general advice as history.</td></tr>
+    <tr><td><code>metadata.predicted_resolution_time</code></td><td>median 6.73 h, range 1.79–21.99 h</td><td>A range, not a promise (this model is weak).</td></tr>
+    <tr><td><code>clarification</code></td><td>asked "…recent deployment…?", learned "trigger = deployment / release"</td><td>What was asked and answered.</td></tr>
+  </table></div>
+
+  <h3>5.7 The Query Evaluation answer (<code>POST /evaluation/query</code>)</h3>
+  <p>Real answers from your system (relevance / P(known) / pattern / fix):</p>
+  <div class="tw"><table>
+    <tr><th>Query</th><th>Score</th><th>Grade</th><th>The four numbers</th></tr>
+    <tr><td>Memory leak</td><td>0.841</td><td><span class="pill p-green">Good</span></td><td>0.985 / 0.998 / 0.932 / 0.450</td></tr>
+    <tr><td>Login loop</td><td>0.777</td><td><span class="pill p-green">Good</span></td><td>0.951 / 0.902 / 0.854 / 0.402</td></tr>
+    <tr><td>Printer queue</td><td>0.916</td><td><span class="pill p-green">Good</span></td><td>0.977 / 0.997 / 0.977 / 0.712</td></tr>
+    <tr><td>Vague report</td><td>0.600</td><td><span class="pill p-amber">Fair</span></td><td>0.739 / 0.742 / 0.620 / 0.301</td></tr>
+    <tr><td>Tape robot (unseen)</td><td>0.010</td><td><span class="pill p-red">Poor</span></td><td>0.023 / 0.006 / 0.010 / 0.000</td></tr>
+    <tr><td>Pizza recipe</td><td>0.008</td><td><span class="pill p-red">Poor</span></td><td>0.020 / 0.000 / 0.012 / 0.000</td></tr>
+    <tr><td>asdf qwerty zxcv</td><td>0.009</td><td><span class="pill p-red">Poor</span></td><td>0.024 / 0.000 / 0.010 / 0.000</td></tr>
+  </table></div>
+  <p class="sm">Score = simple average of the four. Good ≥ 0.70, Fair ≥ 0.40, else Poor. A novel verdict is always Poor. A signal that can't be computed is left out of the average, not counted as zero.</p>
+
+  <h3>5.8 Error responses you may meet</h3>
+  <div class="tw"><table>
+    <tr><th>Code</th><th>When (observed)</th><th>What it means</th></tr>
+    <tr><td><span class="pill p-gray">200</span></td><td>Normal</td><td>Success.</td></tr>
+    <tr><td><span class="pill p-amber">400</span></td><td>Start troubleshooting with no text; answering a step that was already answered</td><td>The request makes no sense right now.</td></tr>
+    <tr><td><span class="pill p-amber">404</span></td><td>Unknown incident (<code>IM-does-not-exist</code>), unknown family (<code>NOPE</code>), respond with no session, resolve a missing escalation</td><td>That thing doesn't exist.</td></tr>
+    <tr><td><span class="pill p-amber">422</span></td><td>Empty evaluation text; <code>top_k</code> 500 (limit 1–50); response <code>MAYBE</code>; escalation note under 10 characters</td><td>The input broke a rule (validation).</td></tr>
+  </table></div>
+
+  <h3>5.9 Colours and line styles</h3>
+  <div class="tw"><table>
+    <tr><th>You see</th><th>It means</th></tr>
+    <tr><td><span class="pill p-blue">Blue bar</span></td><td>Known pattern</td></tr>
+    <tr><td><span class="pill p-red">Red bar</span></td><td>Novel incident (nothing similar enough)</td></tr>
+    <tr><td><span class="pill p-gray">Dark bar</span></td><td>Undetermined (degraded search, model not calibrated)</td></tr>
+    <tr><td><b>original</b></td><td>Straight from the real data</td></tr>
+    <tr><td><b>derived</b> (dashed line)</td><td>Worked out from real data by a fixed rule</td></tr>
+    <tr><td><span class="pill p-amber">synthetic</span> (amber)</td><td>Text written by an AI from real ticket facts (about 95% of the library text)</td></tr>
+    <tr><td><b>inferred</b> (dotted line)</td><td>The app's best guess, not confirmed</td></tr>
+    <tr><td>Solid line</td><td>Observed (real records)</td></tr>
+    <tr><td>Amber band: Caution / Alert / Note</td><td>Warnings from mild to serious, for example "Needs human confirmation" or "Retrieval-only mode"</td></tr>
+  </table></div>
+  <p class="sm">Line style repeats the colour on purpose, so nobody has to rely on colour alone.</p>
+</section>
+
+<!-- =============================================================== 6 LAB -->
+<section id="lab">
+  <h2>6. Try it: interactive lab</h2>
+  <p class="lede">Move the sliders. These use the same formulas and cut-offs as the app, so you can see <i>why</i> a result comes out the way it does.</p>
+
+  <div class="lab">
+    <div class="card" id="lab-conf">
+      <h3>A. Confidence calculator</h3>
+      <div class="big"><span id="c-out">0.45</span> <span class="sm">confidence</span></div>
+      <div class="sm" id="c-expl"></div>
+      <label>Best relevance <b id="c-r-v"></b><input type="range" id="c-r" min="0" max="100" value="96"></label>
+      <label>Evidence agreement (share of evidence backing this fix) <b id="c-a-v"></b><input type="range" id="c-a" min="0" max="100" value="59"></label>
+      <label>Provenance factor <select id="c-p"><option value="0.8">0.8 (AI-written evidence)</option><option value="1">1.0 (original text)</option></select></label>
+      <div class="meter"><i id="c-bar"></i><u style="left:45%" title="0.45: clarifying question level"></u></div>
+      <div class="sm">Marker at 0.45: below it on a vague report, the app asks a clarifying question.</div>
+    </div>
+
+    <div class="card" id="lab-grade">
+      <h3>B. Query grade calculator</h3>
+      <div class="big"><span id="g-out">Good</span> <span class="sm" id="g-score"></span></div>
+      <div class="sm" id="g-note"></div>
+      <label>Retrieval relevance <b id="g-1-v"></b><input type="range" id="g-1" min="0" max="100" value="98"></label>
+      <label>P(known pattern) <b id="g-2-v"></b><input type="range" id="g-2" min="0" max="100" value="100"></label>
+      <label>Pattern match <b id="g-3-v"></b><input type="range" id="g-3" min="0" max="100" value="93"></label>
+      <label>Fix confidence <b id="g-4-v"></b><input type="range" id="g-4" min="0" max="100" value="45"></label>
+      <label><input type="checkbox" id="g-nov"> The novelty model says <b>novel</b></label>
+      <div class="meter"><i id="g-bar"></i><u style="left:40%"></u><u style="left:70%"></u></div>
+      <div class="sm">Markers: Fair from 0.40, Good from 0.70. Try the tape-robot numbers: 0.02, 0.006, 0.01, 0.</div>
+    </div>
+
+    <div class="card" id="lab-nov">
+      <h3>C. Known or novel?</h3>
+      <div class="big"><span id="n-out">Known pattern</span></div>
+      <label>P(known) <b id="n-v"></b><input type="range" id="n-p" min="0" max="1000" value="998"></label>
+      <div class="meter"><i id="n-bar"></i><u style="left:48.96%" title="0.4896"></u></div>
+      <div class="sm" id="n-note"></div>
+      <div class="sm">Real values: Memory leak 0.998 · Login loop 0.903 · GPS time server 0.0135 · Tape robot 0.006 · Pizza 0.0002 · Gibberish 0.0005. Cut-off <b>0.4896</b>.</div>
+    </div>
+
+    <div class="card" id="lab-tier">
+      <h3>D. Which tier gets the escalation?</h3>
+      <div class="big"><span id="t-out">L1</span></div>
+      <div class="sm">Tiers in order: L1 → L2 → L3. Each ticked reason lifts the tier by one (capped at L3).</div>
+      <label><input type="checkbox" class="t"> Priority is 1 or 2</label>
+      <label><input type="checkbox" class="t"> The incident is novel</label>
+      <label><input type="checkbox" class="t"> The recommended action is destructive</label>
+      <label><input type="checkbox" class="t" id="t-ex"> Guided troubleshooting was exhausted</label>
+      <label><input type="checkbox" class="t"> This family needed 2.0+ reassignments on average</label>
+      <label><input type="checkbox" class="t" id="t-re"> Family reopen rate ≥ 15% <span class="sm">(counts only if troubleshooting was exhausted)</span></label>
+      <div class="sm" id="t-why"></div>
+    </div>
+
+    <div class="card" id="lab-qg">
+      <h3>E. Does a fix join the library?</h3>
+      <div class="big"><span id="q-out">Added</span></div>
+      <label>Quality score <b id="q-v"></b><input type="range" id="q-s" min="0" max="100" value="80"></label>
+      <div class="meter"><i id="q-bar"></i><u style="left:55%" title="0.55"></u></div>
+      <div class="sm" id="q-note"></div>
+      <div class="sm">Try the note <code>ok</code> (about 0.05) versus "Rebuilt the SB-7 reconciliation index and reran the batch; it finished in 12 minutes." (detailed: action, cause-ish and a check).</div>
+    </div>
+
+    <div class="card sim" id="lab-sim">
+      <h3>F. Troubleshooting simulator</h3>
+      <div class="sm">Replays the real recorded session for the Memory-leak report. Click the answers.</div>
+      <div class="track" id="s-track"></div>
+      <div id="s-panel"></div>
+      <button class="btn" type="button" id="s-reset">Start over</button>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================================== 7 TESTS -->
+<section id="tests">
+  <h2>7. Test cases: tick them off as you go</h2>
+  <p class="lede">About 90 cases. <span class="pill p-green">Observed</span> means I ran it and saw this. <span class="pill p-gray">Code</span> means it is expected from the code or automated tests but I did not click it.
+  Your ticks are saved in this browser only.</p>
+  <div class="callout warn"><b>Comparing numbers</b>The library grows as fixes are added, so confidences drift slightly (the memory-leak fix was 0.4345 in an old recorded run and 0.4503 when I ran it). Compare the <i>verdict, grade and rough size</i>.</div>
+  <div class="filters" id="tfilters"></div>
+  <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><div class="progress" style="flex:1 1 240px"><i id="tprog"></i></div><b id="tcount"></b><button class="chip" type="button" id="treset">Clear ticks</button></div>
+  <div class="tw"><table class="tc" id="ttable"><thead><tr><th></th><th>ID</th><th>Screen</th><th>Do this</th><th>Expect this</th><th>Why</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+</section>
+
+<!-- =============================================================== 8 AUTO -->
+<section id="auto">
+  <h2>8. The automated tests, explained</h2>
+  <p class="lede"><b>64 tests</b> in <code>tests/</code>: <b>46 unit</b> (run by me: all pass) and <b>18 integration</b> (need the built data and models; I did not re-run these, to avoid clashing with your running engine).
+  They use a temporary database and block writes to the real vector store, so they never touch your data.</p>
+  <div class="filters" id="afilters"></div>
+  <div id="alist"></div>
+</section>
+
+<!-- =============================================================== 9 NUMBERS -->
+<section id="numbers">
+  <h2>9. The report card, in plain English</h2>
+  <p class="lede">From <code>docs/EVALUATION.md</code> (run of 2026-09-28). <b>Caveat first:</b> about 95% of the library text is AI-written, so these describe performance on <i>this</i> library, not on a real company's tickets.</p>
+  <div class="tw"><table>
+    <tr><th>Area</th><th>Number</th><th>What it means</th></tr>
+    <tr><td>Finding the right past incident</td><td><b>89.5%</b> top result relevant · <b>93.4%</b> relevant one in top 5</td><td>Strong. Hybrid + re-rank beats either search alone (score 0.911 vs 0.864 keyword-only).</td></tr>
+    <tr><td>Vague reports</td><td>87% in top 5 vs 97.7% for everyday wording</td><td>Vague is harder, as expected.</td></tr>
+    <tr><td>Right family</td><td><b>89.1%</b></td><td>Nearly 9 in 10 land in the correct family.</td></tr>
+    <tr><td>Right <i>fix</i> (exact strategy)</td><td><b>39.5%</b></td><td>The weakest headline. Each problem has 2–3 valid fixes, so alternatives and 3 rounds exist.</td></tr>
+    <tr><td>Does confidence mean anything?</td><td>11% right at ≤ 0.25; ~55% at 0.5–0.75</td><td>Higher confidence really is more often right.</td></tr>
+    <tr><td>Novel detection (test set)</td><td>Catches <b>100%</b>; wrongly says novel <b>0.8%</b> (1 of 129)</td><td>Very good. Only 21 novel probes, so "indicative". A simpler one-signal method caught 81%.</td></tr>
+    <tr><td>Finding families</td><td>30 families, purity <b>91%</b></td><td>Groups are mostly clean (68% without the enriched fingerprint).</td></tr>
+    <tr><td>Guided troubleshooting (simulated)</td><td>Resolved <b>76%</b>, first step right <b>39.5%</b>, avg <b>1.63</b> steps, escalated <b>23%</b>, asked a question in <b>50%</b>, never more than one</td><td>The loop does its job.</td></tr>
+    <tr><td>Live correlation</td><td>Caught <b>100%</b> of bursts; <b>78%</b> of alerts correct; <b>22%</b> false alarms; about <b>4.4 min</b></td><td>Good at not missing, weaker at not over-alerting, hence "possible correlation: confirm".</td></tr>
+    <tr><td>Evidence chain</td><td>Complete for <b>99.2%</b> of known incidents; 0% for novel (by design)</td><td>Novel incidents deliberately have no invented evidence.</td></tr>
+    <tr><td>Quality manager</td><td>Finds 100% of planted "closed/fixed" notes; only <b>16%</b> precision on contradictions</td><td>Weakest check, reported as-is.</td></tr>
+    <tr><td>Text classifiers</td><td>Category <b>96.3%</b>; priority/impact/urgency 54–57%</td><td>Category is easy. The other three are below "always guess the most common" (about 60%): don't lean on them.</td></tr>
+    <tr><td>Time to resolve</td><td>Median error <b>16.5 h</b>, R² ≈ 0.05</td><td>Almost unpredictable; shown as a range.</td></tr>
+    <tr><td>Will it be reopened?</td><td>ROC-AUC <b>0.83</b>; riskiest 10% reopen 4.5× more</td><td>A useful warning signal.</td></tr>
+    <tr><td>AI-written text (LLM mode)</td><td>Only <b>28%</b> of AI sentences confirmed by a fact-checker (72.5% pass the built-in grounding check)</td><td>Why the default answer is copied from history rather than written by AI.</td></tr>
+  </table></div>
+</section>
+
+<!-- =============================================================== 10 FAQ -->
+<section id="faq">
+  <h2>10. Honest limits and FAQ</h2>
+  <div class="grid g2">
+    <div class="card"><h4>Limits</h4><ul class="sm">
+      <li>Most text is synthetic (real tickets had no descriptions). Confidence is capped near 0.8 by design.</li>
+      <li>The exact fix is right on the first try only about 40% of the time.</li>
+      <li>No step-sequence data: "what usually comes next" is not claimed.</li>
+      <li>No assignee or team data: no individual is ever recommended.</li>
+      <li>No environment field: it stays Unknown unless you say it.</li>
+      <li>The novelty test set is small (about 20 per split).</li>
+      <li>The new website has <b>no Live Correlation page</b>; use the API (<code>/incidents/simulate</code>) or the older Streamlit app.</li>
+      <li>Desktop only; no Docker (local processes).</li>
+      <li>Decision support only. It never changes a real system.</li>
+    </ul></div>
+    <div class="card"><h4>Where your work is kept</h4><ul class="sm">
+      <li>Report text, the last analysis, the session and the evaluated-query list live in your browser tab's <b>session storage</b>: they survive a reload but not a new tab (the list holds up to 50).</li>
+      <li>Incidents, attempts, escalations, feedback, postmortems and knowledge-base changes are saved by the engine in <code>data/processed/incidents.db</code> and the search index.</li>
+      <li>Theme choice is remembered in the browser.</li>
+      <li>Menu status refreshes every 30 s; the Escalations count refreshes every 30 s.</li>
+    </ul></div>
+  </div>
+  <div id="faqlist"></div>
+</section>
+
+<!-- =============================================================== 11 GLOSSARY -->
+<section id="glossary">
+  <h2>11. Glossary</h2>
+  <div class="filters"><input type="search" id="gq" placeholder="Search words…" aria-label="Search glossary"></div>
+  <div class="tw"><table id="gtable"><thead><tr><th>Word</th><th>Plain meaning</th></tr></thead><tbody></tbody></table></div>
+  <p class="sm" style="margin-top:30px">Sources: source code, tests and recorded outputs in this project, plus live calls made on 2026-09-29. Companion file: <code>APP_GUIDE.md</code>.</p>
+</section>
+
+</main>
+</div>
+
+<script>
+"use strict";
+/* ------------------------------------------------------------------ helpers */
+function $(s, r){ return (r||document).querySelector(s); }
+function $$(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function store(k, v){ try{ if(v===undefined){ return localStorage.getItem(k); } localStorage.setItem(k, v); }catch(e){ return null; } }
+function pill(status){ return status==="Obs" ? '<span class="pill p-green">Observed</span>' : '<span class="pill p-gray">Code</span>'; }
+
+/* ------------------------------------------------------------------ theme */
+(function(){
+  var btn = $("#themebtn"), root = document.documentElement;
+  var modes = ["auto","light","dark"];
+  var cur = store("guide-theme") || "auto";
+  function apply(){
+    if(cur==="auto"){ root.removeAttribute("data-theme"); } else { root.setAttribute("data-theme", cur); }
+    btn.textContent = "Theme: " + cur + " (click to change)";
+  }
+  btn.addEventListener("click", function(){ cur = modes[(modes.indexOf(cur)+1)%3]; store("guide-theme", cur); apply(); });
+  apply();
+})();
+
+/* ------------------------------------------------------------------ scroll spy */
+(function(){
+  var links = $$("#navlist a");
+  var secs = links.map(function(a){ return $(a.getAttribute("href")); });
+  function spy(){
+    var y = window.scrollY + 120, idx = 0;
+    secs.forEach(function(s,i){ if(s && s.offsetTop <= y){ idx = i; } });
+    links.forEach(function(a,i){ a.classList.toggle("on", i===idx); });
+  }
+  window.addEventListener("scroll", spy, {passive:true}); spy();
+})();
+
+/* ------------------------------------------------------------------ BUTTON CATALOG */
+var BUTTONS = [
+ /* shell */
+ {s:"Menu & shell", l:"Left menu items", w:"Left rail on every page",
+  api:"None (just moves between pages)",
+  does:"Takes you to Assistant, Troubleshooting, Escalations, Novel incidents, Patterns, Knowledge base, Feedback or Evaluation.",
+  see:"The page changes and the current item is highlighted. Your work is kept: the report text, last analysis, session and evaluated queries carry across pages.",
+  why:"The groups (Operate, Understand, Improve) follow how a support engineer works: act, understand, then improve."},
+ {s:"Menu & shell", l:"Number next to Escalations", w:"Left rail",
+  api:"GET /escalations every 30 seconds",
+  does:"Shows how many escalations are still open (waiting for L2/L3).",
+  see:"An amber number. No number means nothing is waiting.",
+  why:"Open escalations are work waiting for a person, so the count is always visible."},
+ {s:"Menu & shell", l:"Status panel", w:"Bottom of the left rail",
+  api:"GET /health every 30 seconds",
+  does:"Shows the live state of the engine: LLM, Retrieval, Knowledge, Families, Escalation tiers.",
+  see:"LLM: model name or <i>Retrieval-only</i>. Retrieval: <i>Hybrid, reranked</i>, <i>Hybrid, unreranked</i> or <i>Keyword-only</i>. Knowledge: 3,130 records. Families: 30. Escalation: L1 → L2 → L3. If the engine is off: <b>API offline</b> plus the command to start it.",
+  why:"Tells you which mode every answer on the screen was produced in, without opening Swagger."},
+ {s:"Menu & shell", l:"Theme toggle (Desktop / Sun / Moon)", w:"Bottom of the left rail",
+  api:"None (saved in your browser)",
+  does:"Switches between matching your system, light, and dark.",
+  see:"The whole site changes colour immediately. The choice is remembered.",
+  why:"Comfort and accessibility. Nothing is sent to the engine."},
+ {s:"Menu & shell", l:"Skip to content (keyboard)", w:"First Tab stop on any page",
+  api:"None", does:"Jumps keyboard users past the menu to the main content.", see:"A link that appears when you press Tab once.", why:"Accessibility (WCAG 2.2 AA baseline)."},
+ {s:"Menu & shell", l:"Any underlined ID (IM0006370, F001, F001-S2, NEW-…)", w:"Everywhere",
+  api:"GET /incidents/{id} or /patterns/{id}",
+  does:"Opens that incident's record page or that family's page.",
+  see:"Incident page: Recorded fields (each with a provenance tag), Fingerprint, Pattern family, Causal chain (or \"No causal chain for this record\"), Resolution attempts. Family page: Signature, Causal chain, Recurrence, Strategies, Members.",
+  why:"Every claim is traceable: click any ID to see the source."},
+
+ /* assistant */
+ {s:"Assistant", l:"Example chips (Memory leak, Vague report, Login loop, Report timeouts, Printer queue, Tape robot (unseen))", w:"Under the report box, labelled \"Try\"",
+  api:"None (fills the text box)",
+  does:"Puts a ready-made report into the box.",
+  see:"The text changes and the chip turns dark. Memory leak is the walkthrough report; Tape robot is an incident the library has never seen.",
+  why:"One click to a known-good demo, and one to a deliberate \"I don't know\"."},
+ {s:"Assistant", l:"Report box", w:"Assistant, Troubleshooting, Novel incidents, Evaluation",
+  api:"None until you submit",
+  does:"Where you describe the problem in your own words. Vague is fine.",
+  see:"The submit button stays disabled until you type <b>more than 3 characters</b>. <kbd>Ctrl</kbd>+<kbd>Enter</kbd> submits.",
+  why:"People don't write like log files; the app translates for them."},
+ {s:"Assistant", l:"Known facts (optional)", w:"Fold-out under the report box",
+  api:"Sent inside POST /incidents/analyze as fields.priority and hints.environment / hints.impact_scope",
+  does:"Lets you state what you already know: Priority 1–5, Environment (Production/Staging/Development), Affected scope (single user, multiple users, team, organization-wide).",
+  see:"Those values appear in the extracted fingerprint instead of <i>Unknown</i>.",
+  why:"What you know beats what the app guesses. It also means the app may not need to ask you a question later."},
+ {s:"Assistant", l:"Analyze", w:"Assistant",
+  api:"POST /incidents/analyze",
+  does:"Runs the full pipeline: understand → search → re-rank → fingerprint → family → known/novel → one ranked fix → safety → evidence chain → grade. Creates a new incident record (<code>NEW-…</code>).",
+  see:"A skeleton loader for a few seconds, then: the verdict bar, the one-line Query evaluation, the recommended first step with its confidence sum and safety note, and the detail sections (see section 5.1). The report collapses to one line so the verdict is in view.",
+  why:"The app answers the four questions in one screen: known?, what fixed it?, try first?, how sure?"},
+ {s:"Assistant", l:"Edit report", w:"The one-line report strip after an analysis",
+  api:"None", does:"Brings the report box back so you can change the text and analyze again.", see:"The box reappears with your text.", why:"Analyze, tweak, re-analyze is how you learn what the app responds to."},
+ {s:"Assistant", l:"Start guided troubleshooting", w:"Under the recommended step (known incidents)",
+  api:"None yet (opens the Troubleshooting page with your report and this incident ID filled in)",
+  does:"Hands your report to the Troubleshooting page. It does <b>not</b> start the session; you click <b>Start troubleshooting</b> there.",
+  see:"The Troubleshooting page opens with the label \"Incident NEW-…\".",
+  why:"Reuses the incident you already analysed instead of creating a second one."},
+ {s:"Assistant", l:"Rate this recommendation", w:"Under the recommended step",
+  api:"None yet (opens Feedback pre-filled)",
+  does:"Opens Feedback with this incident ID and the list of past incidents that backed the recommendation.",
+  see:"The Feedback page with the ID filled in and a list \"The rated recommendation was backed by…\".",
+  why:"So a bad rating can lower the influence of exactly the records that misled the app."},
+ {s:"Assistant", l:"Open a troubleshooting session / How novelty is decided", w:"Shown instead of a fix when the verdict is novel",
+  api:"None", does:"First goes to Troubleshooting for a fresh investigation; second goes to the Novel incidents page.", see:"Page changes.", why:"A novel incident has no historical playbook, so the next step is investigation, not a guess."},
+ {s:"Assistant", l:"Details (in the Query evaluation line)", w:"Under the verdict bar",
+  api:"None", does:"Opens the Evaluation page to see the four signals behind the grade.", see:"Evaluation page with your query listed.", why:"One line for a quick read; the breakdown is one click away."},
+ {s:"Assistant", l:"Open the family", w:"Pattern family section",
+  api:"GET /patterns/{id}", does:"Opens that family's page.", see:"Signature, causal chain, recurrence, fix strategies and members.", why:"Lets you see the pattern, not only the one match."},
+ {s:"Assistant", l:"Why did the system recommend this?", w:"Fold-out at the bottom",
+  api:"None (already in the analysis)",
+  does:"Opens the evidence chain: The report was understood as · Fingerprint extracted · Incident family matched · Evidence strength (computed) · Historical incidents used as evidence · Root-cause evidence · Resolution evidence · LLM inference (kept apart).",
+  see:"Numbers between 0 and 1, or the honest words <i>insufficient evidence</i>. For a novel incident, family, root cause and resolution all say insufficient evidence.",
+  why:"Principle 1: evidence before assertion. Nothing is fabricated to fill a gap."},
+ {s:"Assistant", l:"LLM synthesis (fold-out, only when an AI writer is active)", w:"Bottom of the analysis",
+  api:"Part of the analysis", does:"Shows an AI-written summary.", see:"Labelled <i>LLM-generated</i> (inferred) and kept apart from the evidence.", why:"AI text is never mixed with historical evidence."},
+
+ /* troubleshooting */
+ {s:"Troubleshooting", l:"Start troubleshooting", w:"Troubleshooting (before a session)",
+  api:"POST /incidents/troubleshoot {action: \"start\", text, incident_id}",
+  does:"Analyses the report and opens a session. Outcomes: (a) round 1 step shown; (b) <b>One question first</b> if confidence &lt; 0.45 on a vague report or two families tie; (c) <b>Novel incident</b> with no playbook.",
+  see:"A status line (In progress / One question first / Novel), session ID, incident link, \"Round 1 of 3\", the family, and the attempt track.",
+  why:"Guided troubleshooting is the same evidence, one step at a time, with a record of each try."},
+ {s:"Troubleshooting", l:"Notes for the attempt log (optional)", w:"Beside the answer buttons",
+  api:"Sent with your answer as notes",
+  does:"Lets you write what happened (\"memory back to 40% for ten minutes\").",
+  see:"The note appears in the Attempt log. If the step <b>worked</b>, the note becomes part of the knowledge-base record.",
+  why:"Good notes make good knowledge."},
+ {s:"Troubleshooting", l:"It worked", w:"Active step",
+  api:"POST /incidents/troubleshoot {action: \"respond\", response: \"WORKED\"}",
+  does:"Marks the attempt WORKED and the incident <b>Resolved</b>.",
+  see:"A blue <b>Resolved</b> block \"by &lt;the step&gt;\" and two buttons: <i>Generate postmortem and update the knowledge base</i>, and <i>Rate this session</i>.",
+  why:"The loop closes and the fix is ready to become knowledge."},
+ {s:"Troubleshooting", l:"It failed", w:"Active step",
+  api:"POST /incidents/troubleshoot {action: \"respond\", response: \"FAILED\"}",
+  does:"Marks the attempt FAILED. That strategy <b>and near-identical steps</b> (similarity ≥ 0.5) are banned for the rest of the session, then the next-best step is found by searching again without them.",
+  see:"The step is crossed out under \"Will not be suggested again\" and on the attempt track; round 2 appears. After round 3 you get <b>One question first</b> (if a useful field is missing) or an escalation.",
+  why:"Nobody wants to be asked to \"restart it\" three times in different words."},
+ {s:"Troubleshooting", l:"Not sure", w:"Active step",
+  api:"POST /incidents/troubleshoot {action: \"respond\", response: \"UNKNOWN\"}",
+  does:"Skips this step for the <b>next pick only</b>. It is not banned.",
+  see:"A different step is offered; the round still counts.",
+  why:"\"I couldn't check\" is not the same as \"it failed\"."},
+ {s:"Troubleshooting", l:"Escalate now", w:"Active step",
+  api:"POST /incidents/troubleshoot {action: \"escalate\", reason: \"requested by engineer\"}",
+  does:"Stops the loop and builds the escalation packet immediately.",
+  see:"Status <b>Escalated</b>, an amber band \"Waiting for L2\" (or L3) with <i>Open in Escalations</i>, and the packet.",
+  why:"Sometimes you already know you need a specialist."},
+ {s:"Troubleshooting", l:"Clarifying question: option buttons, \"Something else, in my words\", Answer", w:"When status is \"One question first\"",
+  api:"POST /incidents/troubleshoot {action: \"clarify\", answer}",
+  does:"Sends your answer. It is turned into a fingerprint value (\"only me\" → single user; \"it's in prod\" → Production; \"no\" → no recent change) and the analysis is re-run with it.",
+  see:"A new step, or (before escalation) one bonus step. The Clarifications fold-out records \"learned trigger = deployment / release\".",
+  why:"One well-chosen question can sharpen the match. At most one is ever asked per session."},
+ {s:"Troubleshooting", l:"Skip, I don't know", w:"Clarifying question",
+  api:"POST /incidents/troubleshoot {action: \"clarify\", declined: true}",
+  does:"Declines the question.",
+  see:"Before the next step: the app carries on. Before escalating: it escalates straight away.",
+  why:"Questions must never block you."},
+ {s:"Troubleshooting", l:"New session", w:"Top right of a session",
+  api:"None (clears the page only)",
+  does:"Clears the screen so you can start another. The old session stays saved in the database.",
+  see:"The report box returns.", why:"Start over without losing history."},
+ {s:"Troubleshooting", l:"Generate postmortem and update the knowledge base", w:"After It worked",
+  api:"POST /postmortem {incident_id, feed_to_kb: true}",
+  does:"Builds a structured postmortem (what happened, root cause, final fix, impact, timeline, prevention) and sends the fix through the quality check.",
+  see:"A postmortem and a notice: <b>Added to the knowledge base</b> (with quality score, family, \"it is now retrievable\") or <b>pending review</b> with the reason. The button then shows \"Postmortem generated\" and is disabled.",
+  why:"Learning from every fix, with a gate so bad notes cannot pollute the library."},
+ {s:"Troubleshooting", l:"Rate this session", w:"After It worked",
+  api:"None (opens Feedback pre-filled)", does:"Opens Feedback with the incident, session and the incidents that backed the winning step.", see:"Feedback page.", why:"Ratings adjust record influence."},
+ {s:"Troubleshooting", l:"Escalate for fresh investigation", w:"When the verdict is novel",
+  api:"POST /incidents/troubleshoot {action: \"escalate\", reason: \"novel incident\"}",
+  does:"Builds the packet for a novel incident.", see:"Escalation band and packet (tier usually higher because novel adds a level).", why:"No playbook exists, so a person must investigate."},
+ {s:"Troubleshooting", l:"Open in Escalations", w:"Amber \"Waiting for L2\" band",
+  api:"None", does:"Opens Escalations with this session selected.", see:"The item on the right side.", why:"Links the engineer's view to the senior engineer's view."},
+ {s:"Troubleshooting", l:"Attempt track, Attempt log, Clarifications, Session timeline and agent messages", w:"Session page",
+  api:"Part of the session", does:"Show the whole story: cross = failed, tick = worked, diamond = question, filled amber = escalated, dashed = not reached.", see:"One line of nodes across the top, a table below, and two fold-outs.", why:"Every attempt stays visible so the current step is judged against what was already tried."},
+
+ /* escalations */
+ {s:"Escalations", l:"Open / Resolved list rows", w:"Left column",
+  api:"GET /escalations", does:"Chooses which escalation to read.", see:"The right side shows its summary, tier, team and expertise, why it was escalated, likely root cause with certainty, suggested next step, what was tried and failed (crossed out).", why:"The senior engineer sees everything without asking."},
+ {s:"Escalations", l:"What fixed it? / Root cause (optional)", w:"Record the fix form",
+  api:"Sent as resolution_notes and root_cause", does:"You describe the fix (at least 10 characters) and the root cause if known.", see:"The <b>Mark resolved</b> button stays disabled until the note is 10+ characters.", why:"A real note is needed, or the fix couldn't teach the next engineer anything."},
+ {s:"Escalations", l:"Mark resolved", w:"Open escalation",
+  api:"POST /escalations/{id}/resolve",
+  does:"Closes the escalation as L2/L3, marks the incident Resolved, and sends the fix through the knowledge-base quality check.",
+  see:"The item moves to <b>Resolved</b> with a notice: either \"The fix passed the quality check and is now knowledge\" or \"The fix scored below the quality threshold, so it waits… on the Knowledge base page\" (or deferred to the nightly batch). The original session shows how it ended. You cannot resolve it twice.",
+  why:"An escalated incident can still become knowledge. (This page was added on request; the original brief stops at the packet.)"},
+ {s:"Escalations", l:"Full escalation packet (fold-out)", w:"Bottom of an escalation",
+  api:"Part of the item", does:"Shows every field of the hand-off packet, and a Raw packet view.", see:"Section 5.6 explains the fields.", why:"Complete context in one place."},
+
+ /* novelty */
+ {s:"Novel incidents", l:"Example chips (GPS time server, HR portal login loop, Tape library arm) and Check novelty", w:"Novel incidents",
+  api:"POST /incidents/search {query, top_k: 5}",
+  does:"Runs only the search and known/novel decision, without the fix ranking.",
+  see:"The verdict bar (P(known) next to 0.4896) and the nearest past incidents. GPS time server and Tape arm: <b>Novel</b>. HR portal login loop: <b>Known</b>.",
+  why:"Lets you study the \"do we have a playbook?\" decision on its own."},
+
+ /* patterns */
+ {s:"Patterns", l:"Family table rows", w:"Patterns",
+  api:"GET /patterns", does:"Lists the 30 families with root cause, scope and incident count. Click a row's ID to open it.", see:"A plain table.", why:"A plain list, on purpose: no chart to decode."},
+ {s:"Patterns", l:"Family page: All families / Signature · Causal chain · Recurrence · Strategies · Members", w:"Family page",
+  api:"GET /patterns/{id}", does:"The tabs jump down the page. Signature = share of members per fingerprint value; Causal chain = trigger → failure → symptom → impact → fix → outcome; Recurrence = real timestamps; Strategies = competing fixes with reopen rates; Members = a sample.",
+  see:"A header \"Potential pattern requiring investigation\", a bar of original vs synthetic text, and link-style causal chain (solid = observed, dashed = derived, dotted = inferred).", why:"A pattern is a lead for investigation, not a verdict."},
+
+ /* knowledge */
+ {s:"Knowledge base", l:"Process resolved incidents", w:"Top right",
+  api:"POST /kb/evolve",
+  does:"Runs the nightly batch now: every resolved live incident not yet processed goes through the quality check.",
+  see:"A message \"Processed N pending resolved incidents.\" (0 if nothing was waiting). Lists \"Resolved but not processed yet\" beforehand.", why:"Normally a scheduler does this at night; the button is for demos."},
+ {s:"Knowledge base", l:"Approve / Reject", w:"Manual review list",
+  api:"POST /kb/review/{incident_id} {approve: true|false}",
+  does:"Approve indexes the record (searchable at once). Reject drops it.",
+  see:"The record leaves the review list; approved ones appear under Recently added.", why:"A person decides about low-scoring fixes; nothing is silently added or silently thrown away."},
+ {s:"Knowledge base", l:"Recently added", w:"Left column",
+  api:"GET /kb/evolution", does:"Shows what joined the library: family, quality score and tier, date, and provenance tags.", see:"Empty state says how to fill it: resolve an incident, then postmortem or feedback.", why:"You can see the library learn."},
+
+ /* feedback */
+ {s:"Feedback", l:"Helpful / Not helpful / Skip", w:"Feedback form", api:"Sent as helpful in POST /incidents/feedback", does:"A thumbs up or down for the recommendation.", see:"Chosen button is highlighted.", why:"Direct signal on the advice."},
+ {s:"Feedback", l:"Reason chips (wrong incident, wrong resolution, incomplete, outdated, escalation required, other)", w:"Feedback form", api:"Sent as reasons", does:"Say what was wrong. <i>wrong resolution</i>, <i>outdated</i> and <i>wrong incident</i> count as negative.", see:"Chips toggle on and off.", why:"Reasons decide how records are penalised."},
+ {s:"Feedback", l:"Yes / No / Not sure questions", w:"Feedback form", api:"root_cause_correct, pattern_correct, troubleshooting_resolved, escalation_appropriate", does:"Four checks: root cause right? family right? did troubleshooting resolve it? was escalation appropriate?", see:"Segmented buttons.", why:"Sharper than a thumb."},
+ {s:"Feedback", l:"Submit feedback", w:"Feedback form (needs an Incident ID)",
+  api:"POST /incidents/feedback",
+  does:"Saves the rating. If it is negative and the backing incidents are known, each loses <b>0.15</b> quality (lower influence). If the incident is a resolved live one, its fix goes through the quality check (+0.05 if helpful and root cause right, −0.15 if not).",
+  see:"\"Feedback recorded\", plus either \"Lowered the influence of …\" or \"No record's influence changed.\", and a knowledge-base notice when the fix was processed. For an unresolved incident: \"…the knowledge base was not updated.\"",
+  why:"Ratings change knowledge records. <b>No model is retrained</b>."},
+
+ /* evaluation */
+ {s:"Evaluation", l:"Example chips (Relevant, Vague, Unseen incident, Unrelated, Gibberish) and Evaluate", w:"Evaluation",
+  api:"POST /evaluation/query {text}",
+  does:"Grades one query: how well the library can answer it. No incident is created.",
+  see:"A card with the grade, score, the four signals as bars, tips, and the nearest historical incidents. Below: a table of every query evaluated this session (up to 50), including those from the Assistant. Click a row to reopen it.",
+  why:"Shows why a query works or doesn't and how to improve it."},
+ {s:"Evaluation", l:"Evaluated queries table rows", w:"Bottom of Evaluation", api:"None", does:"Reopens an earlier evaluation.", see:"The card switches to that query.", why:"Easy side-by-side comparison."}
+];
+
+(function(){
+  var screens = ["All"]; BUTTONS.forEach(function(b){ if(screens.indexOf(b.s)<0) screens.push(b.s); });
+  var cur = "All", q = "";
+  var fbox = $("#bfilters"), list = $("#blist"), count = $("#bcount"), input = $("#bq");
+  fbox.innerHTML = screens.map(function(s){ return '<button type="button" class="chip'+(s==="All"?' on':'')+'" data-s="'+esc(s)+'">'+esc(s)+'</button>'; }).join(" ");
+  function render(){
+    var n = 0, out = [];
+    BUTTONS.forEach(function(b){
+      var hay = (b.s+" "+b.l+" "+b.w+" "+b.api+" "+b.does+" "+b.see+" "+b.why).toLowerCase();
+      if((cur==="All"||b.s===cur) && (!q || hay.indexOf(q)>=0)){
+        n++;
+        out.push('<details class="btnitem"'+(q&&n<=3?' open':'')+'><summary><span class="lbl">'+b.l+'</span><span class="scr">'+esc(b.s)+'</span></summary><div class="body">'+
+          '<div class="row"><div class="k">Where</div><div>'+b.w+'</div></div>'+
+          '<div class="row"><div class="k">What it does</div><div>'+b.does+'</div></div>'+
+          '<div class="row"><div class="k">What you see</div><div>'+b.see+'</div></div>'+
+          '<div class="row"><div class="k">Sends</div><div><code>'+b.api+'</code></div></div>'+
+          '<div class="row"><div class="k">Why</div><div>'+b.why+'</div></div></div></details>');
+      }
+    });
+    list.innerHTML = out.join("") || '<div class="callout warn">No button matches. Try a shorter word.</div>';
+    count.textContent = n + " of " + BUTTONS.length + " controls shown";
+  }
+  fbox.addEventListener("click", function(e){
+    var b = e.target.closest("button"); if(!b) return;
+    cur = b.getAttribute("data-s");
+    $$(".chip", fbox).forEach(function(c){ c.classList.toggle("on", c===b); });
+    render();
+  });
+  input.addEventListener("input", function(){ q = input.value.trim().toLowerCase(); render(); });
+  render();
+})();
+
+/* ------------------------------------------------------------------ LAB */
+(function(){
+  function f2(x){ return (Math.round(x*1000)/1000).toFixed(2); }
+  /* A confidence */
+  var cr=$("#c-r"), ca=$("#c-a"), cp=$("#c-p");
+  function confCalc(){
+    var r=cr.value/100, a=ca.value/100, p=parseFloat(cp.value), c=r*a*p;
+    $("#c-r-v").textContent=f2(r); $("#c-a-v").textContent=f2(a);
+    $("#c-out").textContent=f2(c);
+    $("#c-expl").textContent=f2(r)+" × "+f2(a)+" × "+p+" = "+(Math.round(c*10000)/10000);
+    $("#c-bar").style.width=(c*100)+"%";
+  }
+  [cr,ca,cp].forEach(function(e){ e.addEventListener("input", confCalc); }); confCalc();
+
+  /* B grade */
+  var gs=["#g-1","#g-2","#g-3","#g-4"].map(function(s){ return $(s); }), gn=$("#g-nov");
+  function gradeCalc(){
+    var v=gs.map(function(e){ return e.value/100; });
+    gs.forEach(function(e,i){ $("#g-"+(i+1)+"-v").textContent=f2(v[i]); });
+    var fixv = gn.checked ? 0 : v[3];
+    var score=(v[0]+v[1]+v[2]+fixv)/4;
+    var grade = (gn.checked||score<0.4) ? "Poor" : (score<0.7 ? "Fair" : "Good");
+    var el=$("#g-out"); el.textContent=grade; el.style.color = grade==="Good"?"var(--green)":(grade==="Fair"?"var(--amber)":"var(--red)");
+    $("#g-score").textContent="score "+f2(score);
+    $("#g-note").textContent = gn.checked ? "A novel verdict is always Poor, and its fix confidence counts as 0 (no fix is forced)." : "Score is the plain average of the four signals.";
+    $("#g-bar").style.width=(score*100)+"%";
+  }
+  gs.concat([gn]).forEach(function(e){ e.addEventListener("input", gradeCalc); }); gradeCalc();
+
+  /* C novelty */
+  var np=$("#n-p");
+  function novCalc(){
+    var p=np.value/1000, thr=0.4896;
+    $("#n-v").textContent=(Math.round(p*10000)/10000);
+    var known=p>=thr, el=$("#n-out");
+    el.textContent = known ? "Known pattern" : "Novel incident"; el.style.color = known ? "var(--blue)" : "var(--red)";
+    $("#n-bar").style.width=(p*100)+"%";
+    $("#n-note").textContent = known ? "Above the cut-off: matched to historical incidents, a fix can be ranked."
+                                     : "Below the cut-off: no low-confidence fix is forced; route to fresh investigation.";
+  }
+  np.addEventListener("input", novCalc); novCalc();
+
+  /* D tier */
+  var ts=$$("input.t"), names=["priority 1 or 2","novel incident","destructive action","troubleshooting exhausted","family needed 2+ reassignments","family reopen rate ≥ 15% (with exhausted)"];
+  function tierCalc(){
+    var idx=0, why=[];
+    ts.forEach(function(c,i){
+      if(!c.checked) return;
+      if(i===5 && !ts[3].checked){ return; }
+      idx++; why.push(names[i]);
+    });
+    var tiers=["L1","L2","L3"]; idx=Math.min(idx,2);
+    $("#t-out").textContent=tiers[idx];
+    $("#t-why").textContent = why.length ? "Reasons: "+why.join("; ")+"." : "No escalation criteria met: first line.";
+  }
+  ts.forEach(function(c){ c.addEventListener("input", tierCalc); }); tierCalc();
+
+  /* E quality gate */
+  var qs=$("#q-s");
+  function qCalc(){
+    var s=qs.value/100; $("#q-v").textContent=f2(s); $("#q-bar").style.width=(s*100)+"%";
+    var tier = s>=0.7 ? "high" : (s>=0.5 ? "medium" : "low");
+    var ok = s>=0.55, el=$("#q-out");
+    el.textContent = ok ? "Added to the library" : "Manual review"; el.style.color = ok ? "var(--green)" : "var(--amber)";
+    $("#q-note").textContent = "Tier: "+tier+". "+(ok ? "At or above 0.55: it is fingerprinted, added to a family, embedded and searchable at once." : "Below 0.55: it waits for a person to Approve or Reject. It is never silently added or discarded.");
+  }
+  qs.addEventListener("input", qCalc); qCalc();
+
+  /* F simulator */
+  var STEPS=[
+    {t:"Restarting the application service", c:0.4345},
+    {t:"We deployed the supplier's hotfix", c:0.3664},
+    {t:"The vendor provided a patch which resolved the issue and kept heap usage stable over 48 hours", c:0.717}
+  ];
+  var st;
+  function reset(){ st={round:0,hist:[],phase:"step",bonus:false,end:null}; st.round=1; draw(); }
+  function draw(){
+    var nodes=[];
+    st.hist.forEach(function(h){ nodes.push('<div class="node '+h.k+'">'+esc(h.t)+'<br><small>'+esc(h.s)+'</small></div>'); });
+    if(st.end==="resolved") nodes.push('<div class="node worked"><b>Resolved</b><br><small>Postmortem and rating buttons appear</small></div>');
+    else if(st.end==="escalated") nodes.push('<div class="node esc">Escalated to L2<br><small>packet built with all 3 failed steps</small></div>');
+    else if(st.phase==="step"){ nodes.push('<div class="node cur"><b>Round '+st.round+' of 3</b><br><small>waiting for your answer</small></div>'); for(var i=st.round+1;i<=3;i++) nodes.push('<div class="node open">Round '+i+'<br><small>not reached</small></div>'); }
+    else if(st.phase==="ask") nodes.push('<div class="node ask">One question<br><small>asked once, before escalating</small></div>');
+    $("#s-track").innerHTML=nodes.join("");
+    var p=$("#s-panel"), h="";
+    if(st.end==="resolved"){ h='<div class="callout ok"><b>Resolved.</b> The incident is marked Resolved. Next: Generate postmortem (fix goes through the 0.55 quality check) or rate the session.</div>'; }
+    else if(st.end==="escalated"){ h='<div class="callout warn"><b>Escalated.</b> Tier L2 because guided troubleshooting was exhausted. The Escalations page now lists it under Open. The three failed steps are in the packet so L2 will not repeat them.</div>'; }
+    else if(st.phase==="ask"){
+      h='<div class="callout warn"><b>Did this start after a recent deployment or configuration change?</b> This is the pre-escalation question: the round cap (3) was reached and a useful field is missing.</div>'+
+        '<button class="btn primary" type="button" data-a="answer">Answer: yes, after a deployment / release</button> <button class="btn" type="button" data-a="skip">Skip, I don\'t know</button>';
+    } else {
+      var s=STEPS[st.round-1];
+      h='<div class="callout"><b>Round '+st.round+': have you tried this?</b>'+esc(s.t)+'<br><small>confidence '+s.c.toFixed(2)+'</small></div>'+
+        '<button class="btn primary" type="button" data-a="worked">It worked</button> <button class="btn danger" type="button" data-a="failed">It failed</button> <button class="btn" type="button" data-a="esc">Escalate now</button>';
+    }
+    p.innerHTML=h;
+  }
+  $("#s-panel").addEventListener("click", function(e){
+    var b=e.target.closest("button"); if(!b) return; var a=b.getAttribute("data-a");
+    var s=STEPS[st.round-1];
+    if(a==="worked"){ st.hist.push({k:"worked",t:s.t,s:"Round "+st.round+", worked"}); st.end="resolved"; }
+    else if(a==="failed"){
+      st.hist.push({k:"failed",t:s.t,s:"Round "+st.round+", failed (banned)"});
+      if(st.round>=3){ st.phase="ask"; } else { st.round++; }
+    }
+    else if(a==="esc"){ st.hist.push({k:"esc",t:"Escalate now",s:"requested by engineer"}); st.end="escalated"; }
+    else if(a==="answer"){
+      st.hist.push({k:"ask",t:"Trigger = deployment / release",s:"answer recorded"});
+      st.hist.push({k:"open",t:"Search again with the answer",s:"nothing new and evidence-backed found"});
+      st.end="escalated";
+    }
+    else if(a==="skip"){ st.hist.push({k:"ask",t:"Question skipped",s:"declined"}); st.end="escalated"; }
+    draw();
+  });
+  $("#s-reset").addEventListener("click", reset); reset();
+})();
+
+/* ------------------------------------------------------------------ TEST CASES */
+var TESTS = [
+ /* Assistant */
+ ["A1","Assistant","Click <b>Memory leak</b>, then Analyze","<b>Known pattern</b> (blue), P(known) ≈ 0.998. Family <b>F001</b> memory leak / heap exhaustion (match ≈ 0.98). First step <b>\"Restarting the application service\"</b>, confidence ≈ 0.45 = 0.96 × 0.59 × 0.80. <b>Needs human confirmation</b>. Grade <b>Good ≈ 0.84</b>.","Slow + freeze + \"restart fixes it\" is translated to <i>memory leak</i> before searching. \"Restart\" is a disruptive word.","Obs"],
+ ["A2","Assistant","Click <b>Vague report</b>, Analyze","Grade <b>Fair ≈ 0.60</b>; fix confidence only ≈ <b>0.30</b>; tip \"Vague wording: add the component, the symptom and the trigger\".","Few details give weaker agreement. 0.30 is below the 0.45 level that triggers a question in Troubleshooting.","Obs"],
+ ["A3","Assistant","Click <b>Login loop</b>, Analyze","<b>Known</b>. Family <b>F007</b> (authentication: SSO / directory sync failure), match ≈ 0.63, relevance 0.95, <b>Good ≈ 0.78</b>, P(known) ≈ 0.90.","Clear symptom that history contains.","Obs"],
+ ["A4","Assistant","Click <b>Report timeouts</b>, Analyze","<b>Known</b>, <b>Good ≈ 0.79</b>, fix confidence ≈ 0.43.","Timeouts at peak time match the database / connection families.","Obs"],
+ ["A5","Assistant","Click <b>Printer queue</b>, Analyze","<b>Known</b>, <b>Good ≈ 0.92</b>. Fix <b>\"Reinstalling the correct printer driver\"</b>, confidence ≈ <b>0.71</b>, backed by 9 incidents. <b>No</b> confirmation warning.","Strong agreement (91%). A driver reinstall is not a disruptive word.","Obs"],
+ ["A6","Assistant","Click <b>Tape robot (unseen)</b>, Analyze","<b>Novel incident</b> (red), P(known) ≈ <b>0.006</b> vs cut-off 0.4896. <b>No fix.</b> \"Route to fresh investigation\". Grade <b>Poor ≈ 0.01</b>.","Nothing resembles a tape library. The nearest family (≈ 0.016) is \"below the threshold, so it is not used as evidence\".","Obs"],
+ ["A7","Assistant","Type <code>abc</code> (3 characters)","<b>Analyze is disabled</b>. At 4+ characters it enables.","The box needs more than 3 characters.","Code"],
+ ["A8","Assistant","Press <kbd>Ctrl</kbd>+<kbd>Enter</kbd> with a valid report","The analysis runs.","Keyboard shortcut.","Code"],
+ ["A9","Assistant","Click any incident ID in the result","Opens that incident's record page.","Every ID is a link.","Code"],
+ ["A10","Assistant","Open <b>Why did the system recommend this?</b>","Eight blocks: understood as, fingerprint, family, evidence strength, historical incidents, root-cause evidence, resolution evidence, LLM inference. Strength values are 0–1 or \"insufficient evidence\".","The evidence trail.","Code"],
+ ["A11","Assistant","Click <b>Start guided troubleshooting</b>","Opens Troubleshooting with the same report, labelled \"Incident NEW-…\". No session yet.","Hand-over from analysis.","Code"],
+ ["A12","Assistant","Analyze the same report twice","Same verdict; a <b>new</b> analysis ID each time.","Each run is a separate record.","Code"],
+ ["A13","Assistant","Open <b>Known facts</b>, set Environment = Production, then Analyze","Environment shows Production in \"What the system extracted\".","Hints override guessing.","Code"],
+ /* Novelty */
+ ["N1","Novel incidents","Click <b>GPS time server</b>, Check novelty","<b>Novel</b>, P(known) ≈ <b>0.0135</b>.","Not in the library.","Obs"],
+ ["N2","Novel incidents","Click <b>HR portal login loop</b>","<b>Known</b> (login family).","Close to the SSO family. (Its twin \"Login loop\" measured 0.903.)","Code"],
+ ["N3","Novel incidents","Click <b>Tape library arm</b>","<b>Novel</b>, ≈ 0.006.","As A6.","Obs"],
+ ["N4","Novel incidents","Enter <code>What is the best pizza recipe for a birthday party?</code>","<b>Novel</b>, P(known) ≈ <b>0.0002</b>.","It is not an IT incident, so nothing is similar. The app has no separate \"not IT\" label; it just finds no history.","Obs"],
+ ["N5","Novel incidents","Enter <code>asdf qwerty zxcv</code>","<b>Novel</b>, ≈ 0.0005.","Nonsense matches nothing.","Obs"],
+ ["N6","Novel incidents","With the re-ranker off, check any text","<b>Undetermined</b>, not a guess.","The model needs all four signals.","Code"],
+ /* Evaluation */
+ ["E1","Evaluation","Click <b>Relevant</b>, Evaluate","<b>Good 0.841</b>; 0.985 / 0.998 / 0.932 / 0.450.","Strong match, known, family, fix.","Obs"],
+ ["E2","Evaluation","Click <b>Vague</b>","<b>Fair 0.600</b>; 0.739 / 0.742 / 0.620 / 0.301.","Partly relevant.","Obs"],
+ ["E3","Evaluation","Click <b>Unseen incident</b>","<b>Poor 0.010</b>; 0.023 / 0.006 / 0.010 / 0.000.","Novel, so always Poor, and no fix.","Obs"],
+ ["E4","Evaluation","Click <b>Unrelated</b>","<b>Poor 0.008</b>; note \"No IT symptom, component or trigger was recognised\".","Not an incident.","Obs"],
+ ["E5","Evaluation","Click <b>Gibberish</b>","<b>Poor 0.009</b>; notes about very short query and nothing recognised.","Nonsense.","Obs"],
+ ["E6","Evaluation","Enter the GPS time server text","<b>Poor 0.032</b> (novel, so always Poor).","Verdict rules the grade.","Obs"],
+ ["E7","Evaluation","Enter <code>printer broken</code>","<b>Good 0.896</b> <i>and</i> a tip \"Very short query: name the affected component, the symptom and when it happens.\"","A short query that clearly matches a family can still score high.","Obs"],
+ ["E8","Evaluation","API: send empty text","HTTP <b>422</b>.","At least 1 character is required.","Obs"],
+ ["E9","Evaluation","Analyze something in the Assistant, then open Evaluation","That query is listed under \"Evaluated queries\" with source \"Assistant\".","Assistant analyses are graded too.","Code"],
+ /* Troubleshooting */
+ ["T1","Troubleshooting","Start with the Memory leak text","Round 1 shows a step and the buttons <b>It worked / It failed / Not sure / Escalate now</b>.","Top-ranked strategy.","Code"],
+ ["T2","Troubleshooting","Click <b>It failed</b> on round 1","Step crossed out under \"Will not be suggested again\"; a <b>different</b> step appears (round 2).","Failed strategy excluded.","Code"],
+ ["T3","Troubleshooting","Fail every step","Never the same strategy twice. After round 3, <b>one</b> question (\"Did this start after a recent deployment…?\"); then escalation, tier <b>L2</b>, with all attempts in the packet.","Round cap plus pre-escalation clarification. (Matches the recorded trace.)","Code"],
+ ["T4","Troubleshooting","At that question click <b>Skip, I don't know</b>","Escalates straight away.","Declined means no new information.","Code"],
+ ["T5","Troubleshooting","Answer that question","One bonus step. If it fails, or nothing new is found, it escalates.","One extra try at most.","Code"],
+ ["T6","Troubleshooting","Click <b>It worked</b>","Status <b>Resolved</b>; buttons for postmortem and rating.","The loop closes.","Code"],
+ ["T7","Troubleshooting","Click <b>Not sure</b>","This step is skipped once; the next-best is offered.","Soft skip.","Code"],
+ ["T8","Troubleshooting","Start with <code>the system is slow</code>","A question first: <b>\"Is this affecting a single user or multiple users?\"</b> (match confidence 0.33 &lt; 0.45 and the report is vague).","Low confidence + vague.","Code"],
+ ["T9","Troubleshooting","Start with the tape-robot text","Status <b>Novel</b>: \"No historical playbook\". Button <b>Escalate for fresh investigation</b>.","No fix forced.","Code"],
+ ["T10","Troubleshooting","Click <b>Escalate now</b> on round 1","Escalated at once; packet built.","Manual hand-off.","Code"],
+ ["T11","Troubleshooting","API: answer the same step twice","<b>400</b> \"already answered\".","A response is recorded once.","Code"],
+ ["T12","Troubleshooting","API: send response <code>MAYBE</code>","<b>422</b>.","Only WORKED / FAILED / UNKNOWN.","Obs"],
+ ["T13","Troubleshooting","API: respond with no session","<b>404</b>.","Nothing to respond to.","Obs"],
+ ["T14","Troubleshooting","API: start with no text","<b>400</b>.","Text is required to start.","Obs"],
+ ["T15","Troubleshooting","Answer a question with <code>only me</code>, <code>it's in prod</code>, <code>no</code>","Understood as <i>single user</i>, <i>Production</i>, <i>no recent change</i>.","Free text is mapped to a fingerprint value.","Code"],
+ ["T16","Troubleshooting","Click <b>New session</b>","Screen clears; the old session remains in the database.","Only the view is reset.","Code"],
+ /* Escalations */
+ ["X1","Escalations","After T3, open Escalations","An <b>Open</b> item; the menu count rises by 1; the packet shows failed steps crossed out.","Escalation record saved.","Code"],
+ ["X2","Escalations","Type <code>ok</code> as the fix","<b>Mark resolved</b> stays disabled (needs 10+ characters); via API, <b>422</b>.","Forces a real note.","Obs"],
+ ["X3","Escalations","API: resolve escalation 999999","<b>404</b>.","Not found.","Obs"],
+ ["X4","Escalations","Write a real note and root cause, click <b>Mark resolved</b>","Moves to <b>Resolved</b> (\"Resolved by L2…\"); message says added to the library or waiting for approval; incident status Resolved.","Goes through the normal quality gate.","Code"],
+ ["X5","Escalations","Try to resolve it again","Error (400).","Already closed.","Code"],
+ ["X6","Escalations","Reopen the original troubleshooting session","Still <b>escalated</b>, with the resolution shown.","Records what happened, then how it ended.","Code"],
+ ["X7","Escalations","Open Escalations when nothing is escalated","Empty state \"Nothing has been escalated\".","When I looked: 1 escalation in total, 0 open.","Obs"],
+ /* KB */
+ ["K1","Knowledge base","Resolve a session with a good note; Generate postmortem (or rate helpful with all Yes)","Appears in <b>Recently added</b> with quality, family and tags; searchable.","Good note passes the 0.55 gate.","Code"],
+ ["K2","Knowledge base","Resolve an incident with the note <code>ok</code> and process it","Goes to <b>Manual review</b>.","A generic note scores far below 0.55.","Code"],
+ ["K3","Knowledge base","Click <b>Reject</b>","Status rejected, not indexed.","A person said no.","Code"],
+ ["K4","Knowledge base","Click <b>Approve</b>","Indexed and searchable.","Approval overrides the gate and is logged.","Code"],
+ ["K5","Knowledge base","Click <b>Process resolved incidents</b> with nothing pending","\"Processed 0 pending resolved incidents.\"","Nothing to do.","Code"],
+ ["K6","Knowledge base","Search for a phrase from a newly added fix","It comes back in the results.","The keyword index is rebuilt after each addition.","Code"],
+ /* Feedback */
+ ["F1","Feedback","Leave Incident ID empty","<b>Submit feedback</b> is disabled.","ID is required.","Code"],
+ ["F2","Feedback","Not helpful (or reason wrong resolution / outdated / wrong incident) on an analysis","\"Feedback recorded. Lowered the influence of IM…\". Each backing incident loses 0.15 quality.","Bad advice should count less next time.","Code"],
+ ["F3","Feedback","Helpful + root cause Yes on a <i>resolved</i> live incident","Recorded; fix goes through the quality check and may be added (+0.05 bonus).","Reward good advice.","Code"],
+ ["F4","Feedback","Submit for an unknown ID","Still \"Feedback recorded\" (the API doesn't check the ID). Nothing else happens.","The rating is saved as-is.","Code"],
+ ["F5","Feedback","Submit while the engine is off","\"Feedback was not recorded\".","Network error shown.","Code"],
+ /* Patterns */
+ ["P1","Patterns","Open Patterns","<b>30</b> families; first is F001 memory leak / heap exhaustion.","Discovered groups.","Obs"],
+ ["P2","Patterns","Open F001","Signature, causal chain, recurrence, strategies, members. Header \"Potential pattern requiring investigation\".","A lead, not a verdict.","Code"],
+ ["P3","Patterns","Open <code>/patterns/NOPE</code>","Not-found page (API 404).","Unknown family.","Obs"],
+ ["P4","Patterns","Open <code>/incidents/IM-does-not-exist</code>","Not-found (API 404).","Unknown incident.","Obs"],
+ ["P5","Patterns","Open an old (IM…) record","Fields with provenance tags; text fields show <b>synthetic</b> (amber).","Honest labelling.","Code"],
+ ["P6","Patterns","Open a text-rich <code>INC-…</code> record","\"No causal chain for this record\".","No timestamps means no chain.","Code"],
+ /* correlation */
+ ["C1","Correlation (API)","Simulate <code>db-outage-burst</code> (0, 4, 9 min)","1 alert, <b>2</b> tickets (family F005, shared symptom \"timeout\"), detected after <b>240 s</b>.","The third ticket matched a different family (F004) and wasn't 90% similar, so it wasn't joined.","Obs"],
+ ["C2","Correlation (API)","Simulate <code>vpn-storm</code> (0, 3, 6 min)","1 alert, <b>3</b> tickets (F022, component VPN gateway), <b>180 s</b>.","Same family, close in time.","Obs"],
+ ["C3","Correlation (API)","Simulate <code>memory-leak</code> (0, 5, 12 min)","1 alert, <b>3</b> tickets (F001), <b>300 s</b>.","Same family.","Obs"],
+ ["C4","Correlation (API)","Simulate <code>unrelated-noise</code>","<b>0 alerts</b>.","Printer, lockout and SAP don't relate.","Obs"],
+ ["C5","Correlation (API)","Two unrelated custom tickets 3 min apart","<b>0 alerts</b>.","Not similar, different families.","Obs"],
+ ["C6","Correlation (API)","Two related VPN tickets 45 min apart","<b>0 alerts</b>.","Outside the 30-minute window.","Obs"],
+ ["C7","Correlation (API)","<code>GET /incidents/correlations</code> after a preset","Window 30 min, min 2, threshold 0.9, events and alerts.","Current state of the window.","Code"],
+ ["C8","Correlation (API)","Simulate with <code>reset: true</code>","Old events and alerts cleared first.","Fresh window.","Code"],
+ /* system */
+ ["S1","System","Stop the engine, refresh the site","\"Could not load this view.\" everywhere; status shows API offline.","Front end can't reach the API.","Code"],
+ ["S2","System","No AI key (or <code>LLM_PROVIDER=none</code>), restart engine","Band \"Retrieval-only mode: LLM unavailable\"; no LLM synthesis panel; fix copied from a past note.","Fallback 1.","Code"],
+ ["S3","System","<code>EMBEDDING_PROVIDER=openai</code> with no key","App starts on local embeddings; /health shows the reason.","Fallback 2.","Code"],
+ ["S4","System","<code>RERANKER_PROVIDER=none</code>","\"unreranked\"; no confidence numbers; verdict undetermined.","Fallback 3.","Code"],
+ ["S5","System","Make the vector store unreachable","\"keyword-only (semantic search unavailable)\"; results still appear.","Fallback 6.","Code"],
+ ["S6","System","<code>ESCALATION_TIERS=L2,L3</code>","Tiers follow your order.","Configurable.","Code"],
+ ["S7","System","Narrow the browser below 1200 px","Page scrolls sideways (no phone layout).","By design.","Code"],
+ ["S8","System","Change theme with the toggle, then reload","Choice persists.","Saved in the browser.","Code"],
+ /* API */
+ ["I1","API","<code>GET /health</code>","200, <code>status: ok</code>, 3,130 records, 30 families.","System status.","Obs"],
+ ["I2","API","<code>POST /incidents/search</code> with <code>top_k: 500</code>","<b>422</b> (limit 1–50).","Validation.","Obs"],
+ ["I3","API","<code>POST /incidents/triage</code> (Memory leak)","classification, routing (tier <b>L1</b>, team <b>Application Support</b>), resolution-time prediction, fix accuracy, root cause, family, novelty, evidence chain.","Triage in one call.","Obs"],
+ ["I4","API","<code>GET /kb/quality</code>","3,130 records; tiers high 2,624 / medium 327 / low 179; 343 generic notes, 143 exact and 394 near duplicates.","Library health.","Obs"],
+ ["I5","API","<code>POST /incidents/resolve</code> on the tape-robot text","<code>top_resolution: null</code>, novelty true.","No fix for novel.","Obs"],
+ ["I6","API","<code>GET /escalations</code>","Open first; each with packet and resolution.","The inbox.","Obs"]
+];
+
+(function(){
+  var KEY="guide-ticks-v1", ticks={};
+  try{ ticks = JSON.parse(store(KEY)||"{}") || {}; }catch(e){ ticks={}; }
+  var cats=["All"]; TESTS.forEach(function(t){ if(cats.indexOf(t[1])<0) cats.push(t[1]); });
+  var cur="All", st="All";
+  var fbox=$("#tfilters"), body=$("#ttable tbody");
+  fbox.innerHTML = cats.map(function(c){ return '<button type="button" class="chip'+(c==="All"?' on':'')+'" data-k="c" data-v="'+esc(c)+'">'+esc(c)+'</button>'; }).join(" ")+
+    ' <span style="width:12px"></span>'+["All","Observed","Code","Not ticked"].map(function(c){ return '<button type="button" class="chip'+(c==="All"?' on':'')+'" data-k="s" data-v="'+c+'">'+c+'</button>'; }).join(" ");
+  function save(){ store(KEY, JSON.stringify(ticks)); }
+  function progress(){
+    var done=TESTS.filter(function(t){ return ticks[t[0]]; }).length;
+    $("#tcount").textContent=done+" / "+TESTS.length+" ticked";
+    $("#tprog").style.width=(done/TESTS.length*100)+"%";
+  }
+  function render(){
+    body.innerHTML = TESTS.filter(function(t){
+      if(cur!=="All" && t[1]!==cur) return false;
+      if(st==="Observed" && t[5]!=="Obs") return false;
+      if(st==="Code" && t[5]!=="Code") return false;
+      if(st==="Not ticked" && ticks[t[0]]) return false;
+      return true;
+    }).map(function(t){
+      return '<tr class="'+(ticks[t[0]]?'done':'')+'"><td><input type="checkbox" data-id="'+t[0]+'" '+(ticks[t[0]]?'checked':'')+' aria-label="Tested '+t[0]+'"></td><td>'+t[0]+'</td><td>'+esc(t[1])+'</td><td>'+t[2]+'</td><td>'+t[3]+'</td><td>'+t[4]+'</td><td>'+pill(t[5])+'</td></tr>';
+    }).join("");
+    progress();
+  }
+  fbox.addEventListener("click", function(e){
+    var b=e.target.closest("button"); if(!b) return;
+    var k=b.getAttribute("data-k"), v=b.getAttribute("data-v");
+    if(k==="c") cur=v; else st=v;
+    $$('button[data-k="'+k+'"]', fbox).forEach(function(c){ c.classList.toggle("on", c===b); });
+    render();
+  });
+  body.addEventListener("change", function(e){
+    var c=e.target; if(!c.matches("input[type=checkbox]")) return;
+    var id=c.getAttribute("data-id"); if(c.checked) ticks[id]=1; else delete ticks[id];
+    save(); c.closest("tr").classList.toggle("done", c.checked); progress();
+  });
+  $("#treset").addEventListener("click", function(){ ticks={}; save(); render(); });
+  render();
+})();
+
+/* ------------------------------------------------------------------ AUTOMATED TESTS */
+var AUTO = [
+ {f:"test_data_preprocessing.py", n:8, kind:"unit", rows:[
+  ["Day-first dates","5/2/2012 is 5 February, not 2 May; 29-03-2012 works; blanks stay blank","A wrong order would scramble every timeline."],
+  ["Corrupted handle time","Values like 3,87,16,91,111 are labelled corrupted, not trusted","The raw file has broken numbers."],
+  ["Placeholders","NS → Not Set, #MULTIVALUE → Multiple, #N/B → Not Available, \"5 - Very Low\" → 5, Dutch closure codes translated","Junk becomes clear, honest values."],
+  ["Structured transform","No rows dropped; durations recomputed from timestamps; each field tagged original/derived/missing","Trust timestamps, not the corrupted column."],
+  ["Priority consistency","Flags rows where Priority is not min(Impact, Urgency)","A real data-quality signal."],
+  ["Category contradiction","\"Database Timeout\" labelled Hardware is corrected from the text, original kept","Fix the error, keep the evidence."],
+  ["Detect files by content","incidents_text.csv is recognised as the structured file","The two input files have swapped names."],
+  ["One incident = one chunk","Short incidents stay whole; over 300 words is split only at sentence ends","Keeps a symptom with its fix."]]},
+ {f:"test_fingerprint_and_causal_chain.py", n:8, kind:"unit", rows:[
+  ["Query fingerprint","\"After the new version was deployed, users in production cannot log in… all users affected\" → login failure, deployment / release, Production, organization-wide; root cause stays Unknown","Extract what is said; invent nothing."],
+  ["Provenance follows text","Root cause from AI text is synthetic; from real text, derived","Honesty travels with the fact."],
+  ["Closure-code fallback","Note is just \"closed\" → root cause \"hardware fault (per closure code)\", derived","Weaker source, labelled."],
+  ["Dimension match","Returns 1.0, 0.7 or \"not applicable\" against family shares","Handles unknowns cleanly."],
+  ["Causal-chain tags","Trigger with a real related change = observed; text-based failure/symptom = inferred; impact = derived; outcome from timestamps = observed","Three kinds of link never look alike."],
+  ["Original text = observed","With real text, symptom/resolution are observed","Tag depends on source."],
+  ["No timestamps, no chain","No chain is built; facts shown unordered with a reason","A chain implies order."],
+  ["Empty stages","Stages with no data say \"insufficient evidence\"","Never fill gaps."]]},
+ {f:"test_patterns_novelty_correlation.py", n:6, kind:"unit", rows:[
+  ["Clustering","Three well-separated groups are found as exactly 3 pure families","The method works when the answer is known."],
+  ["Cross-symptom root cause","\"slow\" and \"freezes\" with the same cause are reported as one cause, 2 symptoms","Different words, one cause."],
+  ["Novelty model","Strong signals → P(known) &gt; 0.99; weak → &lt; 0.01; no calibration → \"undetermined\"","The threshold must be fitted, not hand-picked."],
+  ["Degraded retrieval","Un-reranked results → \"undetermined\"","Don't judge with missing signals."],
+  ["Threshold rule","False-novel rate ≤ 2% and every novel item caught on clean data","The rule does what it claims."],
+  ["Correlation","Two DB tickets 5 min apart alert (latency 300 s); printer and VPN tickets don't join; a ticket at 80 min is outside the 30-minute window","Burst yes, noise no, expired no."]]},
+ {f:"test_query_evaluation.py", n:8, kind:"6 unit + 2 integration", rows:[
+  ["Clear known query","Grades Good with the four components","Baseline."],
+  ["Unrelated query","Grades Poor with a reason","Honest grading."],
+  ["Novel is always Poor","Even with a high score; fix confidence forced to 0","Grade never contradicts the red bar."],
+  ["Middle score","Grades Fair","Middle band."],
+  ["Missing signal","Left out of the average, not counted as 0","Fair maths."],
+  ["Very short query","Told to add detail","Helpful nudge."],
+  ["Relevant beats unrelated (integration)","Memory-leak text Good, pizza recipe Poor, gap over 0.5","End-to-end."],
+  ["Endpoint agrees with Analyze (integration)","/evaluation/query returns Good with 3 top matches; empty text 422; same score as Analyze","One truth."]]},
+ {f:"test_synthetic_and_quality.py", n:6, kind:"unit", rows:[
+  ["Generation is conditioned","Every AI-written story fits the real ticket's CI group and closure code; each real row used at most once","Synthetic text stays tied to real facts."],
+  ["Seeded defects","Low-quality notes and contradictions are planted on purpose, in differently worded views","So the quality manager can be tested."],
+  ["Generic / empty notes","\"closed\" and \"\" flagged; a detailed note scores above 0.8","Detects useless notes."],
+  ["Duplicates","Identical tickets group; very similar (cosine ≥ 0.95) form near-duplicates","No crowd of copies."],
+  ["Contradictions","\"Hardware fix\" whose note says \"installed the vendor patch\" is a conflict","Catches mislabelled fixes."],
+  ["Score order","Detailed note beats \"fixed\"; a reopened ticket and a contradiction lower the score","Sensible ranking."]]},
+ {f:"test_troubleshooting_units.py", n:12, kind:"unit", rows:[
+  ["Asks when low confidence and vague","Confidence 0.2 + vague → asks about component","Trigger 1."],
+  ["Doesn't ask when confident or specific","Confidence 0.9, or a specific report → no question","Don't quiz needlessly."],
+  ["Never asks known fields or twice","Known component skipped; a second question refused","At most one."],
+  ["Ambiguous families","0.50 vs 0.46 with different components → asks; 0.50 vs 0.20 → no","Trigger 2."],
+  ["Pre-escalation and answer parsing","About to escalate → asks trigger; \"only me\" → single user; \"it's in prod\" → Production; \"no\" → no recent change","Trigger 3 + free text."],
+  ["Attempt tracking","New attempt PENDING; \"failed\" → FAILED and excluded; answering twice or \"MAYBE\" is an error","Formal records."],
+  ["Destructive needs 2 sources","\"Restored the table from backup\" with 1 source not allowed; with 2 allowed + human confirmation; restart flagged disruptive","Safety."],
+  ["Ranking","One top pick; confidence equals relevance × agreement × provenance; \"closed\" skipped; excluding the top gives the next; un-reranked → undetermined","The core maths."],
+  ["Family prior","A confident family match pulls its strategies to the top","Stays on the same problem."],
+  ["Action extraction","Pulls the action and the \"what you should see\" clause; Wilson interval brackets a 5% rate","Readable steps, honest stats."],
+  ["Ranking metrics","MRR, precision@k, hit@k, nDCG compute correctly","Trustworthy report card."],
+  ["Clustering metrics","Purity 1.0 for perfect clusters; pairwise precision 2/6 when lumped","Trustworthy report card."]]},
+ {f:"test_integration.py", n:16, kind:"integration (not re-run by me)", rows:[
+  ["Retrieval: demo finds memory-leak family","Top results vote for a family named memory leak","End-to-end."],
+  ["Retrieval: filters and exclusions","Priority 3 filter returns only priority 3; an excluded incident never appears","Filters work."],
+  ["Retrieval: duplicates collapsed","\"Encoder crashed during media conversion\" merges 10+ identical tickets","No crowd."],
+  ["Fallback: no AI key","Labelled retrieval-only mode; still a top resolution","Fallback 1."],
+  ["Fallback: embedding","Bad cloud provider → local model, 384-number vectors","Fallback 2."],
+  ["Fallback: reranker missing","\"unreranked\" and no confidence numbers","Fallback 3."],
+  ["Fallback: vector DB unreachable","\"keyword-only\" label; results returned","Fallback 6."],
+  ["Honesty: novel probe","\"Quantum key distribution link… desynchronized\" is novel; root cause and family \"insufficient evidence\"","No fabrication."],
+  ["Honesty: evidence chain complete","Known incident has all parts; strengths computed or \"insufficient evidence\"","Traceability."],
+  ["Workflow: fail-fail-fail","No strategy repeats; ≤ 1 question; ends escalated; packet history matches","The loop rules."],
+  ["Workflow: next tier resolves","Escalate → list → resolve → KB decision → incident Resolved → second resolve refused","Full loop."],
+  ["Workflow: escalation API validation","List 200; unknown ID 404; 2-letter note 422","Input rules."],
+  ["Workflow: WORKED becomes retrievable","Payroll-export fix enters the KB and is found by keyword search","Learning works."],
+  ["Workflow: poor note to review","\"ok\" → pending review → reject works","Quality gate."],
+  ["API: all endpoints","Health, search, analyze, incident, evidence chain, attempts, triage, resolve, patterns, 404s, VPN alert, escalate, KB quality","Whole surface."],
+  ["Science: evaluation reproducible","Running the same retrieval evaluation twice gives identical numbers","Trustworthy metrics."]]}
+];
+(function(){
+  var fbox=$("#afilters"), list=$("#alist");
+  fbox.innerHTML='<button class="chip on" type="button" id="aopen">Expand all</button> <button class="chip" type="button" id="aclose">Collapse all</button>';
+  list.innerHTML = AUTO.map(function(g){
+    return '<details><summary><code>'+g.f+'</code> <span class="pill p-gray">'+g.n+' tests</span> <span class="pill '+(g.kind.indexOf("integration")===0?'p-amber':'p-green')+'">'+g.kind+'</span></summary><div class="body"><div class="tw"><table><tr><th>Test</th><th>In plain words</th><th>Why it matters</th></tr>'+
+      g.rows.map(function(r){ return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>'; }).join("")+'</table></div></div></details>';
+  }).join("");
+  $("#aopen").addEventListener("click", function(){ $$("#alist details").forEach(function(d){ d.open=true; }); });
+  $("#aclose").addEventListener("click", function(){ $$("#alist details").forEach(function(d){ d.open=false; }); });
+})();
+
+/* ------------------------------------------------------------------ FAQ */
+var FAQ = [
+ ["Why did it say \"Novel\" for my pizza question?","It doesn't know whether text is an IT incident. It only sees that nothing in the library is similar: P(known) about 0.0002, red bar, Poor grade."],
+ ["Why is there no recommended fix?","Either the incident is novel (no forced fix), or every candidate was skipped (generic notes), banned (already failed) or blocked (destructive with fewer than 2 sources)."],
+ ["Why is confidence never above about 0.8?","It is multiplied by 0.8 for AI-written evidence, and nearly all evidence is AI-written. It is the honest ceiling."],
+ ["Why did it suggest something so like what I just tried?","It shouldn't: steps at least 0.5 similar to a failed step are dropped. A near-repeat would be a bug worth reporting."],
+ ["Why did it ask me a question?","One of three reasons: low confidence on a vague report, two families nearly tied, or you are about to escalate. At most once per session."],
+ ["Why did my fix go to Manual review?","Its quality score was under 0.55, usually a short or generic note like \"ok\". Write what you did, what caused it and how you verified it."],
+ ["Why does the confidence differ from an earlier run?","The library grows as fixes are added, so the evidence shifts slightly."],
+ ["Why is there a \"Retrieval-only mode\" banner?","No AI writer is available. Everything shown comes from history and maths; only optional AI wording is missing."],
+ ["Why is a restart marked \"needs human confirmation\"?","Restarts interrupt users. The app is decision support, so a person confirms anything disruptive."],
+ ["Why are some things amber or dotted?","Amber \"synthetic\" = AI-written from real ticket facts. Dotted = inferred (a guess). Dashed = derived. Solid = observed. Line style repeats the colour so nobody depends on colour alone."],
+ ["Why two frontends?","The original brief asked for Streamlit; the Next.js site replaced it as the main screen. Streamlit (<code>streamlit run frontend/app.py</code>) is kept as the fallback. It has the Live Correlation page but no Escalations page."],
+ ["The site says \"Could not load this view\".","The engine isn't running (or crashed). Start Terminal 1 again and check the status panel."],
+ ["Analyze takes a few seconds.","Normal: it searches and re-ranks thousands of records."],
+ ["Two programs are fighting over the search database.","Embedded ChromaDB isn't safe for two writers. Run one at a time, or use a Chroma server (<code>CHROMA_MODE=http</code>)."]
+];
+(function(){
+  $("#faqlist").innerHTML = '<h3>Frequently asked</h3>'+FAQ.map(function(q){ return '<details><summary>'+q[0]+'</summary><div class="body">'+q[1]+'</div></details>'; }).join("");
+})();
+
+/* ------------------------------------------------------------------ GLOSSARY */
+var GLOSS = [
+ ["Incident","One reported problem (\"VPN keeps dropping\")."],
+ ["Knowledge base (KB)","The library of past incidents (3,130 records) the app searches."],
+ ["Pattern family","A group of past incidents that are really the same problem in different words. There are 30 (F001–F030)."],
+ ["Fingerprint","The ID card the app extracts: component, service, symptom, failure type, trigger, root cause, environment, dependency, business impact, impact scope. Unknown stays Unknown."],
+ ["Known / Novel","Known = looks like a family we've seen. Novel = nothing similar enough."],
+ ["P(known)","Probability that this is a known problem (0–1), compared with the cut-off 0.4896."],
+ ["Confidence","How sure the app is about its first fix: relevance × agreement × provenance factor. A calculation, never an AI guess."],
+ ["Strategy","One way of fixing a problem (e.g. restart the service vs. increase the heap). Keys look like F001-S2."],
+ ["Provenance","Where a fact came from: original, derived, synthetic, inferred or missing."],
+ ["Synthetic","Text written by a small AI from real ticket facts, because real tickets had no descriptions (about 95% of the library text)."],
+ ["Retrieval-only mode","The app runs without an AI writer; everything comes from past incidents and maths."],
+ ["Hybrid search","Two searches at once (by meaning and by keywords), merged."],
+ ["RRF","Reciprocal Rank Fusion: merges two ranked lists by position (k = 60)."],
+ ["BM25","A classic keyword-scoring method."],
+ ["Embedding","A list of numbers that captures the meaning of text, so similar meanings sit close together."],
+ ["Cross-encoder / re-ranker","A slower, sharper model that reads your text and a candidate together to judge relevance."],
+ ["Calibration (Platt)","Turning a raw model score into a real probability, fitted on test data."],
+ ["Evidence chain","The \"why did you say that?\" trail attached to every recommendation."],
+ ["Attempt","One suggested step and your answer: WORKED, FAILED or UNKNOWN (Not sure)."],
+ ["Escalation / L1 · L2 · L3","Handing a problem to a more senior support tier. L1 first line, L2 specialists, L3 deepest experts."],
+ ["Escalation packet","The hand-off note: summary, everything tried, likely cause, suggested team, tier and next step."],
+ ["Clarifying question","The one question (at most per session) asked when the answer can change what happens."],
+ ["Postmortem","A structured write-up of a resolved incident: what happened, root cause, fix, impact, timeline, prevention."],
+ ["Quality score","0–1 rating of how useful a note is. Below 0.55 a new fix waits for manual review."],
+ ["Influence weight","Quality × provenance factor: how much a past incident's fix counts in ranking."],
+ ["Correlation","Several tickets in a short window that are really one outage."],
+ ["Wilson interval","A statistically careful range (e.g. reopen rate 7.7%, 95% range 3.6–15.8%)."],
+ ["Guardrail","A safety rule: destructive actions need 2+ sources and human confirmation."],
+ ["Swagger","The API's built-in test page at localhost:8000/docs."]
+];
+(function(){
+  var body=$("#gtable tbody"), inp=$("#gq");
+  function render(){
+    var q=inp.value.trim().toLowerCase();
+    body.innerHTML = GLOSS.filter(function(g){ return !q || (g[0]+" "+g[1]).toLowerCase().indexOf(q)>=0; })
+      .map(function(g){ return '<tr><td><b>'+g[0]+'</b></td><td>'+g[1]+'</td></tr>'; }).join("");
+  }
+  inp.addEventListener("input", render); render();
+})();
+</script>
+</body>
+</html>

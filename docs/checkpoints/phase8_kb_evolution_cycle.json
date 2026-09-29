@@ -1,0 +1,305 @@
+{
+  "incident_id": "NEW-20260928041420-0FFE",
+  "retrieved_before": [
+    "IM0027828",
+    "IM0010147",
+    "IM0044548",
+    "IM0007683",
+    "IM0008231"
+  ],
+  "postmortem": {
+    "incident_id": "NEW-20260928041420-0FFE",
+    "generated_at": "2026-09-28T04:14:20.609708",
+    "what_happened": "Nightly payroll interface job aborted because the upstream bank file arrived with a malformed header",
+    "impact": {
+      "business_impact": "Service unavailable",
+      "impact_scope": "Unknown",
+      "provenance": {
+        "business_impact": "derived",
+        "impact_scope": "missing"
+      }
+    },
+    "timeline": [
+      {
+        "at": "2026-09-28T04:14:20.349638",
+        "event": "incident opened"
+      },
+      {
+        "at": "2026-09-28T04:14:20.349638",
+        "event": "session started",
+        "detail": {
+          "text": "Nightly payroll interface job aborted because the upstream bank file arrived with a malformed header"
+        }
+      },
+      {
+        "at": "2026-09-28T04:14:20.437643",
+        "event": "step suggested",
+        "detail": {
+          "attempt_id": "ATT-3341ad82e0",
+          "strategy_key": "F008-S1",
+          "round": 1
+        }
+      },
+      {
+        "at": "2026-09-28T04:14:20.526416",
+        "event": "attempt response",
+        "detail": {
+          "attempt_id": "ATT-3341ad82e0",
+          "response": "WORKED",
+          "strategy_key": "F008-S1"
+        }
+      },
+      {
+        "at": "2026-09-28T04:14:20.527417",
+        "event": "resolved",
+        "detail": {
+          "attempt_id": "ATT-3341ad82e0"
+        }
+      },
+      {
+        "at": "2026-09-28T04:14:20.526416",
+        "event": "incident resolved"
+      }
+    ],
+    "root_cause": {
+      "status": "computed",
+      "statement": "missing or malformed interface file",
+      "certainty": "likely",
+      "share_of_retrieved": 1.0,
+      "supporting_incidents": [
+        "IM0027828",
+        "IM0010147",
+        "IM0044548",
+        "IM0007683",
+        "IM0008231"
+      ],
+      "fields": [
+        "IM0027828.fingerprint.root_cause \u2190 resolution notes: 'malformed' (synthetic)",
+        "IM0010147.fingerprint.root_cause \u2190 resolution notes: 'malformed' (synthetic)",
+        "IM0044548.fingerprint.root_cause \u2190 resolution notes: 'malformed' (synthetic)",
+        "IM0007683.fingerprint.root_cause \u2190 resolution notes: 'malformed' (synthetic)",
+        "IM0008231.fingerprint.root_cause \u2190 resolution notes: 'malformed' (synthetic)"
+      ],
+      "provenance_breakdown": {
+        "synthetic": 5
+      },
+      "note": "Root cause of a NEW incident is inferred from matched historical incidents; it is not observed.",
+      "tag": "inferred from matched historical incidents"
+    },
+    "pattern": {
+      "family_id": "F008",
+      "name": "Batch / interface \u00b7 missing or stale data \u2014 missing or malformed interface file",
+      "match_strength": 0.9656
+    },
+    "resolution_attempt_history": [
+      {
+        "attempt_id": "ATT-3341ad82e0",
+        "incident_id": "NEW-20260928041420-0FFE",
+        "session_id": "TS-6ced2c8255",
+        "round": 1,
+        "step_description": "Rerunning the batch job after the input was available",
+        "strategy_key": "F008-S1",
+        "source_incident_ids": [
+          "IM0010147",
+          "IM0044548",
+          "IM0007683",
+          "IM0008231",
+          "IM0037893",
+          "IM0046926",
+          "IM0037305",
+          "IM0014152",
+          "IM0013567",
+          "IM0037781",
+          "IM0025248",
+          "IM0002248",
+          "IM0018283",
+          "IM0035426",
+          "IM0014462",
+          "IM0018708"
+        ],
+        "expected_observation": null,
+        "engineer_response": "WORKED",
+        "timestamp": "2026-09-28T04:14:20.436642",
+        "responded_at": "2026-09-28T04:14:20.525416",
+        "excluded_from_next_suggestion": false,
+        "confidence": 0.6316,
+        "notes": "The root cause was identified as the missing or malformed upstream interface file causing the batch job to abort during the nightly run. The issue was resolved by rerunning the batch job after the input was available, with data loaded by 09:10 and users informed.\n[engineer] Upstream team redelivered the file with a corrected header; job rerun, record counts reconciled."
+      }
+    ],
+    "final_fix": {
+      "attempt_id": "ATT-3341ad82e0",
+      "incident_id": "NEW-20260928041420-0FFE",
+      "session_id": "TS-6ced2c8255",
+      "round": 1,
+      "step_description": "Rerunning the batch job after the input was available",
+      "strategy_key": "F008-S1",
+      "source_incident_ids": [
+        "IM0010147",
+        "IM0044548",
+        "IM0007683",
+        "IM0008231",
+        "IM0037893",
+        "IM0046926",
+        "IM0037305",
+        "IM0014152",
+        "IM0013567",
+        "IM0037781",
+        "IM0025248",
+        "IM0002248",
+        "IM0018283",
+        "IM0035426",
+        "IM0014462",
+        "IM0018708"
+      ],
+      "expected_observation": null,
+      "engineer_response": "WORKED",
+      "timestamp": "2026-09-28T04:14:20.436642",
+      "responded_at": "2026-09-28T04:14:20.525416",
+      "excluded_from_next_suggestion": false,
+      "confidence": 0.6316,
+      "notes": "The root cause was identified as the missing or malformed upstream interface file causing the batch job to abort during the nightly run. The issue was resolved by rerunning the batch job after the input was available, with data loaded by 09:10 and users informed.\n[engineer] Upstream team redelivered the file with a corrected header; job rerun, record counts reconciled."
+    },
+    "preventive_recommendations": [
+      {
+        "recommendation": "Potential pattern requiring investigation: CI SBA000607 had 16 incidents in this family, 15 of them within 30 days of the previous one.",
+        "basis": "recurrence analysis over real timestamps",
+        "framing": "potential pattern requiring investigation"
+      }
+    ],
+    "clarifications": [],
+    "llm_narrative": null,
+    "postmortem_id": 1
+  },
+  "feedback_result": {
+    "recorded": true,
+    "penalised_records": [],
+    "kb_update": {
+      "incident_id": "NEW-20260928041420-0FFE",
+      "status": "added_to_kb",
+      "quality": {
+        "score": 0.9275,
+        "tier": "high",
+        "flags": [],
+        "components": {
+          "resolution_detail": 1.0,
+          "completeness": 0.333,
+          "consistency": 1.0,
+          "outcome": 1.0,
+          "resolution_consistency": 0.956,
+          "feedback_bonus": 0.05
+        }
+      },
+      "family_id": "F008",
+      "family_created": false,
+      "centroid_similarity": 0.6162,
+      "strategy_key": "F008-S1",
+      "retrievable": true
+    }
+  },
+  "retrieved_after": [
+    "NEW-20260928041420-0FFE",
+    "IM0010147",
+    "IM0044548",
+    "IM0007683",
+    "IM0008231"
+  ],
+  "evolution_view": {
+    "events": [
+      {
+        "incident_id": "NEW-20260928041420-0FFE",
+        "stage": "fingerprinted",
+        "status": "ok",
+        "details": {
+          "fingerprint": {
+            "component": "Batch / interface",
+            "symptom": "missing or stale data",
+            "failure_type": "hard failure",
+            "trigger": "scheduled batch window",
+            "root_cause": "missing or malformed interface file",
+            "dependency": "upstream system",
+            "business_impact": "Service unavailable"
+          }
+        },
+        "at": "2026-09-28T04:14:21.247947"
+      },
+      {
+        "incident_id": "NEW-20260928041420-0FFE",
+        "stage": "family_assigned",
+        "status": "existing_family",
+        "details": {
+          "family_id": "F008",
+          "centroid_similarity": 0.6162
+        },
+        "at": "2026-09-28T04:14:21.247947"
+      },
+      {
+        "incident_id": "NEW-20260928041420-0FFE",
+        "stage": "indexed",
+        "status": "ok",
+        "details": {
+          "vector_ids": [
+            "NEW-20260928041420-0FFE#0"
+          ],
+          "bm25": "rebuilt",
+          "strategy_key": "F008-S1",
+          "approved_by_review": false
+        },
+        "at": "2026-09-28T04:14:21.247947"
+      },
+      {
+        "incident_id": "NEW-20260928041420-0FFE",
+        "stage": "candidate_built",
+        "status": "ok",
+        "details": {
+          "attempts": 1,
+          "feedback": {
+            "helpful": true,
+            "reasons": [],
+            "root_cause_correct": true,
+            "pattern_correct": true,
+            "troubleshooting_resolved": true,
+            "escalation_appropriate": null
+          }
+        },
+        "at": "2026-09-28T04:14:20.691043"
+      },
+      {
+        "incident_id": "NEW-20260928041420-0FFE",
+        "stage": "quality_rescored",
+        "status": "pass",
+        "details": {
+          "score": 0.9275,
+          "threshold": 0.55,
+          "flags": []
+        },
+        "at": "2026-09-28T04:14:20.691043"
+      }
+    ],
+    "recently_added": [
+      {
+        "incident_id": "NEW-20260928041420-0FFE",
+        "title": "Nightly payroll interface job aborted because the upstream bank file arrived wit",
+        "resolution_notes": "Rerunning the batch job after the input was available. The root cause was identified as the missing or malformed upstream interface file causing the batch job to abort during the nightly run. The issue was resolved by rerunning the batch job after the input was available, with data loaded by 09:10 and users informed. Engineer note: Upstream team redelivered the file with a corrected header; job rerun, record counts reconciled. Root cause (postmortem): missing or malformed interface file.",
+        "family_id": "F008",
+        "in_kb": true,
+        "provenance": {
+          "description": "original",
+          "title": "missing",
+          "priority": "missing",
+          "impact": "missing",
+          "urgency": "missing",
+          "category": "derived",
+          "resolution_notes": "original"
+        },
+        "quality": 0.9275,
+        "tier": "high",
+        "flags": [],
+        "review_status": "auto",
+        "added_at": "2026-09-28T04:14:20.693041"
+      }
+    ],
+    "pending_review": [],
+    "pending_candidates": [],
+    "mode": "on-demand per resolved incident + documented nightly batch (scripts/kb_evolution_batch.py)"
+  }
+}

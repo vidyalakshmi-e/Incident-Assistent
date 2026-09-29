@@ -1,0 +1,19 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+vectorstore/
+data/processed/*.db*
+data/evaluation/*.db*
+data/processed/llm_cache.jsonl
+*.log
+
+# design tooling: per-machine caches and review screenshots (regenerated on demand)
+**/hook.cache.json
+.impeccable/review/
+
+# identical copies of the files in data/raw/ (the pipeline reads data/raw/)
+/incidents_text.csv
+/incidents_structured.xlsx

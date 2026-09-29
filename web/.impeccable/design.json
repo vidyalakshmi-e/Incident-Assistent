@@ -1,0 +1,807 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-28T09:08:11.425Z",
+  "title": "Design System: Incident Intelligence",
+  "extensions": {
+    "colorMeta": {
+      "chart-paper": {
+        "role": "neutral",
+        "displayName": "Chart Paper",
+        "canonical": "#f1f5f6",
+        "cssVar": "--paper",
+        "dark": "#0d1317",
+        "purpose": "Page ground.",
+        "oklch": "oklch(96.7% 0.004 214.3)",
+        "tonalRamp": [
+          "oklch(15% 0.004 214.3)",
+          "oklch(26.4% 0.004 214.3)",
+          "oklch(37.9% 0.004 214.3)",
+          "oklch(49.3% 0.004 214.3)",
+          "oklch(60.7% 0.004 214.3)",
+          "oklch(72.1% 0.004 214.3)",
+          "oklch(83.6% 0.004 214.3)",
+          "oklch(95% 0.004 214.3)"
+        ]
+      },
+      "rail-paper": {
+        "role": "neutral",
+        "displayName": "Rail Paper",
+        "canonical": "#e5ebee",
+        "cssVar": "--paper-2",
+        "dark": "#121a20",
+        "purpose": "Navigation rail, Note band, ghost hover, skeleton base.",
+        "oklch": "oklch(93.6% 0.008 228.9)",
+        "tonalRamp": [
+          "oklch(15% 0.008 228.9)",
+          "oklch(26.4% 0.008 228.9)",
+          "oklch(37.9% 0.008 228.9)",
+          "oklch(49.3% 0.008 228.9)",
+          "oklch(60.7% 0.008 228.9)",
+          "oklch(72.1% 0.008 228.9)",
+          "oklch(83.6% 0.008 228.9)",
+          "oklch(95% 0.008 228.9)"
+        ]
+      },
+      "plotting-sheet": {
+        "role": "neutral",
+        "displayName": "Plotting Sheet",
+        "canonical": "#fafcfc",
+        "cssVar": "--sheet",
+        "dark": "#17212a",
+        "purpose": "Raised working surfaces: composer, report strip, modules, chart disc, inputs.",
+        "oklch": "oklch(99% 0.002 197.1)",
+        "tonalRamp": [
+          "oklch(15% 0.002 197.1)",
+          "oklch(26.4% 0.002 197.1)",
+          "oklch(37.9% 0.002 197.1)",
+          "oklch(49.3% 0.002 197.1)",
+          "oklch(60.7% 0.002 197.1)",
+          "oklch(72.1% 0.002 197.1)",
+          "oklch(83.6% 0.002 197.1)",
+          "oklch(95% 0.002 197.1)"
+        ]
+      },
+      "blue-black-ink": {
+        "role": "neutral",
+        "displayName": "Blue-Black Ink",
+        "canonical": "#101820",
+        "cssVar": "--ink",
+        "dark": "#e2e8ec",
+        "purpose": "Primary text, filled stations, observed provenance, undetermined verdict field.",
+        "oklch": "oklch(20.5% 0.02 248.8)",
+        "tonalRamp": [
+          "oklch(15% 0.02 248.8)",
+          "oklch(26.4% 0.02 248.8)",
+          "oklch(37.9% 0.02 248.8)",
+          "oklch(49.3% 0.02 248.8)",
+          "oklch(60.7% 0.02 248.8)",
+          "oklch(72.1% 0.02 248.8)",
+          "oklch(83.6% 0.02 248.8)",
+          "oklch(95% 0.02 248.8)"
+        ]
+      },
+      "ink-secondary": {
+        "role": "neutral",
+        "displayName": "Secondary Ink",
+        "canonical": "#3a4753",
+        "cssVar": "--ink-2",
+        "dark": "#aab5be",
+        "purpose": "Supporting text.",
+        "oklch": "oklch(39.1% 0.026 246.4)",
+        "tonalRamp": [
+          "oklch(15% 0.026 246.4)",
+          "oklch(26.4% 0.026 246.4)",
+          "oklch(37.9% 0.026 246.4)",
+          "oklch(49.3% 0.026 246.4)",
+          "oklch(60.7% 0.026 246.4)",
+          "oklch(72.1% 0.026 246.4)",
+          "oklch(83.6% 0.026 246.4)",
+          "oklch(95% 0.026 246.4)"
+        ]
+      },
+      "ink-tertiary": {
+        "role": "neutral",
+        "displayName": "Tertiary Ink",
+        "canonical": "#56636f",
+        "cssVar": "--ink-3",
+        "dark": "#8a97a2",
+        "purpose": "Captions, annotation labels, axis values.",
+        "oklch": "oklch(49.3% 0.025 246.2)",
+        "tonalRamp": [
+          "oklch(15% 0.025 246.2)",
+          "oklch(26.4% 0.025 246.2)",
+          "oklch(37.9% 0.025 246.2)",
+          "oklch(49.3% 0.025 246.2)",
+          "oklch(60.7% 0.025 246.2)",
+          "oklch(72.1% 0.025 246.2)",
+          "oklch(83.6% 0.025 246.2)",
+          "oklch(95% 0.025 246.2)"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#d2dade",
+        "cssVar": "--line",
+        "dark": "#25313a",
+        "purpose": "Row rules and module seams.",
+        "oklch": "oklch(88.3% 0.01 228.9)",
+        "tonalRamp": [
+          "oklch(15% 0.01 228.9)",
+          "oklch(26.4% 0.01 228.9)",
+          "oklch(37.9% 0.01 228.9)",
+          "oklch(49.3% 0.01 228.9)",
+          "oklch(60.7% 0.01 228.9)",
+          "oklch(72.1% 0.01 228.9)",
+          "oklch(83.6% 0.01 228.9)",
+          "oklch(95% 0.01 228.9)"
+        ]
+      },
+      "rule-strong": {
+        "role": "neutral",
+        "displayName": "Strong Rule",
+        "canonical": "#a3afb9",
+        "cssVar": "--line-2",
+        "dark": "#3e4c57",
+        "purpose": "Control borders, table-head rules, contours, chart rim.",
+        "oklch": "oklch(74.8% 0.02 243.1)",
+        "tonalRamp": [
+          "oklch(15% 0.02 243.1)",
+          "oklch(26.4% 0.02 243.1)",
+          "oklch(37.9% 0.02 243.1)",
+          "oklch(49.3% 0.02 243.1)",
+          "oklch(60.7% 0.02 243.1)",
+          "oklch(72.1% 0.02 243.1)",
+          "oklch(83.6% 0.02 243.1)",
+          "oklch(95% 0.02 243.1)"
+        ]
+      },
+      "cobalt": {
+        "role": "primary",
+        "displayName": "Chart Cobalt",
+        "canonical": "#2447d5",
+        "cssVar": "--cobalt",
+        "dark": "#7189ff",
+        "purpose": "Action, selection, focus, known state; the dark value is for text and links only.",
+        "oklch": "oklch(47.5% 0.22 266.4)",
+        "tonalRamp": [
+          "oklch(15% 0.11 266.4)",
+          "oklch(26.4% 0.172 266.4)",
+          "oklch(37.9% 0.214 266.4)",
+          "oklch(49.3% 0.22 266.4)",
+          "oklch(60.7% 0.218 266.4)",
+          "oklch(72.1% 0.179 266.4)",
+          "oklch(83.6% 0.119 266.4)",
+          "oklch(95% 0.044 266.4)"
+        ]
+      },
+      "cobalt-hover": {
+        "role": "primary",
+        "displayName": "Chart Cobalt Deep",
+        "canonical": "#1a37b3",
+        "cssVar": "--cobalt-hover",
+        "dark": "#8fa2ff",
+        "purpose": "Hover for cobalt text.",
+        "oklch": "oklch(41.1% 0.197 266.3)",
+        "tonalRamp": [
+          "oklch(15% 0.11 266.3)",
+          "oklch(26.4% 0.172 266.3)",
+          "oklch(37.9% 0.197 266.3)",
+          "oklch(49.3% 0.197 266.3)",
+          "oklch(60.7% 0.197 266.3)",
+          "oklch(72.1% 0.179 266.3)",
+          "oklch(83.6% 0.119 266.3)",
+          "oklch(95% 0.044 266.3)"
+        ]
+      },
+      "cobalt-soft": {
+        "role": "primary",
+        "displayName": "Cobalt Wash",
+        "canonical": "#e1e7fb",
+        "cssVar": "--cobalt-soft",
+        "dark": "#1c2650",
+        "purpose": "Focus halo, highlighted rows.",
+        "oklch": "oklch(92.9% 0.028 272.5)",
+        "tonalRamp": [
+          "oklch(15% 0.028 272.5)",
+          "oklch(26.4% 0.028 272.5)",
+          "oklch(37.9% 0.028 272.5)",
+          "oklch(49.3% 0.028 272.5)",
+          "oklch(60.7% 0.028 272.5)",
+          "oklch(72.1% 0.028 272.5)",
+          "oklch(83.6% 0.028 272.5)",
+          "oklch(95% 0.028 272.5)"
+        ]
+      },
+      "cobalt-fill": {
+        "role": "primary",
+        "displayName": "Cobalt Field",
+        "canonical": "#2447d5",
+        "cssVar": "--cobalt-fill",
+        "dark": "#2f54e6",
+        "purpose": "Filled cobalt surfaces: primary button, known verdict, selection. Stays saturated in dark.",
+        "oklch": "oklch(47.5% 0.22 266.4)",
+        "tonalRamp": [
+          "oklch(15% 0.11 266.4)",
+          "oklch(26.4% 0.172 266.4)",
+          "oklch(37.9% 0.214 266.4)",
+          "oklch(49.3% 0.22 266.4)",
+          "oklch(60.7% 0.218 266.4)",
+          "oklch(72.1% 0.179 266.4)",
+          "oklch(83.6% 0.119 266.4)",
+          "oklch(95% 0.044 266.4)"
+        ]
+      },
+      "cobalt-fill-hover": {
+        "role": "primary",
+        "displayName": "Cobalt Field Deep",
+        "canonical": "#1a37b3",
+        "cssVar": "--cobalt-fill-hover",
+        "dark": "#4062f0",
+        "purpose": "Hover for filled cobalt.",
+        "oklch": "oklch(41.1% 0.197 266.3)",
+        "tonalRamp": [
+          "oklch(15% 0.11 266.3)",
+          "oklch(26.4% 0.172 266.3)",
+          "oklch(37.9% 0.197 266.3)",
+          "oklch(49.3% 0.197 266.3)",
+          "oklch(60.7% 0.197 266.3)",
+          "oklch(72.1% 0.179 266.3)",
+          "oklch(83.6% 0.119 266.3)",
+          "oklch(95% 0.044 266.3)"
+        ]
+      },
+      "on-cobalt": {
+        "role": "primary",
+        "displayName": "On Cobalt",
+        "canonical": "#f4f6ff",
+        "cssVar": "--on-cobalt",
+        "dark": "#f4f6ff",
+        "purpose": "Ink on cobalt fields.",
+        "oklch": "oklch(97.4% 0.012 276.1)",
+        "tonalRamp": [
+          "oklch(15% 0.012 276.1)",
+          "oklch(26.4% 0.012 276.1)",
+          "oklch(37.9% 0.012 276.1)",
+          "oklch(49.3% 0.012 276.1)",
+          "oklch(60.7% 0.012 276.1)",
+          "oklch(72.1% 0.012 276.1)",
+          "oklch(83.6% 0.012 276.1)",
+          "oklch(95% 0.012 276.1)"
+        ]
+      },
+      "alert-red": {
+        "role": "secondary",
+        "displayName": "Alert Red",
+        "canonical": "#c23a2e",
+        "cssVar": "--red",
+        "dark": "#ff7b6c",
+        "purpose": "Novel, alert, failure and destructive text and marks.",
+        "oklch": "oklch(54.8% 0.175 29)",
+        "tonalRamp": [
+          "oklch(15% 0.11 29)",
+          "oklch(26.4% 0.172 29)",
+          "oklch(37.9% 0.175 29)",
+          "oklch(49.3% 0.175 29)",
+          "oklch(60.7% 0.175 29)",
+          "oklch(72.1% 0.175 29)",
+          "oklch(83.6% 0.119 29)",
+          "oklch(95% 0.044 29)"
+        ]
+      },
+      "red-soft": {
+        "role": "secondary",
+        "displayName": "Alert Wash",
+        "canonical": "#f8e1de",
+        "cssVar": "--red-soft",
+        "dark": "#3a1a17",
+        "purpose": "Alert notice band, danger hover.",
+        "oklch": "oklch(92.8% 0.026 26.5)",
+        "tonalRamp": [
+          "oklch(15% 0.026 26.5)",
+          "oklch(26.4% 0.026 26.5)",
+          "oklch(37.9% 0.026 26.5)",
+          "oklch(49.3% 0.026 26.5)",
+          "oklch(60.7% 0.026 26.5)",
+          "oklch(72.1% 0.026 26.5)",
+          "oklch(83.6% 0.026 26.5)",
+          "oklch(95% 0.026 26.5)"
+        ]
+      },
+      "red-fill": {
+        "role": "secondary",
+        "displayName": "Alert Field",
+        "canonical": "#c23a2e",
+        "cssVar": "--red-fill",
+        "dark": "#c63d2f",
+        "purpose": "Novel verdict field, correlation alert field, bad segmented option.",
+        "oklch": "oklch(54.8% 0.175 29)",
+        "tonalRamp": [
+          "oklch(15% 0.11 29)",
+          "oklch(26.4% 0.172 29)",
+          "oklch(37.9% 0.175 29)",
+          "oklch(49.3% 0.175 29)",
+          "oklch(60.7% 0.175 29)",
+          "oklch(72.1% 0.175 29)",
+          "oklch(83.6% 0.119 29)",
+          "oklch(95% 0.044 29)"
+        ]
+      },
+      "on-red": {
+        "role": "secondary",
+        "displayName": "On Red",
+        "canonical": "#fff6f4",
+        "cssVar": "--on-red",
+        "dark": "#fff6f4",
+        "purpose": "Ink on red fields.",
+        "oklch": "oklch(98% 0.01 32.5)",
+        "tonalRamp": [
+          "oklch(15% 0.01 32.5)",
+          "oklch(26.4% 0.01 32.5)",
+          "oklch(37.9% 0.01 32.5)",
+          "oklch(49.3% 0.01 32.5)",
+          "oklch(60.7% 0.01 32.5)",
+          "oklch(72.1% 0.01 32.5)",
+          "oklch(83.6% 0.01 32.5)",
+          "oklch(95% 0.01 32.5)"
+        ]
+      },
+      "caution-amber": {
+        "role": "secondary",
+        "displayName": "Caution Amber",
+        "canonical": "#dda01e",
+        "cssVar": "--amber",
+        "dark": "#eeb443",
+        "purpose": "Escalation field, synthetic provenance stroke.",
+        "oklch": "oklch(74.5% 0.148 79.7)",
+        "tonalRamp": [
+          "oklch(15% 0.11 79.7)",
+          "oklch(26.4% 0.148 79.7)",
+          "oklch(37.9% 0.148 79.7)",
+          "oklch(49.3% 0.148 79.7)",
+          "oklch(60.7% 0.148 79.7)",
+          "oklch(72.1% 0.148 79.7)",
+          "oklch(83.6% 0.119 79.7)",
+          "oklch(95% 0.044 79.7)"
+        ]
+      },
+      "on-amber": {
+        "role": "secondary",
+        "displayName": "On Amber",
+        "canonical": "#14110a",
+        "cssVar": "--on-amber",
+        "dark": "#14110a",
+        "purpose": "Ink on amber fields; dark in both themes.",
+        "oklch": "oklch(17.9% 0.014 87.5)",
+        "tonalRamp": [
+          "oklch(15% 0.014 87.5)",
+          "oklch(26.4% 0.014 87.5)",
+          "oklch(37.9% 0.014 87.5)",
+          "oklch(49.3% 0.014 87.5)",
+          "oklch(60.7% 0.014 87.5)",
+          "oklch(72.1% 0.014 87.5)",
+          "oklch(83.6% 0.014 87.5)",
+          "oklch(95% 0.014 87.5)"
+        ]
+      },
+      "amber-ink": {
+        "role": "secondary",
+        "displayName": "Amber Ink",
+        "canonical": "#7a5000",
+        "cssVar": "--amber-ink",
+        "dark": "#f1be5c",
+        "purpose": "Readable amber text on paper: Caution grade, weak fact sub-lines, synthetic tags.",
+        "oklch": "oklch(46.7% 0.099 74.3)",
+        "tonalRamp": [
+          "oklch(15% 0.099 74.3)",
+          "oklch(26.4% 0.099 74.3)",
+          "oklch(37.9% 0.099 74.3)",
+          "oklch(49.3% 0.099 74.3)",
+          "oklch(60.7% 0.099 74.3)",
+          "oklch(72.1% 0.099 74.3)",
+          "oklch(83.6% 0.099 74.3)",
+          "oklch(95% 0.044 74.3)"
+        ]
+      },
+      "amber-soft": {
+        "role": "secondary",
+        "displayName": "Caution Wash",
+        "canonical": "#f6ebcd",
+        "cssVar": "--amber-soft",
+        "dark": "#33270e",
+        "purpose": "Caution notice band.",
+        "oklch": "oklch(94.1% 0.041 90.2)",
+        "tonalRamp": [
+          "oklch(15% 0.041 90.2)",
+          "oklch(26.4% 0.041 90.2)",
+          "oklch(37.9% 0.041 90.2)",
+          "oklch(49.3% 0.041 90.2)",
+          "oklch(60.7% 0.041 90.2)",
+          "oklch(72.1% 0.041 90.2)",
+          "oklch(83.6% 0.041 90.2)",
+          "oklch(95% 0.041 90.2)"
+        ]
+      },
+      "inferred-violet": {
+        "role": "tertiary",
+        "displayName": "Inferred Violet",
+        "canonical": "#7040ab",
+        "cssVar": "--violet",
+        "dark": "#bb96f3",
+        "purpose": "Inferred provenance, always dotted.",
+        "oklch": "oklch(48.3% 0.165 301.1)",
+        "tonalRamp": [
+          "oklch(15% 0.11 301.1)",
+          "oklch(26.4% 0.165 301.1)",
+          "oklch(37.9% 0.165 301.1)",
+          "oklch(49.3% 0.165 301.1)",
+          "oklch(60.7% 0.165 301.1)",
+          "oklch(72.1% 0.165 301.1)",
+          "oklch(83.6% 0.119 301.1)",
+          "oklch(95% 0.044 301.1)"
+        ]
+      },
+      "violet-soft": {
+        "role": "tertiary",
+        "displayName": "Inferred Wash",
+        "canonical": "#ece4f6",
+        "cssVar": "--violet-soft",
+        "dark": "#2a2140",
+        "purpose": "Inferred provenance backgrounds.",
+        "oklch": "oklch(93% 0.026 305.8)",
+        "tonalRamp": [
+          "oklch(15% 0.026 305.8)",
+          "oklch(26.4% 0.026 305.8)",
+          "oklch(37.9% 0.026 305.8)",
+          "oklch(49.3% 0.026 305.8)",
+          "oklch(60.7% 0.026 305.8)",
+          "oklch(72.1% 0.026 305.8)",
+          "oklch(83.6% 0.026 305.8)",
+          "oklch(95% 0.026 305.8)"
+        ]
+      },
+      "derived-teal": {
+        "role": "tertiary",
+        "displayName": "Derived Teal",
+        "canonical": "#0d6d65",
+        "cssVar": "--teal",
+        "dark": "#45c4b3",
+        "purpose": "Derived provenance, always dashed.",
+        "oklch": "oklch(48.3% 0.082 185.8)",
+        "tonalRamp": [
+          "oklch(15% 0.082 185.8)",
+          "oklch(26.4% 0.082 185.8)",
+          "oklch(37.9% 0.082 185.8)",
+          "oklch(49.3% 0.082 185.8)",
+          "oklch(60.7% 0.082 185.8)",
+          "oklch(72.1% 0.082 185.8)",
+          "oklch(83.6% 0.082 185.8)",
+          "oklch(95% 0.044 185.8)"
+        ]
+      },
+      "teal-soft": {
+        "role": "tertiary",
+        "displayName": "Derived Wash",
+        "canonical": "#dcefec",
+        "cssVar": "--teal-soft",
+        "dark": "#11302c",
+        "purpose": "Derived provenance backgrounds.",
+        "oklch": "oklch(93.7% 0.02 185.5)",
+        "tonalRamp": [
+          "oklch(15% 0.02 185.5)",
+          "oklch(26.4% 0.02 185.5)",
+          "oklch(37.9% 0.02 185.5)",
+          "oklch(49.3% 0.02 185.5)",
+          "oklch(60.7% 0.02 185.5)",
+          "oklch(72.1% 0.02 185.5)",
+          "oklch(83.6% 0.02 185.5)",
+          "oklch(95% 0.02 185.5)"
+        ]
+      },
+      "missing-gray": {
+        "role": "neutral",
+        "displayName": "Missing Gray",
+        "canonical": "#687480",
+        "cssVar": "--gray",
+        "dark": "#8d99a4",
+        "purpose": "Missing values, drawn as an empty outline.",
+        "oklch": "oklch(55.3% 0.024 248.3)",
+        "tonalRamp": [
+          "oklch(15% 0.024 248.3)",
+          "oklch(26.4% 0.024 248.3)",
+          "oklch(37.9% 0.024 248.3)",
+          "oklch(49.3% 0.024 248.3)",
+          "oklch(60.7% 0.024 248.3)",
+          "oklch(72.1% 0.024 248.3)",
+          "oklch(83.6% 0.024 248.3)",
+          "oklch(95% 0.024 248.3)"
+        ]
+      }
+    },
+    "themes": {
+      "note": "Light (day chart) values are the frontmatter defaults; dark (night chart) values are colorMeta.<token>.dark. Dark applies under prefers-color-scheme: dark unless :root[data-theme=light], and always under :root[data-theme=dark]. Source: web/src/app/globals.css.",
+      "shade": {
+        "light": "210 40% 18%",
+        "dark": "210 60% 2%",
+        "purpose": "HSL triplet tinting every shadow and the modal backdrop."
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Page titles (h1), Archivo at width 116."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Ranked fix action (24px compact), verdict state words (28px), escalation tier (30px)."
+      },
+      "numeral": {
+        "displayName": "Numeral",
+        "purpose": "Verdict probability and computed confidence; always followed by the terms that produce it."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Section titles with an inline tertiary meta line."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Reading text; ledes and steps at 15.5px relaxed, capped at 62 to 70ch."
+      },
+      "body-small": {
+        "displayName": "Body Small",
+        "purpose": "Fact labels, table cells, attribution lines beneath headings."
+      },
+      "label": {
+        "displayName": "Annotation",
+        "purpose": "Condensed caps for axes, contour captions, table heads and data-term labels. Never a kicker above a heading."
+      },
+      "grade": {
+        "displayName": "Grade Word",
+        "purpose": "The printed Note / Caution / Alert word on notice bands only."
+      },
+      "record-id": {
+        "displayName": "Record ID",
+        "purpose": "Every incident, family, strategy, packet and analysis ID; always a link to its record."
+      }
+    },
+    "shadows": [
+      {
+        "name": "press-lip",
+        "value": "0 1px 0 hsl(var(--shade)/0.18), 0 2px 6px -2px hsl(var(--shade)/0.35)",
+        "purpose": "Primary button only."
+      },
+      {
+        "name": "sheet-lift",
+        "value": "0 1px 0 hsl(var(--shade)/0.04), 0 8px 24px -18px hsl(var(--shade)/0.4)",
+        "purpose": "The report composer."
+      },
+      {
+        "name": "selected-tab",
+        "value": "0 1px 2px hsl(var(--shade)/0.12)",
+        "purpose": "Active rail nav item and selected theme option."
+      },
+      {
+        "name": "focus-halo",
+        "value": "0 0 0 3px var(--cobalt-soft)",
+        "purpose": "Inputs on focus."
+      },
+      {
+        "name": "focus-outline",
+        "value": "outline: 2px solid var(--cobalt); outline-offset: 2px",
+        "purpose": "Default :focus-visible ring."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Disclosure height, caret rotation, chart entrances."
+      },
+      {
+        "name": "control-state",
+        "value": "150ms ease-out",
+        "purpose": "Button, toggle, input and nav colour and border transitions."
+      },
+      {
+        "name": "disclosure",
+        "value": "220ms ease-out-expo",
+        "purpose": "Native details open height."
+      },
+      {
+        "name": "caret",
+        "value": "180ms ease-out-expo",
+        "purpose": "Disclosure caret rotates 90 degrees."
+      },
+      {
+        "name": "chart-entrance",
+        "value": "700-750ms ease-out-expo, 45ms stagger",
+        "purpose": "Contours scale in; stations travel in from beyond the rim."
+      },
+      {
+        "name": "busy-sweep",
+        "value": "0.9s ease-in-out infinite",
+        "purpose": "2px sweeping bar inside a busy button."
+      },
+      {
+        "name": "skeleton",
+        "value": "1.4s ease-in-out infinite",
+        "purpose": "Skeleton shimmer shaped to the final layout."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "0.01ms",
+        "purpose": "All animation and transition collapses under prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "desktop minimum",
+        "value": "1200px",
+        "note": "Desktop only: the shell holds this minimum width and never reflows; viewport declared 1280px."
+      }
+    ],
+    "layout": {
+      "rail": "244px",
+      "mainMax": "1240px",
+      "mainPadding": "40px",
+      "grid": "12 columns; fix 7 beside analog chart 5; 48px column gap",
+      "minWidth": "1200px (desktop only, no phone layout)"
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one cobalt action per view (Analyze, Troubleshoot).",
+      "html": "<button class=\"ds-btn-primary\"><svg width=\"17\" height=\"17\" viewBox=\"0 0 256 256\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M224.49 136.49l-72 72a12 12 0 0 1-17-17L187 140H40a12 12 0 0 1 0-24h147l-51.49-51.51a12 12 0 0 1 17-17l72 72a12 12 0 0 1-.02 17z\"/></svg>Analyze</button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 20px;font:600 15px/1 var(--font-archivo,Archivo),sans-serif;background:var(--cobalt-fill);color:var(--on-cobalt);border:0;border-radius:3px;box-shadow:0 1px 0 hsl(var(--shade)/0.18),0 2px 6px -2px hsl(var(--shade)/0.35);cursor:pointer;transition:background-color 150ms ease-out,transform 150ms ease-out}.ds-btn-primary:hover{background:var(--cobalt-fill-hover)}.ds-btn-primary:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px}.ds-btn-primary:active{transform:translateY(1px)}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Neutral action on a sheet with a strong-rule border.",
+      "html": "<button class=\"ds-btn-secondary\">Open record</button>",
+      "css": ".ds-btn-secondary{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;font:600 14.5px/1 var(--font-archivo,Archivo),sans-serif;background:var(--sheet);color:var(--ink);border:1px solid var(--line-2);border-radius:3px;cursor:pointer;transition:background-color 150ms ease-out,border-color 150ms ease-out}.ds-btn-secondary:hover{border-color:var(--ink-3);background:var(--paper)}.ds-btn-secondary:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px}.ds-btn-secondary:active{transform:translateY(1px)}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "In-context tool such as Edit report.",
+      "html": "<button class=\"ds-btn-ghost\">Edit report</button>",
+      "css": ".ds-btn-ghost{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;font:600 13.5px/1 var(--font-archivo,Archivo),sans-serif;background:transparent;color:var(--ink-2);border:0;border-radius:3px;cursor:pointer;transition:background-color 150ms ease-out,color 150ms ease-out}.ds-btn-ghost:hover{background:var(--paper-2);color:var(--ink)}.ds-btn-ghost:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px}"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Destructive action: red text and border on a sheet.",
+      "html": "<button class=\"ds-btn-danger\">Discard attempt</button>",
+      "css": ".ds-btn-danger{display:inline-flex;align-items:center;height:40px;padding:0 16px;font:600 14.5px/1 var(--font-archivo,Archivo),sans-serif;background:var(--sheet);color:var(--red);border:1px solid color-mix(in srgb,var(--red) 55%,transparent);border-radius:3px;cursor:pointer;transition:background-color 150ms,border-color 150ms}.ds-btn-danger:hover{background:var(--red-soft);border-color:var(--red)}.ds-btn-danger:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px}"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Sheet field with strong-rule border and cobalt focus halo.",
+      "html": "<input class=\"ds-input\" placeholder=\"e.g. VPN unreachable since this morning\">",
+      "css": ".ds-input{width:280px;height:40px;padding:0 12px;font:400 14.5px/1.4 var(--font-archivo,Archivo),sans-serif;background:var(--sheet);color:var(--ink);border:1px solid var(--line-2);border-radius:3px;caret-color:var(--cobalt);transition:border-color 150ms,box-shadow 150ms}.ds-input::placeholder{color:var(--ink-3)}.ds-input:hover{border-color:var(--ink-3)}.ds-input:focus{outline:none;border-color:var(--cobalt);box-shadow:0 0 0 3px var(--cobalt-soft)}"
+    },
+    {
+      "name": "Preset Chip",
+      "kind": "chip",
+      "refersTo": "toggle-on",
+      "description": "Composer preset; the selected preset fills with ink.",
+      "html": "<div class=\"ds-chips\"><button class=\"ds-chip\" aria-pressed=\"true\">Memory leak</button><button class=\"ds-chip\" aria-pressed=\"false\">Login loop</button></div>",
+      "css": ".ds-chips{display:flex;gap:6px}.ds-chip{height:28px;padding:0 10px;font:600 12.5px/1 var(--font-archivo,Archivo),sans-serif;border:1px solid var(--line);background:var(--paper);color:var(--ink-2);border-radius:3px;cursor:pointer;transition:color 150ms,border-color 150ms,background-color 150ms}.ds-chip:hover{border-color:var(--ink-3);color:var(--ink)}.ds-chip[aria-pressed=true]{border-color:var(--ink);background:var(--ink);color:var(--paper)}.ds-chip:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px}"
+    },
+    {
+      "name": "Rail Navigation",
+      "kind": "nav",
+      "refersTo": "nav-item-active",
+      "description": "Grouped rail links under condensed-caps group labels.",
+      "html": "<nav class=\"ds-rail\"><p class=\"ds-rail-group\">Operate</p><a class=\"ds-rail-item\" aria-current=\"page\" href=\"#\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 256 256\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24zm0 192a88 88 0 1 1 88-88 88.1 88.1 0 0 1-88 88zm44.42-132.62-64 32a8 8 0 0 0-3.58 3.58l-32 64A8 8 0 0 0 80 184a8.1 8.1 0 0 0 3.58-.84l64-32a8 8 0 0 0 3.58-3.58l32-64a8 8 0 0 0-10.74-10.74z\"/></svg>Assistant</a><a class=\"ds-rail-item\" href=\"#\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 256 256\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"16\" aria-hidden=\"true\"><circle cx=\"128\" cy=\"128\" r=\"88\" stroke-dasharray=\"20 18\"/></svg>Novel incidents</a></nav>",
+      "css": ".ds-rail{width:216px;padding:12px;background:var(--paper-2);display:flex;flex-direction:column;gap:1px}.ds-rail-group{margin:0 0 6px;padding:0 10px;font:600 11.5px/1.2 var(--font-archivo,Archivo),sans-serif;font-stretch:78%;font-variation-settings:'wdth' 78;letter-spacing:.035em;text-transform:uppercase;color:var(--ink-3)}.ds-rail-item{display:flex;align-items:center;gap:10px;height:36px;padding:0 10px;border-radius:3px;font:400 14.5px/1 var(--font-archivo,Archivo),sans-serif;color:var(--ink-2);text-decoration:none;transition:background-color 150ms,color 150ms}.ds-rail-item svg{color:var(--ink-3)}.ds-rail-item:hover{background:var(--paper);color:var(--ink)}.ds-rail-item[aria-current=page]{background:var(--sheet);color:var(--ink);font-weight:600;box-shadow:0 1px 2px hsl(var(--shade)/0.12)}.ds-rail-item[aria-current=page] svg{color:var(--cobalt)}.ds-rail-item:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px}"
+    },
+    {
+      "name": "Notice Band",
+      "kind": "custom",
+      "refersTo": "notice-caution",
+      "description": "Flat square band with a printed grade word from the closed set Note, Caution, Alert.",
+      "html": "<div class=\"ds-notice ds-notice-caution\" role=\"status\"><span class=\"ds-grade\">Caution</span><div><b>Needs human confirmation before you act.</b><br><span class=\"ds-notice-body\">Restarting the service drops active sessions.</span></div></div><div class=\"ds-notice ds-notice-alert\" role=\"alert\"><span class=\"ds-grade\">Alert</span><div><b>Could not load this view.</b><br><span class=\"ds-notice-body\">The API did not respond.</span></div></div>",
+      "css": ".ds-notice{display:grid;grid-template-columns:7.5rem minmax(0,1fr);column-gap:20px;padding:12px 16px;font:400 14px/1.6 var(--font-archivo,Archivo),sans-serif;color:var(--ink);margin-bottom:8px}.ds-notice b{font-weight:600}.ds-notice-body{color:var(--ink-2)}.ds-grade{padding-top:3px;font-weight:800;font-size:12.5px;line-height:1.2;font-stretch:72%;font-variation-settings:'wdth' 72;letter-spacing:.06em;text-transform:uppercase}.ds-notice-caution{background:var(--amber-soft)}.ds-notice-caution .ds-grade{color:var(--amber-ink)}.ds-notice-alert{background:var(--red-soft)}.ds-notice-alert .ds-grade{color:var(--red)}"
+    },
+    {
+      "name": "Verdict Field",
+      "kind": "custom",
+      "refersTo": "verdict-known",
+      "description": "Full-width flat state field that closes with an issuance line.",
+      "html": "<section class=\"ds-verdict\"><div class=\"ds-verdict-grid\"><div><h2 class=\"ds-verdict-state\">Known pattern</h2><p class=\"ds-verdict-sub\">Matched to historical incidents.</p></div><div class=\"ds-verdict-mid\"><p class=\"ds-verdict-cause\">Application memory leak under sustained load</p><p class=\"ds-verdict-sub\">Pattern family <a href=\"#\">F012</a>, match strength 0.96</p></div><div class=\"ds-verdict-odds\"><p class=\"ds-verdict-num\">0.981</p><p class=\"ds-verdict-sub\">P(known pattern), above the validated threshold 0.620</p></div></div><p class=\"ds-verdict-issue\"><span>Analysis <a href=\"#\">NEW-20260928143012-A1B2</a></span><span>issued 14:30:12 UTC</span></p></section>",
+      "css": ".ds-verdict{background:var(--cobalt-fill);color:var(--on-cobalt);font-family:var(--font-archivo,Archivo),sans-serif}.ds-verdict-grid{display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr) auto;gap:20px 32px;padding:24px 28px 16px}.ds-verdict-state{margin:0;font-size:28px;font-weight:700;line-height:1.05;font-stretch:116%;font-variation-settings:'wdth' 116;letter-spacing:-.015em}.ds-verdict-sub{margin:6px 0 0;font-size:13.5px;opacity:.85}.ds-verdict-mid{border-left:1px solid color-mix(in srgb,currentColor 25%,transparent);padding-left:32px}.ds-verdict-cause{margin:0;font-size:20px;font-weight:600;line-height:1.35}.ds-verdict a{color:inherit;font-family:var(--font-geist-mono,'Geist Mono'),monospace;text-underline-offset:3px}.ds-verdict-odds{text-align:right}.ds-verdict-num{margin:0;font-size:34px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums lining-nums;font-stretch:116%;font-variation-settings:'wdth' 116}.ds-verdict-issue{margin:0;display:flex;gap:16px;border-top:1px solid color-mix(in srgb,currentColor 20%,transparent);padding:8px 28px;font-size:12.5px;opacity:.8;font-variant-numeric:tabular-nums}"
+    },
+    {
+      "name": "Fact Rows",
+      "kind": "card",
+      "refersTo": "body-small",
+      "description": "Ruled label and value rows that replace KPI tiles.",
+      "html": "<dl class=\"ds-facts\"><div><dt>Incidents in family</dt><dd>142</dd></div><div><dt>Median resolution<span>too few real outcomes</span></dt><dd>3.4 h</dd></div><div><dt>Reopen rate</dt><dd>4.2%</dd></div></dl>",
+      "css": ".ds-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:40px;margin:0;border-top:1px solid var(--line-2);font-family:var(--font-archivo,Archivo),sans-serif}.ds-facts>div{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:7px 0;border-bottom:1px solid var(--line)}.ds-facts dt{font-size:13.5px;line-height:1.35;color:var(--ink-2)}.ds-facts dt span{display:block;font-size:12px;color:var(--amber-ink)}.ds-facts dd{margin:0;font-size:15px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums lining-nums}"
+    },
+    {
+      "name": "Provenance Tag",
+      "kind": "chip",
+      "refersTo": "label",
+      "description": "Line-style swatch plus word; provenance is never colour alone.",
+      "html": "<span class=\"ds-prov\"><span class=\"ds-prov-tag\" style=\"color:var(--ink)\"><svg width=\"16\" height=\"8\" aria-hidden=\"true\"><line x1=\"1\" y1=\"4\" x2=\"15\" y2=\"4\" stroke=\"var(--ink)\" stroke-width=\"2\"/></svg>observed</span><span class=\"ds-prov-tag\" style=\"color:var(--teal)\"><svg width=\"16\" height=\"8\" aria-hidden=\"true\"><line x1=\"1\" y1=\"4\" x2=\"15\" y2=\"4\" stroke=\"var(--teal)\" stroke-width=\"2\" stroke-dasharray=\"4 2.5\"/></svg>derived</span><span class=\"ds-prov-tag\" style=\"color:var(--violet)\"><svg width=\"16\" height=\"8\" aria-hidden=\"true\"><line x1=\"1\" y1=\"4\" x2=\"15\" y2=\"4\" stroke=\"var(--violet)\" stroke-width=\"2\" stroke-dasharray=\"0.1 3\" stroke-linecap=\"round\"/></svg>inferred</span><span class=\"ds-prov-tag\" style=\"color:var(--amber-ink)\"><svg width=\"16\" height=\"8\" aria-hidden=\"true\"><line x1=\"1\" y1=\"4\" x2=\"15\" y2=\"4\" stroke=\"var(--amber)\" stroke-width=\"3\"/></svg>synthetic</span></span>",
+      "css": ".ds-prov{display:inline-flex;flex-wrap:wrap;gap:6px 16px}.ds-prov-tag{display:inline-flex;align-items:center;gap:6px;font:600 12.5px/1 var(--font-archivo,Archivo),sans-serif;font-stretch:86%;font-variation-settings:'wdth' 86;white-space:nowrap}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Analog Forecast Desk",
+    "overview": "Every incident is read the way a forecaster reads a chart: against historical analogs, with stated odds, and with a clear line between what was observed and what was inferred. The surface is cool chart paper with blue-black ink; colour is spent almost entirely on meaning (state, provenance, action), never on decoration. Density is that of a working desk: ruled fact rows, hairline tables, charts drawn only where real data sits under them.\n\nThe system has two sheets. Light is the day chart (projected demos, office light); dark is the night chart (on-call). Both carry identical roles; only the values shift. Flat colour fields announce state (a verdict, an escalation, an alert), and everything else stays on paper. Numbers are shown as the computation they are (confidence as its equation, relevance on contours), never as a bare hero figure in a tile.\n\nThe build refuses the dark KPI-tile observability console and the chat-bot assistant. There are no tile dashboards, no chat bubbles, no gradient hero numbers.",
+    "keyCharacteristics": [
+      "Cool chart-paper ground, blue-black ink, colour reserved for state and provenance.",
+      "Flat, square state fields (verdict, escalation, correlation alert) that own their full width.",
+      "Archivo across its width axis: wide for display, condensed caps for chart annotation, extra-condensed for grade words.",
+      "Geist Mono for every record ID, and every ID is a link to its record.",
+      "Provenance drawn in line style (solid, dashed, dotted) plus a word, never colour alone.",
+      "Graticules, contours and rules only under real data."
+    ],
+    "rules": [
+      {
+        "name": "The Colour Is State Rule",
+        "body": "Cobalt means known or action, red means novel or alert, amber means escalation, caution or synthetic. No hue is used decoratively; if a colour appears, it is asserting one of these meanings.",
+        "section": "colors"
+      },
+      {
+        "name": "The Filled Field Rule",
+        "body": "Any filled state surface uses the *-fill token and its on-* ink (cobalt-fill with on-cobalt, red-fill with on-red, caution-amber with on-amber). The lifted dark-mode cobalt (#7189ff) is for text links only and never fills a surface.",
+        "section": "colors"
+      },
+      {
+        "name": "The Never Colour Alone Rule",
+        "body": "Provenance is always line style plus a word: solid for observed or original, dashed for derived, dotted for inferred, a heavier solid amber stroke for synthetic, an empty outline for missing.",
+        "section": "colors"
+      },
+      {
+        "name": "The Headings Lead Rule",
+        "body": "Nothing sits above a heading. Attribution (lead phrase, kind, strategy ID, family, counts) follows beneath it in body-small secondary ink. The condensed label cut labels data and axes; it is never a kicker over a title.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Figures Rule",
+        "body": "Every number in a table, fact row, chart or equation uses tabular lining numerals so columns of odds line up.",
+        "section": "typography"
+      },
+      {
+        "name": "The Paper Stays Flat Rule",
+        "body": "State fields, notices, charts, tables and modules never cast shadows. A shadow means \"you can press or write here\", nothing else.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** give every filled state surface its *-fill token and on-* ink; keep filled cobalt saturated (#2f54e6) in dark mode.",
+      "**Do** lead with the heading and put attribution beneath it in 13.5px secondary ink.",
+      "**Do** use ruled fact rows (Facts) for key figures; use the hairline module grid only when a module holds a real distribution chart.",
+      "**Do** show confidence as its equation: the 34px figure, then \"=\" and each component with its label.",
+      "**Do** mark provenance with line style plus a word: solid observed, dashed derived, dotted inferred.",
+      "**Do** keep one desktop layout: no phone reflow, no stacked tables, a 1200px minimum width.",
+      "**Do** fold the composer to a one-line report strip with \"Edit report\" once an analysis exists.",
+      "**Do** close every verdict with its issuance line: analysis ID link and UTC issue time.",
+      "**Do** honour reduced motion; chart entrances (700 to 750ms, ease-out-expo) and disclosure motion collapse to instant."
+    ],
+    "donts": [
+      "**Don't** place a kicker or eyebrow label above any heading.",
+      "**Don't** build KPI tiles or oversized hero numbers; the build replaced them with fact rows.",
+      "**Don't** use rounded callouts with icons for notices, or invent a grade word outside Note, Caution and Alert.",
+      "**Don't** use red for anything but novel, alert, failure or destruction, or amber for anything but escalation, caution or synthetic provenance.",
+      "**Don't** fill a surface with the dark-mode text cobalt (#7189ff), or put light ink on an amber field.",
+      "**Don't** encode provenance by colour alone.",
+      "**Don't** draw graticules, contours or gridlines where there is no real data under them.",
+      "**Don't** round state fields, notices, tables or charts; only controls take the 3px corner.",
+      "**Don't** use chat bubbles or a conversational assistant frame."
+    ]
+  }
+}

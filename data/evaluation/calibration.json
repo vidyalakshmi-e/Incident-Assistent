@@ -1,0 +1,45 @@
+{
+  "ce_platt_a": {
+    "value": 0.4044990101217974,
+    "fitted_on": "1280 (query, result) pairs, validation split"
+  },
+  "ce_platt_b": {
+    "value": 0.6818506455651293
+  },
+  "novelty": {
+    "weights": [
+      2.432284166211522,
+      -0.12353244068222684,
+      1.4731213028774144,
+      -0.5575972372887251
+    ],
+    "bias": 3.337959448670676,
+    "means": [
+      3.28417006802721,
+      0.6651612244897962,
+      0.5997897959183671,
+      0.5413605442176872
+    ],
+    "stds": [
+      5.264201583887681,
+      0.1608649119141511,
+      0.13854238345595632,
+      0.23640158662111227
+    ],
+    "threshold": 0.4895834276814094,
+    "features": [
+      "max_relevance_logit",
+      "max_semantic",
+      "centroid_similarity",
+      "fingerprint_support"
+    ],
+    "value": 0.4895834276814094,
+    "fitted_on": "validation split: 128 known, 19 novel",
+    "selection_rule": "max novel recall s.t. false-novel rate \u2264 2% (validation)",
+    "created": "2026-09-27T18:41:54.718122"
+  },
+  "correlation_similarity": {
+    "value": 0.9,
+    "fitted_on": "validation streams (see evaluation_results.json \u2192 correlation)"
+  }
+}
