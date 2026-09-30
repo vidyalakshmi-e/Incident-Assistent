@@ -7,7 +7,7 @@ from pathlib import Path
 from fastapi import APIRouter, HTTPException
 
 from backend.schemas.api import (
-    AnalyzeRequest, EscalateRequest, EscalationHandoffRequest, EscalationResolveRequest, EvaluateQueryRequest,
+    AnalyzeRequest, EscalateRequest, EscalationHandoffRequest, EscalationInfoRequest, EscalationResolveRequest, EvaluateQueryRequest,
     FeedbackRequest, PostmortemRequest, ResolveRequest, ReviewRequest, SearchRequest, SimulateRequest, TriageRequest,
     TroubleshootRequest,
 )
@@ -62,6 +62,17 @@ def troubleshoot(req: TroubleshootRequest):
 @router.post("/incidents/feedback", tags=["feedback"], summary="Thumbs up/down + structured reasons → KB evolution")
 def feedback(req: FeedbackRequest):
     return _guard(get_platform().feedback, req)
+
+
+@router.get("/feedback/summary", tags=["feedback"], summary="How much of the rated work was resolved, from the star ratings")
+def feedback_summary():
+    return get_platform().feedback_summary()
+
+
+@router.post("/incidents/escalation-info", tags=["escalation"],
+             summary="Add extra information from the reporter to an open escalation (shown to the next tier)")
+def escalation_info(req: EscalationInfoRequest):
+    return _guard(get_platform().add_escalation_info, req)
 
 
 @router.post("/incidents/escalate", tags=["escalation"], summary="Build a structured escalation packet (Escalation Agent)")

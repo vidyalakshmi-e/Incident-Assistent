@@ -4,6 +4,7 @@ import { clean, fixed } from "@/lib/format";
 import type { Resolution } from "@/lib/types";
 
 import { IdLink } from "../ui/IdLink";
+import { ProvTag } from "../ui/ProvTag";
 import { Notice } from "../ui/States";
 
 const COMPONENT_LABEL: Record<string, string> = {
@@ -70,14 +71,23 @@ export function RankedFix({
 }) {
   return (
     <article className="flex flex-col gap-6">
-      <div>
-        <h2 className={`display font-bold leading-[1.15] text-ink ${compact ? "text-[24px]" : "text-[27px]"}`}>
+      <div className="min-w-0">
+        <h2 className={`display font-bold leading-[1.15] [overflow-wrap:anywhere] text-ink ${compact ? "text-[24px]" : "text-[27px]"}`}>
           {clean(r.action)}
         </h2>
-        <p className="mt-1.5 text-[13.5px] text-ink-2">
-          <span className="font-semibold text-ink">{lead}</span>, {clean(r.kind)}, strategy <IdLink id={r.strategy_key} />
+        <p className="mt-1.5 flex flex-wrap items-baseline gap-x-1.5 gap-y-1 text-[13.5px] text-ink-2">
+          <span className="font-semibold text-ink">{lead}</span>
+          <span>{clean(r.kind)}, strategy</span>
+          <IdLink id={r.strategy_key} />
+          {r.guidance?.adapted && <ProvTag tag="inferred">Worded for this report by the LLM</ProvTag>}
         </p>
-        <p className="mt-3 max-w-[68ch] text-[15.5px] leading-relaxed text-ink-2">{clean(r.step)}</p>
+        {r.guidance?.adapted && r.guidance.reason && (
+          <p className="mt-2 max-w-[68ch] text-[14px] leading-snug text-ink-2">Why it fits: {clean(r.guidance.reason)}</p>
+        )}
+        <p className="mt-3 max-w-[68ch] text-[15.5px] leading-relaxed [overflow-wrap:anywhere] text-ink-2">
+          {r.guidance?.adapted && <span className="font-semibold text-ink">From the historical note: </span>}
+          {clean(r.step)}
+        </p>
         {r.expected_observation && (
           <p className="mt-3 max-w-[68ch] text-[14.5px] leading-relaxed text-ink">
             <span className="font-semibold">Expected observation:</span> {clean(r.expected_observation)}

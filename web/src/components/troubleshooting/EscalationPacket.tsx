@@ -2,6 +2,7 @@ import { clean, clock, period } from "@/lib/format";
 import type { Attempt, EscalationPacket as Packet } from "@/lib/types";
 
 import { Disclosure } from "../ui/Disclosure";
+import { AdditionalInfoList } from "./AdditionalInfo";
 import { IdLink } from "../ui/IdLink";
 import { ProvTag } from "../ui/ProvTag";
 import { Table } from "../ui/Table";
@@ -120,6 +121,14 @@ export function EscalationPacket({ p, showHistory = true }: { p: Packet; showHis
             )}
           </dd>
         </div>
+        {!!p.additional_info?.length && (
+          <div className="md:col-span-2">
+            <dt className="annot text-ink-3">Added by the reporter</dt>
+            <dd className="mt-2">
+              <AdditionalInfoList items={p.additional_info} />
+            </dd>
+          </div>
+        )}
         {!!p.checks_performed?.length && (
           <div className="md:col-span-2">
             <dt className="annot text-ink-3">Checks performed</dt>

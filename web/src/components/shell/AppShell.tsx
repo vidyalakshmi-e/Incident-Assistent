@@ -12,6 +12,7 @@ import type { EscalationsResponse } from "@/lib/types";
 import { Mark } from "./Mark";
 import { StatusStation } from "./StatusStation";
 import { ThemeToggle } from "./ThemeToggle";
+import { Toaster } from "./Toaster";
 
 const NAV = [
   {
@@ -115,6 +116,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <main id="main" className="min-w-0 px-10 pt-9 pb-24">
         <div className="mx-auto max-w-[1240px]">{children}</div>
       </main>
+      <Toaster />
     </div>
   );
 }

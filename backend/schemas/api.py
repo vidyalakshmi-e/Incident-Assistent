@@ -75,6 +75,7 @@ class FeedbackRequest(BaseModel):
     troubleshooting_resolved: bool | None = None
     escalation_appropriate: bool | None = None
     comment: str | None = None
+    rating: int | None = Field(None, ge=1, le=5, description="1-5 stars; rating / 5 is the share of the incident resolved")
     supporting_incident_ids: list[str] | None = Field(
         None, description="historical incidents that backed the rated recommendation (for influence penalties)")
     process_kb_update: bool = Field(True, description="run the KB evolution loop immediately if the incident is resolved")
@@ -87,6 +88,13 @@ class EscalateRequest(BaseModel):
     reason: str = "requested by engineer"
     hints: dict[str, str] | None = None
     fields: IncidentFields | None = None
+
+
+class EscalationInfoRequest(BaseModel):
+    session_id: str | None = Field(None, description="the troubleshooting session that was escalated")
+    escalation_id: int | None = None
+    info: str = Field(..., min_length=3, max_length=2000, description="anything the next tier should know")
+    author: str = "reporter"
 
 
 class SimulateRequest(BaseModel):

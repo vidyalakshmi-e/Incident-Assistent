@@ -35,7 +35,7 @@ class PatternIntelligenceAgent:
 
     def run(self, state: dict) -> dict:
         bundle = analyze_text(self.rt, state["text"], filters=state.get("filters"), hints=state.get("hints"),
-                              top_k=state.get("top_k", 10))
+                              top_k=state.get("top_k", 10), pool=state.get("pool"))
         fam = bundle.families[0] if bundle.families else None
         ctx = {
             "fingerprint": bundle.fingerprint.as_dict(),

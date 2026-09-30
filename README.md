@@ -65,7 +65,7 @@ Run the API and a worker against the same embedded store one at a time, or switc
 | Variable | Default | Meaning |
 |---|---|---|
 | `LLM_API_KEY` | *(blank)* | Leaving it blank gives **"Retrieval-only mode — LLM unavailable"**: no crash, and every response is labelled. A value that is not a plausible key (spaces, non-ASCII, a pasted comment) is treated as unset. A key that keeps failing is reported in `/health` and also falls back |
-| `LLM_MODEL` | `gpt-4o-mini` | Any model served by the configured endpoint |
+| `LLM_MODEL` | `gpt-4o-mini` | Any model served by the configured endpoint. **Leave it blank for a gateway that picks the model itself** (the lab gateway `https://keygateway1.arshnivlabs.com/v1`): no `model` is sent. That gateway also caps `max_tokens` at 500 (`LLM_MAX_TOKENS_CAP`) |
 | `LLM_PROVIDER` | `openai` | `openai` (any OpenAI-compatible endpoint: OpenAI, NVIDIA NIM, Ollama, LM Studio), `local` (an in-process Hugging Face model), or `none` |
 | `LLM_BASE_URL` | OpenAI | Set this when the key belongs to a gateway or another provider, e.g. `https://integrate.api.nvidia.com/v1` or `http://localhost:11434/v1`. Keep `.env` comments on their own line: a `#` right after `=` becomes part of the value |
 | `EMBEDDING_PROVIDER` | `local` | `local` (all-MiniLM-L6-v2), `openai`, or `nvidia`. If the chosen provider fails, it falls back to local automatically and logs the switch |

@@ -34,6 +34,7 @@ class Settings(BaseSettings):
     llm_timeout_s: float = 45.0
     llm_temperature: float = 0.1
     llm_max_tokens: int = 500
+    llm_max_tokens_cap: int = 500  # the lab gateway rejects max_tokens above 500 (HTTP 422)
 
     # ---------------- Embeddings ----------------
     embedding_provider: str = "local"  # local | openai | nvidia

@@ -47,6 +47,22 @@ def _short_error(exc: Exception) -> str:
     return f"{type(exc).__name__}: {exc}"[:160]
 
 
+def parse_json_reply(text: str) -> dict | list | None:
+    """Pull the first JSON object/array out of a model reply (fenced or surrounded by prose)."""
+    s = text.strip()
+    if s.startswith("```"):
+        s = s.split("\n", 1)[1] if "\n" in s else s
+        s = s.rsplit("```", 1)[0]
+    for opener, closer in (("{", "}"), ("[", "]")):
+        i, j = s.find(opener), s.rfind(closer)
+        if i != -1 and j > i:
+            try:
+                return json.loads(s[i:j + 1])
+            except json.JSONDecodeError:
+                continue
+    return None
+
+
 class LLMClient:
     def __init__(self, settings: Settings | None = None, read_cache: bool = True):
         """read_cache=False forces live calls (still written to the cache) — evaluation uses it so LLM
@@ -99,7 +115,7 @@ class LLMClient:
 
     @property
     def name(self) -> str:
-        return f"{self.provider}:{self.model}" if self.available else "none"
+        return f"{self.provider}:{self.model or 'server-default'}" if self.available else "none"
 
     def status(self) -> dict:
         return {"available": self.available, "provider": self.provider, "model": self.model,
@@ -143,9 +159,11 @@ class LLMClient:
             return self._cache[k]
         try:
             t = time.perf_counter()
-            with self._lock:
-                out = self._local_complete(system, prompt, max_tokens) if self.provider == "local" \
-                    else self._http_complete(system, prompt, max_tokens)
+            if self.provider == "local":
+                with self._lock:  # one in-process model: generations must not overlap
+                    out = self._local_complete(system, prompt, max_tokens)
+            else:  # HTTP calls are independent, so guidance for several candidates can run side by side
+                out = self._http_complete(system, prompt, max_tokens)
             self.calls += 1
             self.consecutive_failures = 0
             self.last_error = None
@@ -160,14 +178,25 @@ class LLMClient:
         self._store(k, out)
         return out
 
+    def complete_json(self, prompt: str, system: str = "You are a careful IT operations assistant.",
+                      max_tokens: int | None = None, purpose: str = "") -> dict | list | None:
+        """`complete`, parsed as JSON. Models often wrap JSON in ``` fences or add a sentence around it; both are
+        tolerated. Returns None when the LLM is unavailable or the reply is not valid JSON."""
+        out = self.complete(prompt, system=system + " Reply with a single JSON value and nothing else.",
+                            max_tokens=max_tokens, purpose=purpose)
+        return parse_json_reply(out) if out else None
+
     def _http_complete(self, system: str, prompt: str, max_tokens: int) -> str:
         import httpx
 
+        body = {"temperature": self.s.llm_temperature, "max_tokens": min(max_tokens, self.s.llm_max_tokens_cap),
+                "messages": [{"role": "system", "content": system}, {"role": "user", "content": prompt}]}
+        if self.model:  # a blank LLM_MODEL lets a gateway pick the model on the server
+            body["model"] = self.model
         r = httpx.post(
             self.s.llm_base_url.rstrip("/") + "/chat/completions",
             headers={"Authorization": f"Bearer {self.s.llm_api_key}"},
-            json={"model": self.model, "temperature": self.s.llm_temperature, "max_tokens": max_tokens,
-                  "messages": [{"role": "system", "content": system}, {"role": "user", "content": prompt}]},
+            json=body,
             timeout=self.s.llm_timeout_s,
         )
         r.raise_for_status()

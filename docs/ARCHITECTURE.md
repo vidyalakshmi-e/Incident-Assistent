@@ -177,3 +177,33 @@ flowchart LR
     W --> DB
     API -. optional .-> LLM["LLM endpoint<br/>(OpenAI-compatible, if LLM_API_KEY)"]
 ```
+
+## 5. LLM guidance layer (clarifying questions, step relevance, top-5 solutions)
+
+A standalone, rendered version of this diagram is in [`architecture-llm-guidance.html`](architecture-llm-guidance.html).
+The evidence pipeline is unchanged and still computes every score. The LLM only judges and words.
+
+```mermaid
+flowchart LR
+    UI["Web UI<br/>Assistant · Troubleshooting · Escalations · Feedback"] --> API["FastAPI<br/>/incidents/analyze · /troubleshoot<br/>/escalation-info · /feedback · /feedback/summary"]
+    API --> PA["Pattern agent<br/>retrieve + rerank 30 · fingerprint · family · novelty"]
+    PA --> RK["Resolution ranker<br/>confidence = relevance × agreement × provenance"]
+    RK --> GL["LLM guidance layer<br/>backend/troubleshooting/guidance.py"]
+    GL -->|"guide_steps: keep / drop, restate,<br/>'what did you see?' + 2 sample answers"| GW[("LLM gateway<br/>keygateway1.arshnivlabs.com/v1<br/>model chosen server-side")]
+    GL -->|"phrase_question: incident-specific wording"| GW
+    GL --> TOP["Top 5 solutions + confidence<br/>(first 5 relevant candidates)"]
+    GL --> TS["Troubleshooting service<br/>question · adapted step · attempts"]
+    TS -->|"round cap / user escalates"| EA["Escalation agent<br/>packet + tier + team"]
+    UI -. "extra info textbox" .-> API --> EA
+    EA --> DB[("SQLite<br/>escalation packet.additional_info")]
+    UI -->|"1-5 stars"| FB["Feedback<br/>% resolved = rating / 5"] --> DB
+```
+
+| Piece | Where |
+|---|---|
+| Step relevance, restated action, "what happened" prompts, question wording | `backend/troubleshooting/guidance.py` |
+| Top-5 solutions (`top_solutions`) and the 30-result pool | `backend/agents/diagnostic_agent.py`, `backend/services/analysis.py` |
+| Guidance inside a session, LLM-worded clarification | `backend/troubleshooting/session.py` |
+| Reporter notes on an escalation | `POST /incidents/escalation-info`, `Platform.add_escalation_info` |
+| Star rating → % resolved | `POST /incidents/feedback` (`rating`), `GET /feedback/summary` |
+| Gateway client (optional model, 500-token cap, JSON parsing) | `backend/rag/llm.py` |

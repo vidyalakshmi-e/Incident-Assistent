@@ -182,6 +182,7 @@ class IncidentFeedback(Base):
     troubleshooting_resolved: Mapped[bool | None] = mapped_column(Boolean)
     escalation_appropriate: Mapped[bool | None] = mapped_column(Boolean)
     comment: Mapped[str | None] = mapped_column(Text)
+    rating: Mapped[int | None] = mapped_column(Integer)  # 1-5 stars: how far the incident got resolved (rating / 5)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=_now)
 
 

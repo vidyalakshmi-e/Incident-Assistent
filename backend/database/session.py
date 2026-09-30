@@ -5,7 +5,7 @@ from contextlib import contextmanager
 from functools import lru_cache
 from pathlib import Path
 
-from sqlalchemy import create_engine, event
+from sqlalchemy import create_engine, event, inspect, text
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
 
@@ -29,9 +29,25 @@ def get_engine(url: str | None = None) -> Engine:
     return engine
 
 
+def _add_missing_columns(engine: Engine) -> None:
+    """create_all never alters an existing table, so a column added to a model later (e.g. feedback.rating)
+    would be missing from a database created by an earlier version. Nullable columns are added in place."""
+    insp = inspect(engine)
+    with engine.begin() as conn:
+        for table in Base.metadata.sorted_tables:
+            if not insp.has_table(table.name):
+                continue
+            have = {c["name"] for c in insp.get_columns(table.name)}
+            for col in table.columns:
+                if col.name not in have and col.nullable:
+                    ddl = col.type.compile(dialect=engine.dialect)
+                    conn.execute(text(f'ALTER TABLE "{table.name}" ADD COLUMN "{col.name}" {ddl}'))
+
+
 def init_db(url: str | None = None) -> Engine:
     engine = get_engine(url)
     Base.metadata.create_all(engine)
+    _add_missing_columns(engine)
     return engine
 
 

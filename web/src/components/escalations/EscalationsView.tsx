@@ -15,6 +15,7 @@ import { Field, Input, TextArea } from "../ui/Form";
 import { IdLink } from "../ui/IdLink";
 import { PageHeader, SectionTitle } from "../ui/Page";
 import { Empty, ErrorState, Notice, Skel } from "../ui/States";
+import { AdditionalInfoForm } from "../troubleshooting/AdditionalInfo";
 import { EscalationPacket } from "../troubleshooting/EscalationPacket";
 
 /** Pre-select from the URL: ?id=<escalation id> or ?session=<troubleshooting session id>. */
@@ -191,11 +192,13 @@ function Detail({
   onResolved,
   onHandedOff,
   onSelect,
+  onInfoAdded,
 }: {
   e: EscalationItem;
   onResolved: () => void;
   onHandedOff: (newId: number) => void;
   onSelect: (id: number) => void;
+  onInfoAdded: () => void;
 }) {
   const [kbNote, setKbNote] = useState<KbUpdate | null | undefined>(undefined);
   const p = e.packet;
@@ -303,6 +306,20 @@ function Detail({
         />
       )}
 
+      {e.status === "open" && (
+        <div className="border-b border-line">
+          <Disclosure title="Add information to this escalation" meta="shown in the packet, kept if it is handed up">
+            <AdditionalInfoForm
+              target={{ escalation_id: e.escalation_id }}
+              author={`${e.tier} engineer`}
+              label="What should everyone reading this packet know?"
+              hint="Optional. For example new symptoms, who is affected, or what you found while investigating."
+              onAdded={onInfoAdded}
+            />
+          </Disclosure>
+        </div>
+      )}
+
       {e.status === "open" && e.next_tier && (
         <div className="border-b border-line">
           <Disclosure title={`Cannot fix it at ${e.tier}? Hand it up to ${e.next_tier}`} meta="keeps this escalation as history">
@@ -393,6 +410,7 @@ export function EscalationsView() {
                 key={selected.escalation_id}
                 e={selected}
                 onSelect={(id) => setPick({ id, session: null })}
+                onInfoAdded={() => mutate()}
                 onHandedOff={(id) => {
                   setPick({ id, session: null });
                   mutate();

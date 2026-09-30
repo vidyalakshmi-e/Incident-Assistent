@@ -8,6 +8,7 @@ import { useState } from "react";
 import { postJSON } from "@/lib/api";
 import { clean, familyParts, pct } from "@/lib/format";
 import { useDesk, useDeskReady } from "@/lib/store";
+import { announceNewIncident } from "@/lib/toast";
 import type { Analysis } from "@/lib/types";
 
 import { EvalStrip } from "../evaluation/QueryEval";
@@ -23,6 +24,7 @@ import { AnnotatedReport } from "./AnnotatedReport";
 import { Composer, DEMO_REPORT } from "./Composer";
 import { EvidenceChain } from "./EvidenceChain";
 import { RankedFix } from "./RankedFix";
+import { TopSolutions } from "./TopSolutions";
 import { Triage } from "./Triage";
 import { VerdictField } from "./Verdict";
 
@@ -157,6 +159,13 @@ function AnalysisResult({ a }: { a: Analysis }) {
         </div>
       </section>
 
+      {!novel && (a.top_solutions?.length ?? 0) > 0 && (
+        <section className="border-t border-line pt-9">
+          <SectionTitle meta={`${a.top_solutions!.length} ranked by confidence`}>Top solutions</SectionTitle>
+          <TopSolutions items={a.top_solutions!} filtered={a.filtered_as_irrelevant?.length ?? 0} />
+        </section>
+      )}
+
       <section className="grid gap-x-12 gap-y-8 border-t border-line pt-9 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <SectionTitle>How the report was read</SectionTitle>
@@ -270,6 +279,7 @@ export function AssistantView() {
         fields: facts.priority ? { priority: facts.priority } : null,
       });
       set({ analysis: res, reportText: text });
+      announceNewIncident(res.incident_id);
       if (res.query_evaluation) logEval({ text, from: "assistant", evaluation: res.query_evaluation });
       setEditing(false);
       // The report folds to one line, so the verdict lands in view; move focus there for keyboard and screen readers.

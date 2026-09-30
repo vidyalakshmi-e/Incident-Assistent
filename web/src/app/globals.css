@@ -279,6 +279,23 @@ details.disclosure[open] > summary .chev {
   }
 }
 
+/* A new incident record announces itself: slides in from the right edge, and its cobalt edge settles. */
+.toast-in {
+  animation: toast-in 380ms var(--ease-out-expo) both;
+}
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+    border-left-color: var(--amber);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    border-left-color: var(--cobalt);
+  }
+}
+
 @keyframes sweep {
   from {
     transform: translateX(-100%);

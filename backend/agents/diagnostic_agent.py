@@ -11,6 +11,11 @@ from __future__ import annotations
 from backend.agents.messages import msg
 from backend.rag.resolution import rank_resolutions
 from backend.rag.synthesis import synthesize, validate
+from backend.troubleshooting.guidance import apply_to_ranking, guide_steps
+
+SOLUTIONS_SHOWN = 5  # ranked solutions returned to the Assistant, each with its own confidence
+SOLUTION_POOL = 30  # reranked incidents grouped into candidate strategies (the reranker's full window)
+SOLUTIONS_JUDGED = 8  # candidates the LLM checks for relevance, so five still remain after it drops some
 
 
 class DiagnosticAgent:
@@ -26,8 +31,23 @@ class DiagnosticAgent:
     def recommend(self, state: dict) -> dict:
         """One-shot recommendation for /analyze and /resolve (no session)."""
         bundle = state["bundle"]
-        ranking = rank_resolutions(bundle.retrieval.results, self.sidx, reranked=bundle.retrieval.mode.reranked,
-                                   family=bundle.families[0] if bundle.families else None)
+        # ten retrieved incidents often collapse into two or three strategies; the analysis keeps the whole reranked
+        # pool so five distinct solutions can be ranked (the verdict itself still comes from the first ten)
+        results, reranked = bundle.pool_results or bundle.retrieval.results, bundle.retrieval.mode.reranked
+        fam0 = bundle.families[0] if bundle.families else None
+        ranking = rank_resolutions(results, self.sidx, reranked=reranked, family=fam0)
+        # the query-evaluation grade is defined on the standard ten-result ranking (it must not move with the
+        # wider pool or with what the LLM drops), so keep that top step aside for it
+        standard = ranking if results is bundle.retrieval.results else rank_resolutions(
+            bundle.retrieval.results, self.sidx, reranked=bundle.retrieval.mode.reranked, family=fam0)
+        baseline_top = standard["top"]
+        if ranking["top"] and not bundle.novelty.get("is_novel"):
+            judged = {**ranking, "alternatives": ranking["alternatives"][:SOLUTIONS_JUDGED - 1]}
+            guidance = guide_steps(self.rt.llm, state["text"], [judged["top"]] + judged["alternatives"],
+                                   embedder=self.rt.embedder)
+            ranking = apply_to_ranking(judged, guidance)
+        ranking["baseline_top"] = baseline_top
+        ranking["solutions"] = ([ranking["top"]] if ranking["top"] else []) + ranking["alternatives"][:SOLUTIONS_SHOWN - 1]
         synth = synthesize(self.rt.llm, state["text"], ranking["top"]) if ranking["top"] else None
         check = validate(self.rt.llm, self.rt.embedder, synth, ranking["top"]) if synth else None
         fam = bundle.families[0]["family_id"] if bundle.families else None

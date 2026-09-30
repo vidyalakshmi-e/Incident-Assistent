@@ -28,7 +28,9 @@ from backend.services.analysis import analyze_text
 from backend.services.incidents import create_live_incident, update_incident
 from backend.troubleshooting.attempts import AttemptTracker
 from backend.troubleshooting.clarification import ClarificationPolicy, parse_answer
+from backend.troubleshooting.guidance import apply_to_ranking, guide_steps, phrase_question
 
+CANDIDATES_JUDGED = 6  # candidate steps the LLM checks per turn (two parallel calls)
 SIMILAR_STEP_THRESHOLD = 0.5  # masked action-clause cosine: restart variants score 0.68-0.73, different actions < 0.15
 
 
@@ -84,12 +86,30 @@ class TroubleshootingService:
         fam = bundle.families[0] if bundle.families else None
         ranking = rank_resolutions(bundle.retrieval.results, sidx, excluded, bundle.retrieval.mode.reranked, family=fam)
         ranking = self._drop_similar_to_failed(ranking, st.get("failed_steps", []))
+        if not bundle.novelty.get("is_novel"):  # a novel incident has no historical steps to judge
+            ranking = self._guide(sess, ranking)
         st["family"] = bundle.families[0] if bundle.families else None
         st["fingerprint"] = bundle.fingerprint.as_dict()
         st["novelty"] = bundle.novelty
         st["mode_labels"] = list(bundle.retrieval.mode.labels) + ([] if self.rt.llm.available else [RETRIEVAL_ONLY_LABEL])
         st["last_top_retrieved"] = [r.incident_id for r in bundle.retrieval.results[:5]]
         return bundle, ranking
+
+    def _guide(self, sess: TroubleshootingSession, ranking: dict) -> dict:
+        """Let the LLM drop candidate steps that do not fit this incident and restate the rest as actions
+        (rag/guidance). The confidence stays the evidence-derived one. No LLM → the ranking is unchanged."""
+        cands = ([ranking["top"]] if ranking["top"] else []) + ranking["alternatives"][:CANDIDATES_JUDGED - 1]
+        if not cands:
+            return ranking
+        guidance = guide_steps(self.rt.llm, sess.query_text, cands, sess.state.get("failed_steps", []), self.rt.embedder)
+        if not guidance:
+            return ranking
+        out = apply_to_ranking({**ranking, "alternatives": ranking["alternatives"][:CANDIDATES_JUDGED - 1]}, guidance)
+        dropped = out.get("filtered_as_irrelevant") or []
+        if dropped:
+            self._event(sess.state, "steps_filtered_as_irrelevant", count=len(dropped),
+                        steps=[{"strategy_key": d["strategy_key"], "reason": d["reason"]} for d in dropped])
+        return out
 
     def _drop_similar_to_failed(self, ranking: dict, failed_steps: list[str]) -> dict:
         """A different strategy key can still describe the same action (e.g. two phrasings of
@@ -170,6 +190,8 @@ class TroubleshootingService:
             raise ValueError("no clarifying question is pending for this session")
         st = sess.state
         pending = st["clarifications"][-1]
+        if answer and pending.get("option_values") and answer in pending["options"]:
+            answer = pending["option_values"][pending["options"].index(answer)]  # back to the canonical answer
         value = None if declined else parse_answer(pending["field"], answer or "")
         pending.update({"answer": answer, "declined": declined, "parsed_value": value,
                         "answered_at": datetime.utcnow().isoformat()})
@@ -204,8 +226,14 @@ class TroubleshootingService:
     # ------------------------------------------------------------------ internals
     def _ask(self, sess, q) -> dict:
         sess.status = "awaiting_clarification"
-        sess.state["clarifications"].append({**q.as_dict(), "asked_at": datetime.utcnow().isoformat(),
-                                             "at_round": sess.round})
+        entry = {**q.as_dict(), "asked_at": datetime.utcnow().isoformat(), "at_round": sess.round}
+        tried = [a["step_description"] for a in self.attempts.for_session(sess.session_id)
+                 if a["engineer_response"] == "FAILED"]
+        worded = phrase_question(self.rt.llm, sess.query_text, q.field, q.question, q.options, tried)
+        if worded:  # wording is the LLM's; the field and the answer values behind the options are the policy's
+            entry.update({"generic_question": q.question, "question": worded["question"], "options": worded["options"],
+                          "option_values": q.options, "llm_why": worded["why"], "worded_by": self.rt.llm.name})
+        sess.state["clarifications"].append(entry)
         self._event(sess.state, "clarification_asked", field=q.field, trigger=q.trigger)
         self._save(sess)
         return self.view(sess.session_id)
@@ -220,6 +248,7 @@ class TroubleshootingService:
                                                         "supporting_incidents", "confidence", "confidence_basis",
                                                         "confidence_components", "safety", "kind", "strategy_stats",
                                                         "evidence_provenance")},
+                                 "guidance": top.get("guidance"), "historical_action": top.get("historical_action"),
                                  "attempt_id": att["attempt_id"], "round": sess.round}
         sess.state["alternatives"] = [{"strategy_key": a["strategy_key"], "action": a["action"],
                                        "confidence": a["confidence"]} for a in ranking["alternatives"][:3]]
@@ -272,6 +301,15 @@ class TroubleshootingService:
         sess = self._load(session_id)
         sess.state["escalation_resolution"] = resolution
         self._event(sess.state, "resolved_after_escalation", resolved_by=resolution.get("resolved_by"))
+        self._save(sess)
+
+    def add_escalation_note(self, session_id: str, note: dict) -> None:
+        """Extra information from the reporter, kept on the session next to the packet it was added to."""
+        sess = self._load(session_id)
+        if sess.state.get("escalation") is not None:
+            sess.state["escalation"] = {**sess.state["escalation"],
+                                        "additional_info": [*sess.state["escalation"].get("additional_info", []), note]}
+        self._event(sess.state, "escalation_info_added", by=note.get("by"))
         self._save(sess)
 
     def session_context(self, session_id: str) -> dict:

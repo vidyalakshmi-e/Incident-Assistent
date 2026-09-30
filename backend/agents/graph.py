@@ -31,6 +31,7 @@ class AgentState(TypedDict, total=False):
     fields: dict
     incident_id: str | None
     top_k: int
+    pool: int | None
     persist_escalation: bool
     escalation_reason: str
     turn: dict
@@ -91,9 +92,9 @@ class AgentOrchestrator:
 
     # ------------------------------------------------------------------ entry points
     def analyze(self, text: str, hints: dict | None = None, filters=None, incident_id: str | None = None,
-                fields: dict | None = None, top_k: int = 10) -> dict:
+                fields: dict | None = None, top_k: int = 10, pool: int | None = None) -> dict:
         return self.analyze_graph.invoke({"text": text, "hints": hints or {}, "filters": filters, "fields": fields or {},
-                                          "incident_id": incident_id, "top_k": top_k, "messages": []})
+                                          "incident_id": incident_id, "top_k": top_k, "pool": pool, "messages": []})
 
     def start_session(self, text: str, incident_id: str | None = None, hints: dict | None = None) -> dict:
         return self.session_graph.invoke({"text": text, "incident_id": incident_id, "hints": hints or {}, "messages": []})

@@ -25,11 +25,15 @@ class AnalysisBundle:
     q_emb: np.ndarray | None
     timer: StageTimer
     hints: dict[str, str] = field(default_factory=dict)
+    # Every reranked result, before trimming to top_k. Only filled when a caller asks for a `pool`: the retriever
+    # reranks 30 candidates whatever top_k is, so keeping them all costs nothing and lets the resolution ranker
+    # see more distinct strategies without a second search.
+    pool_results: list | None = None
 
 
 def analyze_text(rt, text: str, filters: RetrievalFilters | None = None, hints: dict[str, str] | None = None,
                  exclude_ids: list[str] | None = None, top_k: int = 10, rerank: bool = True,
-                 exclude_fn=None) -> AnalysisBundle:
+                 exclude_fn=None, pool: int | None = None) -> AnalysisBundle:
     timer = StageTimer()
     hints = dict(hints or {})
     with timer.stage("query_processing"):
@@ -39,8 +43,14 @@ def analyze_text(rt, text: str, filters: RetrievalFilters | None = None, hints: 
     if exclude_ids:
         filters = (filters or RetrievalFilters()).model_copy()
         filters.exclude_incident_ids = list(set((filters.exclude_incident_ids or []) + list(exclude_ids)))
-    retrieval = rt.retriever.search(text, filters=filters, top_k=top_k, rerank=rerank, qu=qu, exclude=exclude_fn,
-                                    timer=timer)
+    retrieval = rt.retriever.search(text, filters=filters, top_k=max(top_k, pool or 0), rerank=rerank, qu=qu,
+                                    exclude=exclude_fn, timer=timer)
+    pool_results = None
+    if pool and len(retrieval.results) > top_k:
+        # the first top_k of a wider search are exactly what a top_k search returns; novelty and family matching
+        # keep seeing that, unchanged
+        pool_results = retrieval.results
+        retrieval = retrieval.model_copy(update={"results": pool_results[:top_k]})
     with timer.stage("fingerprint"):
         fp = rt.fingerprinter.from_query(text, hints={**qu.hints, **hints})
     q_emb = None
@@ -50,4 +60,4 @@ def analyze_text(rt, text: str, filters: RetrievalFilters | None = None, hints: 
         families = rt.patterns.match(retrieval.results, q_emb)
     with timer.stage("novelty"):
         novelty = rt.novelty.assess(retrieval, families, fp)
-    return AnalysisBundle(text, qu, retrieval, fp, families, novelty, q_emb, timer, hints)
+    return AnalysisBundle(text, qu, retrieval, fp, families, novelty, q_emb, timer, hints, pool_results)

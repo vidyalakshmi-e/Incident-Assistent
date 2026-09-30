@@ -9,6 +9,7 @@ from functools import cached_property
 
 from sqlalchemy import func, select
 
+from backend.agents.diagnostic_agent import SOLUTION_POOL
 from backend.agents.graph import AgentOrchestrator
 from backend.database.session import session_scope
 from backend.evaluation.query_eval import evaluate_query as score_query
@@ -28,6 +29,11 @@ from backend.services.incidents import create_live_incident, incident_row, updat
 from backend.services.runtime import Runtime, get_runtime
 from backend.services.triage import family_outcome_stats, route_team, route_tier
 from backend.troubleshooting.attempts import AttemptTracker
+
+
+def resolved_percent(rating: float) -> int:
+    """Star rating (1-5) as the share of the incident that got resolved."""
+    return round(max(0.0, min(5.0, float(rating))) / 5 * 100)
 
 
 def _jsonable(obj):
@@ -101,7 +107,8 @@ class Platform:
         self.maybe_refresh_kb()
         iid = incident_id or create_live_incident(text, title=title, fields=fields)
         with self.rt.lock:
-            state = self.agents.analyze(text, hints=hints, filters=filters, incident_id=iid, fields=fields, top_k=top_k)
+            state = self.agents.analyze(text, hints=hints, filters=filters, incident_id=iid, fields=fields, top_k=top_k,
+                                        pool=SOLUTION_POOL)
         bundle = state["bundle"]
         diag = state.get("diagnostic") or {}
         ranking = diag.get("ranking")
@@ -121,13 +128,15 @@ class Platform:
             "confidence": top["confidence"] if top else None,
             "confidence_basis": top["confidence_basis"] if top else "undetermined — no evidence-backed resolution",
             "llm_synthesis": diag.get("synthesis"), "llm_validation": diag.get("validation"),
-            "alternatives": ranking["alternatives"][:3] if ranking else [],
+            "alternatives": ranking["alternatives"][:4] if ranking else [],
+            "top_solutions": ranking.get("solutions", [])[:5] if ranking else [],
+            "filtered_as_irrelevant": ranking.get("filtered_as_irrelevant", []) if ranking else [],
             "blocked_by_guardrails": ranking["blocked_by_guardrails"] if ranking else [],
             "strategy_panel": diag.get("strategy_panel", self.agents.sidx.panel(fam["family_id"] if fam else None)),
             "similar_incidents": [r.model_dump(mode="json") for r in bundle.retrieval.results[:top_k]],
             "fingerprint": bundle.fingerprint.as_dict(),
             "escalation_proposal": state.get("escalation"),
-            "query_evaluation": score_query(bundle, top),
+            "query_evaluation": score_query(bundle, (ranking or {}).get("baseline_top") or top),
             "evidence_chain": chain,
             "agent_messages": state.get("messages", []),
             "mode_labels": self._mode(bundle),
@@ -378,8 +387,9 @@ class Platform:
                                    reasons=list(req.reasons), root_cause_correct=req.root_cause_correct,
                                    pattern_correct=req.pattern_correct,
                                    troubleshooting_resolved=req.troubleshooting_resolved,
-                                   escalation_appropriate=req.escalation_appropriate, comment=req.comment))
-        out = {"recorded": True, "penalised_records": [], "influence_changes": [], "kb_update": None}
+                                   escalation_appropriate=req.escalation_appropriate, comment=req.comment,
+                                   rating=req.rating))
+        out = {"recorded": True, "resolved_percent": None if req.rating is None else resolved_percent(req.rating), "penalised_records": [], "influence_changes": [], "kb_update": None}
         negative = {"wrong resolution", "outdated", "wrong incident"} & set(req.reasons)
         if (req.helpful is False or negative) and req.supporting_incident_ids:
             with self.rt.lock:
@@ -391,7 +401,54 @@ class Platform:
         if req.process_kb_update and row and row.get("origin") == "live" and row.get("status") == "Resolved":
             with self.rt.lock:
                 out["kb_update"] = self.evolution.process(req.incident_id)
+        out["summary"] = self.feedback_summary()
         return _jsonable(out)
+
+    def feedback_summary(self) -> dict:
+        """Star ratings turned into 'how much was resolved': rating / 5, averaged over every rated incident."""
+        with session_scope() as s:
+            rows = s.execute(select(IncidentFeedback.incident_id, IncidentFeedback.rating,
+                                    IncidentFeedback.created_at).where(IncidentFeedback.rating.is_not(None))
+                             .order_by(IncidentFeedback.created_at.desc())).all()
+        ratings = [r.rating for r in rows]
+        n = len(ratings)
+        return _jsonable({
+            "rated": n,
+            "average_rating": round(sum(ratings) / n, 2) if n else None,
+            "resolved_percent": resolved_percent(sum(ratings) / n) if n else None,
+            "fully_resolved": sum(r == 5 for r in ratings),
+            "distribution": {str(k): sum(r == k for r in ratings) for k in range(1, 6)},
+            "recent": [{"incident_id": r.incident_id, "rating": r.rating, "resolved_percent": resolved_percent(r.rating),
+                        "at": r.created_at.isoformat()} for r in rows[:5]],
+            "basis": "each rating counts as rating / 5 resolved (5 stars = 100%, 1 star = 20%); the figure is the mean",
+        })
+
+    def add_escalation_info(self, req) -> dict:
+        """The reporter adds context after (or while) escalating. It is appended to the escalation packet, so the
+        L2/L3 engineer reads it with everything else, and it travels with a hand-off to the next tier."""
+        text = req.info.strip()
+        with session_scope() as s:
+            q = select(EscalationRecord)
+            if req.escalation_id is not None:
+                q = q.where(EscalationRecord.id == req.escalation_id)
+            elif req.session_id:
+                q = q.where(EscalationRecord.session_id == req.session_id)
+            else:
+                raise ValueError("provide escalation_id or session_id")
+            esc = s.execute(q.order_by(EscalationRecord.id.desc())).scalars().first()
+            if esc is None:
+                raise KeyError("no escalation found for that session: escalate first")
+            if s.get(EscalationResolution, esc.id) is not None:
+                raise ValueError(f"escalation {esc.id} is already resolved")
+            note = {"at": datetime.utcnow().isoformat(), "by": req.author or "reporter", "text": text}
+            esc.packet = {**(esc.packet or {}), "additional_info": [*(esc.packet or {}).get("additional_info", []), note]}
+            esc_id, session_id, packet = esc.id, esc.session_id, esc.packet
+        if session_id:
+            try:
+                self.agents.troubleshooting.add_escalation_note(session_id, note)
+            except KeyError:
+                pass  # the packet still carries it
+        return _jsonable({"escalation_id": esc_id, "additional_info": packet["additional_info"]})
 
     def postmortem(self, incident_id: str, feed_to_kb: bool = True) -> dict:
         content = pm_service.generate(self.rt, incident_id, self.agents.sidx)

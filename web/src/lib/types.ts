@@ -70,9 +70,26 @@ export interface Safety {
   independent_sources?: number;
 }
 
+/** The LLM's reading of a historical step against the reported incident (backend/troubleshooting/guidance.py). */
+export interface StepGuidance {
+  relevant: boolean;
+  reason?: string | null;
+  /** The step restated for this incident; null when the historical wording was kept. */
+  action?: string | null;
+  adapted: boolean;
+  /** "What happened when you tried it?", worded for this step. */
+  observe?: string | null;
+  /** Two sample answers: [it helped, it did not]. */
+  outcomes: string[];
+  model?: string;
+}
+
 export interface Resolution {
   strategy_key: string;
   action: string;
+  /** The original wording when `action` was restated for this incident. */
+  historical_action?: string | null;
+  guidance?: StepGuidance | null;
   step: string;
   strategy_label?: string | null;
   expected_observation?: string | null;
@@ -249,6 +266,8 @@ export interface EscalationPacket {
   likely_root_cause?: { statement?: string; certainty?: string; support?: number; of_retrieved?: number; status?: string };
   recommended_next_diagnostic_action?: { action: string; kind: string };
   clarification?: { attempted: boolean; notes: { trigger: string; question: string; learned: string }[] };
+  /** Extra information the reporter added for the next tier. */
+  additional_info?: { at: string; by: string; text: string }[];
   checks_performed?: string[];
   failed_approaches_do_not_repeat?: string[];
   resolution_attempt_history?: Attempt[];
@@ -288,6 +307,9 @@ export interface Analysis {
   llm_synthesis: { text: string } | null;
   llm_validation: Record<string, unknown> | null;
   alternatives: Resolution[];
+  /** Up to five ranked solutions, each with its own evidence-derived confidence. */
+  top_solutions?: Resolution[];
+  filtered_as_irrelevant?: { strategy_key: string; action: string; reason?: string | null; confidence?: number | null }[];
   strategy_panel: Strategy[];
   similar_incidents: Similar[];
   fingerprint: Fingerprint;
@@ -330,6 +352,11 @@ export interface Clarification {
   field: string;
   question: string;
   options: string[];
+  /** Set when the LLM reworded the question: the policy's generic wording and the answer values behind `options`. */
+  generic_question?: string;
+  option_values?: string[];
+  llm_why?: string | null;
+  worded_by?: string;
   trigger: string;
   reason: string;
   asked_at?: string;
@@ -391,6 +418,17 @@ export interface TSession {
   escalation_resolution?: { resolved_by: string; resolution_notes: string; root_cause: string | null; resolved_at: string } | null;
   resolved_by: Attempt | null;
   events: ({ at: string; kind: string } & Record<string, unknown>)[];
+}
+
+export interface FeedbackSummary {
+  rated: number;
+  average_rating: number | null;
+  /** Mean of rating / 5, as a whole percent. */
+  resolved_percent: number | null;
+  fully_resolved: number;
+  distribution: Record<string, number>;
+  recent: { incident_id: string; rating: number; resolved_percent: number; at: string }[];
+  basis: string;
 }
 
 export interface Postmortem {

@@ -7,6 +7,7 @@ import { useState } from "react";
 import { postJSON } from "@/lib/api";
 import { clean, clock, familyParts, fixed, period } from "@/lib/format";
 import { useDesk, useDeskReady } from "@/lib/store";
+import { announceNewIncident } from "@/lib/toast";
 import type { AgentMessage, KbUpdate, Postmortem, TSession } from "@/lib/types";
 
 import { AgentMessages } from "../assistant/AgentTrace";
@@ -15,10 +16,11 @@ import { Composer, DEMO_REPORT } from "../assistant/Composer";
 import { RankedFix } from "../assistant/RankedFix";
 import { Button, ButtonLink } from "../ui/Button";
 import { Disclosure } from "../ui/Disclosure";
-import { Input } from "../ui/Form";
+import { Field, Input, TextArea } from "../ui/Form";
 import { IdLink } from "../ui/IdLink";
 import { PageHeader, SectionTitle } from "../ui/Page";
 import { Notice, Skel } from "../ui/States";
+import { AdditionalInfoForm, AdditionalInfoList } from "./AdditionalInfo";
 import { AttemptTrack } from "./AttemptTrack";
 import { AttemptTable, EscalationPacket } from "./EscalationPacket";
 import { PostmortemView } from "./PostmortemView";
@@ -45,10 +47,12 @@ function Clarify({ s, call, busy }: { s: TSession; call: (p: object) => void; bu
   return (
     <section className="border border-line-2 bg-sheet">
       <div className="bg-amber-soft px-5 py-4 sm:px-6">
-        <h2 className="display text-[23px] font-bold leading-snug text-ink">{q.question}</h2>
+        <h2 className="display text-[23px] font-bold leading-snug [overflow-wrap:anywhere] text-ink">{q.question}</h2>
         <p className="mt-1 text-[14px] text-ink-2">
-          Asked once, before {s.round >= s.max_rounds ? "escalating" : "the next step"}. Why: {clean(q.reason)}
+          Asked once, before {s.round >= s.max_rounds ? "escalating" : "the next step"}.{" "}
+          {q.llm_why ? `Why: ${clean(q.llm_why)}` : `Why: ${clean(q.reason)}`}
         </p>
+        {q.worded_by && <p className="mt-1 text-[12.5px] text-ink-3">Worded for this report by the LLM. Standard question: &ldquo;{q.generic_question}&rdquo;</p>}
       </div>
       <fieldset className="flex flex-col gap-1 px-5 py-4 sm:px-6">
         <legend className="sr-only">Answer</legend>
@@ -88,16 +92,37 @@ function Session({ s, reset }: { s: TSession; reset: () => void }) {
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [notes, setNotes] = useState("");
+  const [extra, setExtra] = useState("");
 
-  async function call(payload: object, tag = "call") {
+  async function call(payload: object, tag = "call"): Promise<boolean> {
     setBusy(tag);
     setError(null);
     try {
       const res = await postJSON<TsResponse>("/incidents/troubleshoot", payload);
       set({ session: res.session, sessionMessages: [...sessionMessages, ...(res.agent_messages ?? [])] });
       setNotes("");
+      return true;
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
+      return false;
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  /** Escalate, then attach whatever the reporter typed so the packet carries it from the start. */
+  async function escalate(reason: string) {
+    if (!(await call({ action: "escalate", session_id: s.session_id, reason }, "esc"))) return;
+    const info = extra.trim();
+    if (!info) return;
+    setBusy("info");
+    try {
+      await postJSON("/incidents/escalation-info", { session_id: s.session_id, info, author: "reporter" });
+      setExtra("");
+      const res = await postJSON<TsResponse>("/incidents/troubleshoot", { action: "state", session_id: s.session_id });
+      set({ session: res.session });
+    } catch (e) {
+      setError(`Escalated, but the extra information was not attached: ${e instanceof Error ? e.message : String(e)}`);
     } finally {
       setBusy(null);
     }
@@ -167,10 +192,35 @@ function Session({ s, reset }: { s: TSession; reset: () => void }) {
           <div className="flex flex-col gap-5 lg:col-span-4">
             <div className="border border-line-2 bg-sheet p-5">
               <p className="text-[15px] font-semibold text-ink">What happened when you tried it?</p>
+              {cs.guidance?.observe && (
+                <p className="mt-1.5 text-[14.5px] leading-snug [overflow-wrap:anywhere] text-ink-2">{clean(cs.guidance.observe)}</p>
+              )}
+              {cs.guidance && cs.guidance.outcomes.length === 2 && (
+                <div className="mt-3 flex flex-col gap-1.5">
+                  {[["It helped", cs.guidance.outcomes[0]], ["It did not help", cs.guidance.outcomes[1]]].map(([tag, o]) => (
+                    <button
+                      key={tag}
+                      type="button"
+                      onClick={() => setNotes(o)}
+                      className="rounded-[3px] border border-line bg-paper px-3 py-2 text-left text-[13.5px] leading-snug text-ink-2 transition-colors hover:border-ink-3 hover:text-ink"
+                    >
+                      <span className="font-semibold text-ink">{tag}: </span>
+                      {clean(o)}
+                    </button>
+                  ))}
+                </div>
+              )}
               <label className="mt-3 block text-[13px] font-semibold text-ink-2" htmlFor="notes">
                 Notes for the attempt log (optional)
               </label>
-              <Input id="notes" value={notes} onChange={(e) => setNotes(e.target.value)} className="mt-1.5" placeholder="e.g. memory back to 40% for ten minutes" />
+              <TextArea
+                id="notes"
+                rows={2}
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                className="mt-1.5 text-[14.5px]!"
+                placeholder="Pick one above, or write what you saw, e.g. memory back to 40% for ten minutes"
+              />
               <div className="mt-4 grid grid-cols-2 gap-2">
                 <Button
                   variant="primary"
@@ -199,12 +249,29 @@ function Session({ s, reset }: { s: TSession; reset: () => void }) {
                 </Button>
                 <Button
                   variant="ghost"
-                  loading={busy === "esc"}
+                  loading={busy === "esc" || busy === "info"}
                   disabled={!!busy}
-                  onClick={() => call({ action: "escalate", session_id: s.session_id, reason: "requested by engineer" }, "esc")}
+                  onClick={() => escalate("requested by engineer")}
                 >
                   Escalate now
                 </Button>
+              </div>
+              <div className="mt-4 border-t border-line pt-3">
+                <Field
+                  label="Anything else L2 should know? (optional)"
+                  htmlFor="esc-extra"
+                  hint="Sent with the escalation if you use Escalate now."
+                >
+                  <TextArea
+                    id="esc-extra"
+                    rows={2}
+                    maxLength={2000}
+                    value={extra}
+                    onChange={(e) => setExtra(e.target.value)}
+                    className="text-[14px]!"
+                    placeholder="e.g. Only the Leeds office is affected; started after Tuesday's patch."
+                  />
+                </Field>
               </div>
               <p className="mt-3 text-[12.5px] leading-snug text-ink-3">
                 A failed step is excluded from every later suggestion, along with near-identical actions.
@@ -269,10 +336,15 @@ function Session({ s, reset }: { s: TSession; reset: () => void }) {
             <p className="display text-[27px] font-bold leading-tight">No historical playbook</p>
             <p className="mt-1 text-[15px]">{period(s.novelty.verdict)} Route to a fresh investigation.</p>
           </div>
-          <div>
-            <Button variant="primary" loading={busy === "esc"} onClick={() => call({ action: "escalate", session_id: s.session_id, reason: "novel incident" }, "esc")}>
-              Escalate for fresh investigation
-            </Button>
+          <div className="flex max-w-[640px] flex-col gap-4">
+            <Field label="Anything else L2 should know? (optional)" htmlFor="nov-extra" hint="Sent with the escalation.">
+              <TextArea id="nov-extra" rows={3} maxLength={2000} value={extra} onChange={(e) => setExtra(e.target.value)} />
+            </Field>
+            <div>
+              <Button variant="primary" loading={busy === "esc" || busy === "info"} disabled={!!busy} onClick={() => escalate("novel incident")}>
+                Escalate for fresh investigation
+              </Button>
+            </div>
           </div>
         </section>
       )}
@@ -292,6 +364,25 @@ function Session({ s, reset }: { s: TSession; reset: () => void }) {
             The {s.escalation.tier} engineer reads this packet and records what fixed it on the Escalations page.
           </Notice>
         ))}
+      {s.escalation && !s.escalation_resolution && (
+        <section className="flex max-w-[720px] flex-col gap-4 border border-line-2 bg-sheet p-5">
+          <SectionTitle meta="the engineer reads it with the packet">Add information</SectionTitle>
+          <AdditionalInfoList items={s.escalation.additional_info} />
+          <AdditionalInfoForm
+            target={{ session_id: s.session_id }}
+            author="reporter"
+            label={s.escalation.additional_info?.length ? "Anything more?" : "Anything else the next engineer should know?"}
+            onAdded={async () => {
+              try {
+                const res = await postJSON<TsResponse>("/incidents/troubleshoot", { action: "state", session_id: s.session_id });
+                set({ session: res.session });
+              } catch {
+                /* the note is saved; the list refreshes on the next state read */
+              }
+            }}
+          />
+        </section>
+      )}
       {s.escalation && <EscalationPacket p={s.escalation} showHistory={false} />}
 
       <div className="flex flex-col gap-4">
@@ -350,6 +441,7 @@ export function TroubleshootingView() {
         incident_id: tsPrefill?.incidentId ?? null,
       });
       set({ session: res.session, sessionMessages: res.agent_messages ?? [], tsPrefill: null, postmortem: null });
+      if (!tsPrefill?.incidentId) announceNewIncident(res.session.incident_id);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
