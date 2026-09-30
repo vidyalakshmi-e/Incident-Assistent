@@ -4,7 +4,7 @@ Each rule is a regex over lower-cased text mapped to a canonical label. Rules ar
 deterministic, so every extracted value is traceable ("derived" from original text, or tagged
 "synthetic" when the text itself was generated).
 
-Caveat (also in docs/DESIGN.md): these lexicons were written with IT-operations domain knowledge
+Caveat: these lexicons were written with IT-operations domain knowledge
 that overlaps the synthetic scenario catalog, so extraction accuracy measured on synthetic text
 overstates accuracy on arbitrary real free text.
 """

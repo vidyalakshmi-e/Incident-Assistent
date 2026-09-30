@@ -10,7 +10,7 @@ import type { KbUpdate } from "@/lib/types";
 import { KbUpdateNotice } from "../troubleshooting/PostmortemView";
 import { Button } from "../ui/Button";
 import { Field, Input, Segmented, TextArea, Toggle } from "../ui/Form";
-import { IdList } from "../ui/IdLink";
+import { IdLink, IdList } from "../ui/IdLink";
 import { PageHeader } from "../ui/Page";
 import { Notice, Skel } from "../ui/States";
 
@@ -23,7 +23,16 @@ const QUESTIONS = [
 ] as const;
 
 type Tri = "unanswered" | "yes" | "no";
-type Result = { recorded: boolean; penalised_records: string[]; kb_update: KbUpdate | null };
+type Change = { incident_id: string; influence_before: number; influence_after: number };
+type Result = {
+  recorded: boolean;
+  penalised_records: string[];
+  influence_changes: Change[];
+  kb_update: KbUpdate | null;
+  /** What was submitted, so the outcome message can say why nothing changed. */
+  negative: boolean;
+  hadEvidence: boolean;
+};
 
 export function FeedbackView() {
   const ready = useDeskReady();
@@ -50,7 +59,8 @@ export function FeedbackView() {
     setError(null);
     setResult(null);
     try {
-      const r = await postJSON<Result>("/incidents/feedback", {
+      const negative = helpful === "no" || reasons.some((x) => ["wrong resolution", "outdated", "wrong incident"].includes(x));
+      const r = await postJSON<Omit<Result, "negative" | "hadEvidence">>("/incidents/feedback", {
         incident_id: incidentId.trim(),
         session_id: sessionId.trim() || null,
         helpful: helpful === "skip" ? null : helpful === "yes",
@@ -62,7 +72,7 @@ export function FeedbackView() {
         comment: comment.trim() || null,
         supporting_incident_ids: supporting.length ? supporting : null,
       });
-      setResult(r);
+      setResult({ ...r, negative, hadEvidence: supporting.length > 0 });
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
@@ -171,9 +181,23 @@ export function FeedbackView() {
             {result && (
               <div className="flex flex-col gap-3">
                 <Notice title="Feedback recorded">
-                  {result.penalised_records.length
-                    ? `Lowered the influence of ${result.penalised_records.join(", ")}.`
-                    : "No record's influence changed."}
+                  {result.influence_changes.length
+                    ? "Lowered how much these records count in future rankings (saved, so it survives a restart): "
+                    : result.negative && !result.hadEvidence
+                      ? "No record's influence changed: this rating was not attached to any historical records. Analyse an incident first, then rate it. "
+                      : !result.negative
+                        ? "No record's influence changed: only a not-helpful, wrong-resolution, outdated or wrong-incident rating lowers it. "
+                        : "No record's influence changed. "}
+                  {result.influence_changes.map((c, i) => (
+                    <span key={c.incident_id}>
+                      {i > 0 && ", "}
+                      <IdLink id={c.incident_id} />{" "}
+                      <span className="num">
+                        {c.influence_before.toFixed(2)} &rarr; {c.influence_after.toFixed(2)}
+                      </span>
+                    </span>
+                  ))}
+                  {result.influence_changes.length > 0 && "."}
                   {!result.kb_update && " The incident is not a resolved live incident, so the knowledge base was not updated."}
                 </Notice>
                 {result.kb_update && <KbUpdateNotice k={result.kb_update} />}

@@ -17,16 +17,7 @@ The four differentiators: **Pattern Intelligence** (with causal chains), **Novel
 **Live Incident Correlation**, and **Resolution Strategy Intelligence**. Each is deepened by the Enriched
 Fingerprint, Resolution Attempt Tracking, the Evidence Chain and Knowledge Base Evolution.
 
-| Document | What it contains |
-|---|---|
-| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Architecture diagrams as Mermaid code: end-to-end flow, agent graph, troubleshooting state machine, deployment |
-| [`docs/DESIGN.md`](docs/DESIGN.md) | Design decisions and their rationale, including chunking, confidence policy and known limitations |
-| [`docs/DATASET_REPORT.md`](docs/DATASET_REPORT.md) | What the attached files contain, the merge, conditioned synthetic text, provenance and the real/derived/synthetic ratios (generated) |
-| [`docs/EVALUATION.md`](docs/EVALUATION.md) | All metrics, computed by code (generated) |
-| [`docs/LATENCY.md`](docs/LATENCY.md) | Per-stage latency and the cost/accuracy trade-offs (generated) |
-| [`docs/FALLBACKS.md`](docs/FALLBACKS.md) | The single source of truth for every fallback, with code and test references |
-| [`docs/MANUAL_VALIDATION.md`](docs/MANUAL_VALIDATION.md) | Manual spot validation of the discovered families |
-| [`BUILD_TRACKER.md`](BUILD_TRACKER.md) | Phase-by-phase build log with the real checkpoint outputs |
+**For the talk:** [`presentation/presentation_guide.md`](presentation/presentation_guide.md) explains how every stage works, why it was built that way, how the app runs with no API key, and how it was evaluated. [`presentation/file_guide.md`](presentation/file_guide.md) says what each file does.
 
 ---
 
@@ -38,12 +29,11 @@ Requirements: Python 3.10+. A GPU is optional; everything runs on CPU, just more
 python -m venv .venv
 # Windows: .venv\Scripts\activate    macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env                 # optionally set LLM_API_KEY; blank = retrieval-only mode
+# edit .env                          # optionally set LLM_API_KEY; blank = retrieval-only mode
 
 # The processed artefacts are already in data/. To rebuild everything from the raw files:
 python scripts/build_all.py          # dataset → index → patterns → models → calibration (~4 min on a GPU)
 python scripts/run_evaluation.py     # all metrics → data/evaluation/evaluation_results.json
-python scripts/write_reports.py      # regenerates docs/DATASET_REPORT.md, EVALUATION.md, LATENCY.md
 python scripts/export_training_data.py   # the rows the models were trained on → data/training/*.csv
 
 # run the platform
@@ -64,8 +54,6 @@ text with a local LLM, run `python scripts/build_dataset.py --generator llm`.
 The platform runs as separate local processes, each started from the project root:
 - **API**: `uvicorn backend.main:app --port 8000`. FastAPI with the agents and intelligence.
 - **UI**: `cd web && npm run dev` (Node 20.9+). The Next.js frontend (see `web/README.md`); it proxies `/api/*` to `API_URL`. Desktop only: there is no phone layout.
-
-For a plain-language tour of every screen, see [`walkthrough.md`](walkthrough.md).
 - **Legacy UI** (optional): `streamlit run frontend/app.py`. The original Streamlit frontend, kept because `prompt.txt` specifies Streamlit. It has no Escalations page.
 - **KB worker** (optional): `python scripts/kb_evolution_batch.py --loop`. The nightly Knowledge-Base-Evolution batch; the API also processes resolved incidents on demand.
 - **Vector DB**: embedded ChromaDB in `vectorstore/` by default. To use a Chroma server instead, run `chroma run --path vectorstore_server --port 8001` and set `CHROMA_MODE=http`. On start-up the API fills an empty server from the prebuilt embeddings.
@@ -76,10 +64,10 @@ Run the API and a worker against the same embedded store one at a time, or switc
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `LLM_API_KEY` | *(blank)* | Leaving it blank gives **"Retrieval-only mode — LLM unavailable"**: no crash, and every response is labelled |
+| `LLM_API_KEY` | *(blank)* | Leaving it blank gives **"Retrieval-only mode — LLM unavailable"**: no crash, and every response is labelled. A value that is not a plausible key (spaces, non-ASCII, a pasted comment) is treated as unset. A key that keeps failing is reported in `/health` and also falls back |
 | `LLM_MODEL` | `gpt-4o-mini` | Any model served by the configured endpoint |
 | `LLM_PROVIDER` | `openai` | `openai` (any OpenAI-compatible endpoint: OpenAI, NVIDIA NIM, Ollama, LM Studio), `local` (an in-process Hugging Face model), or `none` |
-| `LLM_BASE_URL` | OpenAI | e.g. `https://integrate.api.nvidia.com/v1` or `http://localhost:11434/v1` |
+| `LLM_BASE_URL` | OpenAI | Set this when the key belongs to a gateway or another provider, e.g. `https://integrate.api.nvidia.com/v1` or `http://localhost:11434/v1`. Keep `.env` comments on their own line: a `#` right after `=` becomes part of the value |
 | `EMBEDDING_PROVIDER` | `local` | `local` (all-MiniLM-L6-v2), `openai`, or `nvidia`. If the chosen provider fails, it falls back to local automatically and logs the switch |
 | `RERANKER_PROVIDER` | `local` | `local` (ms-marco-MiniLM-L-6-v2), `nvidia`, or `none`. The fallback chain is local, then unreranked (labelled) |
 | `ESCALATION_TIERS` | `L1,L2,L3` | Tier **order** is configurable, so the direction can be confirmed against the grading rubric |
@@ -99,8 +87,8 @@ Run the API and a worker against the same embedded store one at a time, or switc
    records the attempt, excludes that approach and suggests the next-best one. Fail the remaining steps:
    before escalating it asks one clarifying question, then builds an **escalation packet** with the full
    attempt history and the clarification notes. Open **Escalations**: this is where the L2/L3 engineer
-   reads the packet and records what fixed it. That fix goes through the same knowledge-base quality
-   check as any other, so an escalated incident can still become knowledge.
+   reads the packet and either records what fixed it or **hands it up to L3** with a note. That fix goes
+   through the same knowledge-base quality check as any other, so an escalated incident can still become knowledge.
 3. **Novel Incidents.** Try *"The GPS time server lost satellite lock and trading hosts drift from UTC"*.
    The result is **NOVEL INCIDENT**, showing P(known) against the validated threshold.
 4. **Close the loop.** Start a new troubleshooting session and mark the first step **WORKED**. Then click
@@ -131,13 +119,14 @@ Sample queries for the API (Swagger) or the UI:
 | POST | `/incidents/triage` | Classification, priority/impact/urgency, team and tier routing, resolution-time prediction, fix accuracy |
 | POST | `/incidents/resolve` | Top resolution plus fallbacks (`exclude_strategies`), LLM synthesis and validation when available |
 | POST | `/incidents/troubleshoot` | `action`: start / respond (WORKED, FAILED, UNKNOWN) / clarify / escalate / state |
-| POST | `/incidents/feedback` | Thumbs up/down, structured reasons and 4 questions; triggers KB evolution |
+| POST | `/incidents/feedback` | Thumbs up/down, structured reasons and 4 questions; a negative rating lowers the influence of the supporting records (saved), and a resolved incident triggers KB evolution |
 | POST | `/incidents/escalate` | Structured escalation packet (Escalation Agent) |
 | GET | `/escalations` | Escalated incidents for L2/L3, open first, each with its packet and resolution |
 | POST | `/escalations/{id}/resolve` | L2/L3 records what fixed it: the incident is resolved and goes through KB evolution |
+| POST | `/escalations/{id}/hand-off` | The current tier passes the escalation to the next one (L2 → L3) with a note; the old one stays as history |
 | POST | `/incidents/simulate` | Simulate incoming incidents for Live Correlation |
 | GET | `/incidents/correlations` | Current correlation window: events and alerts |
-| GET | `/incidents/{id}` | Record with field-level provenance, fingerprint, quality, family, causal chain |
+| GET | `/incidents/{id}` | Record with field-level provenance, fingerprint, quality, family, causal chain. Works for live incidents and for historical knowledge-base incidents |
 | GET | `/incidents/{id}/evidence-chain` | Structured "why this recommendation" trace |
 | GET | `/incidents/{id}/attempts` | Formal resolution-attempt history |
 | GET | `/patterns`, `/patterns/{id}`, `/patterns/graph` | Families, cross-symptom findings, proactive findings, recurrence, causal chains, strategies, graph |
@@ -170,16 +159,17 @@ backend/
   services/               platform facade, analysis pipeline, triage, escalation, postmortem, runtime
   evaluation/             query generator, calibration, metrics, suite, model training
   models/ database/ schemas/
-web/                      Next.js UI (primary): src/app routes, src/components, DESIGN.md
+web/                      Next.js UI (primary): src/app routes, src/components
 frontend/app.py + views/  Streamlit UI (legacy, 8 screens)
-scripts/                  build_*.py, calibrate.py, train_models.py, run_evaluation.py, write_reports.py, kb_evolution_batch.py
+scripts/                  build_*.py, calibrate.py, train_models.py, run_evaluation.py, kb_evolution_batch.py
 data/raw | processed | evaluation
 tests/
-requirements.txt, .env.example
+presentation/             presentation_guide.md (talk guide) and file_guide.md (what each file does)
+requirements.txt, .env
 ```
 
 ## Honesty notes
 
-- About 95% of the knowledge-base text is LLM-generated. It is conditioned on real structured fields and every generated value is flagged `synthetic`. The only real free text is Source A (150 rows, 7 unique texts). See `docs/DATASET_REPORT.md`.
+- About 95% of the knowledge-base text is LLM-generated. It is conditioned on real structured fields and every generated value is flagged `synthetic`. The only real free text is Source A (150 rows, 7 unique texts). See `data/processed/dataset_report.json` for the exact ratios.
 - All reported numbers are computed by `scripts/run_evaluation.py`. Relevance labels come from the generator's ground truth, not from the system being evaluated.
 - The system is decision support: destructive actions always require human confirmation, and feedback changes knowledge records but does not retrain any model.

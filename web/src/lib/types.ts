@@ -349,8 +349,13 @@ export interface EscalationItem {
   expertise: string | null;
   reason: string;
   escalated_at: string;
-  status: "open" | "resolved";
+  /** open = waiting for this tier; handed_off = this tier passed it up; resolved = fixed. */
+  status: "open" | "handed_off" | "resolved";
+  /** The tier an open escalation can be handed to, or null at the last tier. */
+  next_tier: string | null;
   packet: EscalationPacket;
+  handed_off_to: { escalation_id: number; tier: string; note: string; at: string } | null;
+  handed_off_from: { escalation_id: number; tier: string; note: string; at: string } | null;
   resolution: {
     resolved_by: string;
     resolution_notes: string;
@@ -513,6 +518,8 @@ export interface KbEvolution {
     provenance?: Record<string, string>;
   }[];
   pending_review: { incident_id: string; quality: number; flags: string[] | string; resolution_notes: string | null }[];
+  quality_threshold: number;
+  gate: { passed: number; held: number; rejected: number };
   pending_candidates: string[];
   mode: string;
 }

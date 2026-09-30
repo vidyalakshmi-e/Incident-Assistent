@@ -70,7 +70,11 @@ export function IncidentView({ id }: { id: string }) {
         </div>
       </header>
 
-      {inc?.description && <p className="max-w-[65ch] text-[16px] leading-relaxed text-ink">{clean(inc.description)}</p>}
+      {inc?.description ? (
+        <p className="max-w-[65ch] text-[16px] leading-relaxed text-ink">{clean(inc.description)}</p>
+      ) : (
+        inc && <p className="text-[14px] text-ink-3">This record has no description text.</p>
+      )}
 
       {rows.length > 0 && (
         <dl className="flex max-w-[520px] flex-col">

@@ -1,4 +1,4 @@
-"""Cross-encoder reranking (FALLBACKS §3).
+"""Cross-encoder reranking (if unavailable, results are labelled 'unreranked').
 
 Chain: configured provider → local cross-encoder (ms-marco-MiniLM-L-6-v2) → no reranking.
 When the last step is reached, results keep their hybrid-fusion order and are labelled

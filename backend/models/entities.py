@@ -211,6 +211,19 @@ class EscalationResolution(Base):
     resolved_at: Mapped[datetime] = mapped_column(DateTime, default=_now)
 
 
+class EscalationHandoff(Base):
+    """A tier passing an escalation on to the next one (L2 → L3). The old escalation stays as history;
+    `to_escalation_id` is the new open escalation the higher tier works from."""
+    __tablename__ = "escalation_handoffs"
+    from_escalation_id: Mapped[int] = mapped_column(Integer, ForeignKey("escalations.id"), primary_key=True)
+    to_escalation_id: Mapped[int] = mapped_column(Integer, ForeignKey("escalations.id"), index=True)
+    incident_id: Mapped[str] = mapped_column(String(40), index=True)
+    from_tier: Mapped[str] = mapped_column(String(10))
+    to_tier: Mapped[str] = mapped_column(String(10))
+    note: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=_now)
+
+
 class KnowledgeQuality(Base):
     __tablename__ = "knowledge_quality"
     incident_id: Mapped[str] = mapped_column(String(40), primary_key=True)

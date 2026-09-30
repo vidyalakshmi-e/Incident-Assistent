@@ -17,3 +17,6 @@ data/processed/llm_cache.jsonl
 # identical copies of the files in data/raw/ (the pipeline reads data/raw/)
 /incidents_text.csv
 /incidents_structured.xlsx
+
+presentation
+docs

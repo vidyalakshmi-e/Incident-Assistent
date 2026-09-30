@@ -23,7 +23,7 @@ class Settings(BaseSettings):
         env_file=str(PROJECT_ROOT / ".env"), env_file_encoding="utf-8", extra="ignore"
     )
 
-    # ---------------- LLM (see docs/FALLBACKS.md §1) ----------------
+    # ---------------- LLM (optional: without a key the app runs in retrieval-only mode) ----------------
     # "openai" = any OpenAI-compatible HTTP endpoint (OpenAI, NVIDIA NIM, Ollama, LM Studio ...)
     # "local"  = a Hugging Face instruct model run in-process with transformers
     # "none"   = force retrieval-only mode
@@ -35,7 +35,7 @@ class Settings(BaseSettings):
     llm_temperature: float = 0.1
     llm_max_tokens: int = 500
 
-    # ---------------- Embeddings (FALLBACKS §2) ----------------
+    # ---------------- Embeddings ----------------
     embedding_provider: str = "local"  # local | openai | nvidia
     embedding_model_local: str = "sentence-transformers/all-MiniLM-L6-v2"
     embedding_model_openai: str = "text-embedding-3-small"
@@ -44,12 +44,12 @@ class Settings(BaseSettings):
     nvidia_api_key: str = ""
     nvidia_base_url: str = "https://integrate.api.nvidia.com/v1"
 
-    # ---------------- Reranker (FALLBACKS §3) ----------------
+    # ---------------- Reranker ----------------
     reranker_provider: str = "local"  # local | nvidia | none
     reranker_model_local: str = "cross-encoder/ms-marco-MiniLM-L-6-v2"
     reranker_model_nvidia: str = "nvidia/nv-rerankqa-mistral-4b-v3"
 
-    # ---------------- Vector store (FALLBACKS §6) ----------------
+    # ---------------- Vector store ----------------
     chroma_mode: str = "embedded"  # embedded | http
     chroma_path: str = str(PROJECT_ROOT / "vectorstore")
     chroma_host: str = "localhost"

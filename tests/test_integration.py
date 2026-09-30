@@ -37,7 +37,7 @@ def test_exact_duplicates_are_collapsed(rt):
     assert len({r.incident_id for r in resp.results}) == len(resp.results)
 
 
-# ------------------------------------------------------------------ fallbacks (docs/FALLBACKS.md)
+# ------------------------------------------------------------------ fallbacks
 def test_llm_missing_gives_labelled_retrieval_only_mode(platform):
     out = platform.analyze(DEMO)
     assert "Retrieval-only mode — LLM unavailable" in out["mode_labels"]

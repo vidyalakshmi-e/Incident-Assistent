@@ -82,10 +82,15 @@ export function NoveltyView() {
               </SectionTitle>
               <ul className="flex flex-col">
                 {r.results.slice(0, 3).map((x) => (
-                  <li key={x.incident_id} className="grid grid-cols-[7.5rem_minmax(0,1fr)_auto] items-baseline gap-4 border-b border-line py-2.5">
-                    <IdLink id={x.incident_id} />
-                    <span className="truncate text-[14.5px] text-ink">{clean(x.title)}</span>
-                    <span className="num text-[14px] text-ink-2">relevance {fixed(x.scores.relevance_confidence, 3)}</span>
+                  <li key={x.incident_id} className="border-b border-line py-2.5">
+                    <div className="grid grid-cols-[7.5rem_minmax(0,1fr)_auto] items-baseline gap-4">
+                      <IdLink id={x.incident_id} />
+                      <span className="truncate text-[14.5px] text-ink">{clean(x.title)}</span>
+                      <span className="num text-[14px] text-ink-2">relevance {fixed(x.scores.relevance_confidence, 3)}</span>
+                    </div>
+                    {x.description && (
+                      <p className="mt-1 line-clamp-2 pl-[8.5rem] text-[13.5px] leading-relaxed text-ink-2">{clean(x.description)}</p>
+                    )}
                   </li>
                 ))}
               </ul>

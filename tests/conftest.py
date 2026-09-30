@@ -23,6 +23,11 @@ os.environ["SKIP_WARMUP"] = "1"
 os.environ["LLM_PROVIDER"] = "openai"
 os.environ["LLM_API_KEY"] = ""  # tests exercise retrieval-only mode deterministically
 
+try:  # Windows: torch must load its DLLs before onnxruntime/chromadb (backend/main.py does the same), or a later
+    import torch  # noqa: F401  # import of sentence-transformers crashes with an access violation
+except Exception:  # noqa: BLE001
+    pass
+
 ARTEFACTS = ROOT / "data" / "processed" / "kb_records.parquet"
 
 

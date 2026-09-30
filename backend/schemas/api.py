@@ -113,6 +113,10 @@ class EscalationResolveRequest(BaseModel):
     feed_to_kb: bool = Field(True, description="send the fix through the KB evolution quality check")
 
 
+class EscalationHandoffRequest(BaseModel):
+    note: str = Field(..., min_length=10, description="what the current tier tried and why the next tier is needed")
+
+
 class GenericResponse(BaseModel):
     model_config = {"extra": "allow"}
     data: dict[str, Any] | None = None

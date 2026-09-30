@@ -7,8 +7,8 @@ from pathlib import Path
 from fastapi import APIRouter, HTTPException
 
 from backend.schemas.api import (
-    AnalyzeRequest, EscalateRequest, EscalationResolveRequest, EvaluateQueryRequest, FeedbackRequest,
-    PostmortemRequest, ResolveRequest, ReviewRequest, SearchRequest, SimulateRequest, TriageRequest,
+    AnalyzeRequest, EscalateRequest, EscalationHandoffRequest, EscalationResolveRequest, EvaluateQueryRequest,
+    FeedbackRequest, PostmortemRequest, ResolveRequest, ReviewRequest, SearchRequest, SimulateRequest, TriageRequest,
     TroubleshootRequest,
 )
 from backend.services.platform import get_platform
@@ -78,6 +78,12 @@ def escalations():
              summary="L2/L3 records what fixed an escalated incident → incident resolved → KB evolution")
 def resolve_escalation(escalation_id: int, req: EscalationResolveRequest):
     return _guard(get_platform().resolve_escalation, escalation_id, req)
+
+
+@router.post("/escalations/{escalation_id}/hand-off", tags=["escalation"],
+             summary="Current tier passes the escalation to the next one (L2 → L3) with a note on what it tried")
+def hand_off_escalation(escalation_id: int, req: EscalationHandoffRequest):
+    return _guard(get_platform().hand_off_escalation, escalation_id, req)
 
 
 @router.post("/incidents/simulate", tags=["correlation"], summary="Simulate incoming incidents for Live Correlation")

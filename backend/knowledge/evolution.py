@@ -273,26 +273,58 @@ class KBEvolution:
         return {"processed": len(out), "results": out, "ran_at": datetime.utcnow().isoformat()}
 
     # ------------------------------------------------------------------ feedback on historical evidence
-    def apply_feedback_penalty(self, incident_ids: list[str], reason: str) -> list[str]:
+    def apply_feedback_penalty(self, incident_ids: list[str], reason: str) -> list[dict]:
         """Negative feedback ('wrong resolution', 'outdated', ...) on a recommendation lowers the
-        influence of the historical records that supported it. No model is retrained."""
+        influence of the historical records that supported it. No model is retrained.
+
+        The penalty is written to `knowledge_quality` (a row is created for a record that has none, which is
+        every original historical record) so it survives a restart; `load_feedback_penalties` re-applies it.
+        Returns one {incident_id, influence_before, influence_after} per record that changed."""
         changed = []
         with session_scope() as s:
-            for iid in incident_ids:
-                kq = s.get(KnowledgeQuality, iid)
+            for iid in dict.fromkeys(incident_ids):
                 rec = self.rt.store.get(iid)
-                if kq is None or rec is None:
+                if rec is None:
                     continue
+                kq = s.get(KnowledgeQuality, iid)
+                if kq is None:
+                    kq = KnowledgeQuality(incident_id=iid, score=float(rec.get("quality_score") or 0.0),
+                                          tier=str(rec.get("quality_tier") or "low"), flags=[], components={},
+                                          dup_group=iid, near_dup_group=iid, canonical=True, review_status="auto")
+                    s.add(kq)
+                before = float(rec.get("influence_weight", 0.5))
                 comps = dict(kq.components or {})
                 comps["feedback_penalty"] = round(comps.get("feedback_penalty", 0) + FEEDBACK_PENALTY, 3)
                 kq.components = comps
                 kq.score = round(max(0.0, kq.score - FEEDBACK_PENALTY), 4)
                 kq.flags = sorted(set(kq.flags or []) | {f"feedback:{reason}"})
-                rec["influence_weight"] = round(max(0.0, float(rec.get("influence_weight", 0.5)) - FEEDBACK_PENALTY), 4)
+                rec["influence_weight"] = round(max(0.0, before - FEEDBACK_PENALTY), 4)
                 rec["quality_score"] = kq.score
-                changed.append(iid)
+                changed.append({"incident_id": iid, "influence_before": round(before, 4),
+                                "influence_after": rec["influence_weight"]})
                 _event(s, iid, "feedback_penalty", "applied", reason=reason, new_score=kq.score)
         return changed
+
+
+def load_feedback_penalties(store) -> int:
+    """Re-apply persisted negative-feedback penalties to the original records, which are rebuilt from the
+    parquet files on every start. (Evolved records already carry their penalty in `knowledge_quality.score`.)"""
+    try:
+        with session_scope() as s:
+            rows = s.execute(select(KnowledgeQuality.incident_id, KnowledgeQuality.components)).all()
+    except Exception as exc:  # noqa: BLE001 — a fresh database has no tables yet
+        log.info("No feedback penalties loaded (%s)", exc)
+        return 0
+    n = 0
+    for iid, comps in rows:
+        penalty = float((comps or {}).get("feedback_penalty") or 0)
+        rec = store.get(iid)
+        if penalty <= 0 or rec is None or rec.get("source") == "kb_evolution":
+            continue
+        rec["influence_weight"] = round(max(0.0, float(rec.get("influence_weight", 0.5)) - penalty), 4)
+        rec["quality_score"] = round(max(0.0, float(rec.get("quality_score") or 0.0) - penalty), 4)
+        n += 1
+    return n
 
 
 def load_accepted_additions(store) -> int:

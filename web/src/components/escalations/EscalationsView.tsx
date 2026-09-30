@@ -1,6 +1,6 @@
 "use client";
 
-import { Check } from "@phosphor-icons/react";
+import { ArrowUp, Check } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useId, useState } from "react";
 import useSWR from "swr";
@@ -63,6 +63,8 @@ function RowItem({ e, on, onSelect }: { e: EscalationItem; on: boolean; onSelect
           <span className="font-semibold">{e.tier}</span>
           <span>{e.team}</span>
           <span className="text-ink-3">{date(e.escalated_at)}</span>
+          {e.handed_off_to && <span className="text-ink-3">handed up to {e.handed_off_to.tier}</span>}
+          {e.handed_off_from && <span className="text-ink-3">from {e.handed_off_from.tier}</span>}
         </span>
       </button>
     </li>
@@ -131,7 +133,70 @@ function ResolveForm({ e, onDone }: { e: EscalationItem; onDone: (kb: KbUpdate |
   );
 }
 
-function Detail({ e, onResolved }: { e: EscalationItem; onResolved: () => void }) {
+function HandOffForm({ e, to, onDone }: { e: EscalationItem; to: string; onDone: (newId: number) => void }) {
+  const id = useId();
+  const [note, setNote] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const tooShort = note.trim().length < 10;
+
+  async function submit() {
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await postJSON<{ escalation: EscalationItem }>(`/escalations/${e.escalation_id}/hand-off`, {
+        note: note.trim(),
+      });
+      onDone(res.escalation.escalation_id);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <form
+      onSubmit={(ev) => {
+        ev.preventDefault();
+        if (!tooShort && !busy) submit();
+      }}
+      className="flex flex-col gap-4"
+    >
+      <Field label={`What did ${e.tier} try, and why does ${to} need it?`} htmlFor={`${id}-h`} hint={`${to} sees this note at the top of the packet.`}>
+        <TextArea
+          id={`${id}-h`}
+          rows={3}
+          value={note}
+          onChange={(ev) => setNote(ev.target.value)}
+          placeholder="e.g. Checked the connection pool and restarted the service; the timeouts continue. Needs database-level access."
+        />
+      </Field>
+      {error && (
+        <Notice tone="error" title="The hand-off did not go through">
+          {error}
+        </Notice>
+      )}
+      <div>
+        <Button type="submit" variant="secondary" loading={busy} disabled={tooShort} icon={<ArrowUp size={16} weight="bold" />}>
+          Hand off to {to}
+        </Button>
+      </div>
+    </form>
+  );
+}
+
+function Detail({
+  e,
+  onResolved,
+  onHandedOff,
+  onSelect,
+}: {
+  e: EscalationItem;
+  onResolved: () => void;
+  onHandedOff: (newId: number) => void;
+  onSelect: (id: number) => void;
+}) {
   const [kbNote, setKbNote] = useState<KbUpdate | null | undefined>(undefined);
   const p = e.packet;
   const rc = p.likely_root_cause;
@@ -161,6 +226,24 @@ function Detail({ e, onResolved }: { e: EscalationItem; onResolved: () => void }
           <span className="font-semibold">Why it was escalated:</span> {period(e.reason)}
         </p>
       </header>
+
+      {e.handed_off_from && (
+        <Notice tone="warn" title={`Handed up from ${e.handed_off_from.tier}, ${date(e.handed_off_from.at)}.`}>
+          {period(e.handed_off_from.note)}{" "}
+          <button type="button" onClick={() => onSelect(e.handed_off_from!.escalation_id)} className="font-semibold text-cobalt hover:underline">
+            See the {e.handed_off_from.tier} escalation
+          </button>
+        </Notice>
+      )}
+
+      {e.status === "handed_off" && e.handed_off_to && (
+        <Notice title={`Handed up to ${e.handed_off_to.tier}, ${date(e.handed_off_to.at)}.`}>
+          {period(e.handed_off_to.note)}{" "}
+          <button type="button" onClick={() => onSelect(e.handed_off_to!.escalation_id)} className="font-semibold text-cobalt hover:underline">
+            Open the {e.handed_off_to.tier} escalation
+          </button>
+        </Notice>
+      )}
 
       {e.status === "resolved" && e.resolution ? (
         <Notice title={`Resolved by ${e.resolution.resolved_by}, ${date(e.resolution.resolved_at)}.`}>
@@ -220,6 +303,18 @@ function Detail({ e, onResolved }: { e: EscalationItem; onResolved: () => void }
         />
       )}
 
+      {e.status === "open" && e.next_tier && (
+        <div className="border-b border-line">
+          <Disclosure title={`Cannot fix it at ${e.tier}? Hand it up to ${e.next_tier}`} meta="keeps this escalation as history">
+            <HandOffForm
+              e={e}
+              to={e.next_tier}
+              onDone={onHandedOff}
+            />
+          </Disclosure>
+        </div>
+      )}
+
       <div className="border-b border-line">
         <Disclosure title="Full escalation packet" meta={p.packet_id}>
           <EscalationPacket p={p} />
@@ -234,6 +329,7 @@ export function EscalationsView() {
   const [pick, setPick] = useState(fromUrl);
   const items = data?.escalations ?? [];
   const open = items.filter((e) => e.status === "open");
+  const passed = items.filter((e) => e.status === "handed_off");
   const done = items.filter((e) => e.status === "resolved");
   const selected =
     items.find((e) => e.escalation_id === pick.id) ??
@@ -245,7 +341,7 @@ export function EscalationsView() {
     <>
       <PageHeader
         title="Escalations"
-        lede="Incidents the system handed to L2 or L3. Read what was already tried, fix the problem, then record what fixed it here."
+        lede="Incidents the system handed to L2 or L3. Read what was already tried and fix the problem, or hand it up a tier if you cannot. Record what fixed it here."
       />
       {error ? (
         <ErrorState error={error} onRetry={() => mutate()} />
@@ -270,6 +366,16 @@ export function EscalationsView() {
                 <p className="text-[14px] text-ink-3">Nothing is waiting.</p>
               )}
             </section>
+            {passed.length > 0 && (
+              <section>
+                <SectionTitle meta={`${passed.length}`}>Handed up</SectionTitle>
+                <ul className="border-t border-line-2">
+                  {passed.map((e) => (
+                    <RowItem key={e.escalation_id} e={e} on={e === selected} onSelect={() => setPick({ id: e.escalation_id, session: null })} />
+                  ))}
+                </ul>
+              </section>
+            )}
             {done.length > 0 && (
               <section>
                 <SectionTitle meta={`${done.length}`}>Resolved</SectionTitle>
@@ -286,6 +392,11 @@ export function EscalationsView() {
               <Detail
                 key={selected.escalation_id}
                 e={selected}
+                onSelect={(id) => setPick({ id, session: null })}
+                onHandedOff={(id) => {
+                  setPick({ id, session: null });
+                  mutate();
+                }}
                 onResolved={() => {
                   setPick({ id: selected.escalation_id, session: null });
                   mutate();

@@ -1,4 +1,4 @@
-"""LLM client (FALLBACKS §1).
+"""LLM client.
 
 Providers:
   openai — any OpenAI-compatible /chat/completions endpoint (OpenAI, NVIDIA NIM, Ollama, LM Studio)
@@ -8,6 +8,10 @@ Providers:
 If the key is missing, the provider cannot be reached, or a call fails, `available` is False (or
 `complete` returns None) and callers switch to "Retrieval-only mode — LLM unavailable". The app
 never crashes because of the LLM. Responses are cached on disk to avoid repeated calls.
+
+A key that is set but does not work (wrong gateway URL, wrong model, expired key) is detected: after
+FAIL_LIMIT failed calls in a row the client reports itself unavailable, with the last error as the reason,
+so the UI shows the retrieval-only label instead of claiming full mode. It tries again after COOLDOWN_S.
 """
 from __future__ import annotations
 
@@ -24,6 +28,23 @@ from backend.config.settings import Settings, get_settings
 log = logging.getLogger(__name__)
 
 RETRIEVAL_ONLY_LABEL = "Retrieval-only mode — LLM unavailable"
+FAIL_LIMIT = 3  # consecutive failed calls before the client stops trying
+COOLDOWN_S = 120.0  # then it waits this long before trying again
+
+
+def _looks_like_key(value: str) -> bool:
+    """API keys are one ASCII token. Text with spaces, '#' or non-ASCII characters is a pasted comment or
+    placeholder (python-dotenv keeps `KEY=# comment` as the value), which would otherwise be sent as a bearer token."""
+    v = value.strip()
+    return v.isascii() and v.isprintable() and not any(c.isspace() for c in v) and not v.startswith("#")
+
+
+def _short_error(exc: Exception) -> str:
+    """HTTP status + reason for endpoint errors (401 = bad key, 404 = wrong URL or model), else the message."""
+    resp = getattr(exc, "response", None)
+    if resp is not None:
+        return f"HTTP {resp.status_code} from {resp.request.url.host}"
+    return f"{type(exc).__name__}: {exc}"[:160]
 
 
 class LLMClient:
@@ -34,7 +55,10 @@ class LLMClient:
         self.read_cache = read_cache
         self.provider = (self.s.llm_provider or "none").lower()
         self.model = self.s.llm_model
-        self.unavailable_reason: str | None = None
+        self._static_reason: str | None = None  # configuration problem: needs a restart
+        self._tripped_at: float | None = None  # runtime problem: calls kept failing
+        self.last_error: str | None = None
+        self.consecutive_failures = 0
         self.calls = 0
         self.cache_hits = 0
         self._lock = threading.Lock()
@@ -46,12 +70,29 @@ class LLMClient:
             self.unavailable_reason = "LLM disabled (LLM_PROVIDER=none)"
         elif self.provider == "openai" and not self.s.llm_api_key.strip():
             self.unavailable_reason = "LLM_API_KEY is not set"
+        elif self.provider == "openai" and not _looks_like_key(self.s.llm_api_key):
+            self.unavailable_reason = ("LLM_API_KEY does not look like a key (it has spaces or non-ASCII characters; "
+                                       "a comment on the same line in .env can end up as the value)")
         elif self.provider not in {"openai", "local"}:
             self.unavailable_reason = f"unknown LLM_PROVIDER '{self.provider}'"
         if self.unavailable_reason:
             log.warning("LLM unavailable: %s → retrieval-only mode", self.unavailable_reason)
 
     # ------------------------------------------------------------------ status
+    @property
+    def unavailable_reason(self) -> str | None:
+        if self._static_reason:
+            return self._static_reason
+        if self._tripped_at is not None:
+            if time.time() - self._tripped_at < COOLDOWN_S:
+                return f"the LLM endpoint keeps failing ({self.last_error}); retrying in a couple of minutes"
+            self._tripped_at, self.consecutive_failures = None, 0  # cooldown over: give it another go
+        return None
+
+    @unavailable_reason.setter
+    def unavailable_reason(self, value: str | None) -> None:
+        self._static_reason = value
+
     @property
     def available(self) -> bool:
         return self.unavailable_reason is None
@@ -62,7 +103,9 @@ class LLMClient:
 
     def status(self) -> dict:
         return {"available": self.available, "provider": self.provider, "model": self.model,
-                "reason": self.unavailable_reason, "calls": self.calls, "cache_hits": self.cache_hits}
+                "base_url": self.s.llm_base_url if self.provider == "openai" else None,
+                "reason": self.unavailable_reason, "last_error": self.last_error,
+                "calls": self.calls, "cache_hits": self.cache_hits}
 
     # ------------------------------------------------------------------ cache
     def _load_cache(self) -> None:
@@ -104,9 +147,15 @@ class LLMClient:
                 out = self._local_complete(system, prompt, max_tokens) if self.provider == "local" \
                     else self._http_complete(system, prompt, max_tokens)
             self.calls += 1
+            self.consecutive_failures = 0
+            self.last_error = None
             log.info("LLM call (%s) %.0f ms", purpose or "-", (time.perf_counter() - t) * 1000)
         except Exception as exc:  # noqa: BLE001 — degrade, never crash
-            log.warning("LLM call failed (%s): %s", purpose, exc)
+            self.last_error = _short_error(exc)
+            self.consecutive_failures += 1
+            if self.consecutive_failures >= FAIL_LIMIT and self._tripped_at is None:
+                self._tripped_at = time.time()
+            log.warning("LLM call failed (%s): %s", purpose, self.last_error)
             return None
         self._store(k, out)
         return out

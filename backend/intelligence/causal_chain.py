@@ -2,7 +2,7 @@
 
     Trigger → Technical Failure → Symptom → Business Impact → Resolution → Outcome
 
-Every link carries exactly one tag (documented rules, see docs/DESIGN.md §Causal chain):
+Every link carries exactly one tag (documented rules):
 
   observed — directly supported by real recorded data: a real related-change record, the
              verbatim symptom / resolution text of an original ticket, real timestamps

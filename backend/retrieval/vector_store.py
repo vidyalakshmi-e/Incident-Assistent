@@ -1,4 +1,4 @@
-"""ChromaDB wrapper (FALLBACKS §6: if unreachable, callers fall back to BM25-only)."""
+"""ChromaDB wrapper (if unreachable, callers fall back to BM25-only)."""
 from __future__ import annotations
 
 import logging

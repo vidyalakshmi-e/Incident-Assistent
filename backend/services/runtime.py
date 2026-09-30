@@ -38,9 +38,10 @@ class Runtime:
     @cached_property
     def store(self):
         from backend.services.knowledge_store import KnowledgeStore
-        from backend.knowledge.evolution import load_accepted_additions
+        from backend.knowledge.evolution import load_accepted_additions, load_feedback_penalties
         st = KnowledgeStore(self.s)
         load_accepted_additions(st)
+        load_feedback_penalties(st)
         return st
 
     @cached_property

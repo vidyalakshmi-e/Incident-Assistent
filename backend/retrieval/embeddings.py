@@ -1,4 +1,4 @@
-"""Embedding providers (FALLBACKS §2).
+"""Embedding providers (a failing provider falls back to the local model).
 
 Default: local sentence-transformers all-MiniLM-L6-v2. External providers (OpenAI, NVIDIA NIM)
 are used only when configured *and* a key is present; any failure falls back to the local model

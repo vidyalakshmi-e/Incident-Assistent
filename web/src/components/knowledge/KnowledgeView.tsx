@@ -107,7 +107,18 @@ export function KnowledgeView() {
           <section className="lg:col-span-5">
             <SectionTitle meta={`${ev.data.pending_review.length} waiting`}>Manual review</SectionTitle>
             {ev.data.pending_review.length === 0 ? (
-              <p className="text-[14px] text-ink-3">No records are waiting for review.</p>
+              <div className="flex flex-col gap-2 text-[14px] leading-relaxed text-ink-2">
+                <p>
+                  Nothing is waiting. This is the safety gate for new knowledge: a fix that scores below{" "}
+                  <span className="num text-ink">{fixed(ev.data.quality_threshold)}</span> is held here instead of being
+                  added or thrown away.
+                </p>
+                <p className="text-ink-3">
+                  So far {ev.data.gate.passed} passed the gate, {ev.data.gate.held} were held
+                  {ev.data.gate.rejected ? `, ${ev.data.gate.rejected} rejected` : ""}. A vague note such as
+                  &ldquo;restarted&rdquo; or &ldquo;closed&rdquo; is what lands here; a specific fix with a cause passes.
+                </p>
+              </div>
             ) : (
               <ul className="flex flex-col">
                 {ev.data.pending_review.map((r) => (

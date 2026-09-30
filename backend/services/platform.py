@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import threading
+import uuid
 from datetime import datetime, timedelta
 from functools import cached_property
 
@@ -15,8 +16,8 @@ from backend.evidence.chain import assemble
 from backend.intelligence.correlation import PRESETS
 from backend.knowledge.evolution import KBEvolution
 from backend.models.entities import (
-    CorrelationAlert, EscalationRecord, EscalationResolution, Incident, IncidentFeedback, IncidentFingerprint,
-    KBEvolutionEvent, KnowledgeQuality,
+    CorrelationAlert, EscalationHandoff, EscalationRecord, EscalationResolution, Incident, IncidentFeedback,
+    IncidentFingerprint, KBEvolutionEvent, KnowledgeQuality,
 )
 from backend.rag.llm import RETRIEVAL_ONLY_LABEL
 from backend.rag.resolution import rank_resolutions
@@ -260,26 +261,74 @@ class Platform:
         return _jsonable({"packet": state["escalation"], "agent_messages": state.get("messages", [])})
 
     # ------------------------------------------------------------------ escalation response (L2/L3)
-    @staticmethod
-    def _escalation_item(esc: EscalationRecord, res: EscalationResolution | None) -> dict:
+    def _next_tier(self, tier: str) -> str | None:
+        tiers = self.rt.s.tiers
+        return tiers[tiers.index(tier) + 1] if tier in tiers and tiers.index(tier) + 1 < len(tiers) else None
+
+    def _escalation_item(self, esc: EscalationRecord, res: EscalationResolution | None,
+                         out: EscalationHandoff | None = None, into: EscalationHandoff | None = None) -> dict:
+        """status: open (waiting for this tier) | handed_off (this tier passed it up) | resolved."""
+        status = "resolved" if res else ("handed_off" if out else "open")
         return {"escalation_id": esc.id, "incident_id": esc.incident_id, "session_id": esc.session_id,
                 "tier": esc.tier, "team": esc.team, "expertise": esc.expertise, "reason": esc.reason,
-                "escalated_at": esc.created_at.isoformat(), "status": "resolved" if res else "open",
+                "escalated_at": esc.created_at.isoformat(), "status": status,
+                "next_tier": self._next_tier(esc.tier) if status == "open" else None,
                 "packet": esc.packet,
+                "handed_off_to": None if out is None else {
+                    "escalation_id": out.to_escalation_id, "tier": out.to_tier, "note": out.note,
+                    "at": out.created_at.isoformat()},
+                "handed_off_from": None if into is None else {
+                    "escalation_id": into.from_escalation_id, "tier": into.from_tier, "note": into.note,
+                    "at": into.created_at.isoformat()},
                 "resolution": None if res is None else {
                     "resolved_by": res.resolved_by, "resolution_notes": res.resolution_notes,
                     "root_cause": res.root_cause, "kb_status": res.kb_status,
                     "resolved_at": res.resolved_at.isoformat()}}
 
     def escalations(self) -> dict:
-        """Every persisted escalation, open ones first, newest first within each group."""
+        """Every persisted escalation: open first, then handed-off, then resolved; newest first within each."""
         with session_scope() as s:
             rows = s.execute(select(EscalationRecord, EscalationResolution).outerjoin(
                 EscalationResolution, EscalationResolution.escalation_id == EscalationRecord.id)
                 .order_by(EscalationRecord.created_at.desc())).all()
-            items = [self._escalation_item(e, r) for e, r in rows]
-        items.sort(key=lambda i: i["status"] != "open")  # stable sort keeps newest first inside each group
+            hands = s.execute(select(EscalationHandoff)).scalars().all()
+            out_of = {h.from_escalation_id: h for h in hands}
+            into = {h.to_escalation_id: h for h in hands}
+            items = [self._escalation_item(e, r, out_of.get(e.id), into.get(e.id)) for e, r in rows]
+        rank = {"open": 0, "handed_off": 1, "resolved": 2}
+        items.sort(key=lambda i: rank[i["status"]])  # stable sort keeps newest first inside each group
         return _jsonable({"open": sum(i["status"] == "open" for i in items), "escalations": items})
+
+    def hand_off_escalation(self, escalation_id: int, req) -> dict:
+        """The current tier could not fix it and passes it up (L2 → L3). The old escalation stays as history
+        and a new open one is created for the next tier, carrying the packet plus what this tier tried."""
+        note = req.note.strip()
+        with session_scope() as s:
+            esc = s.get(EscalationRecord, escalation_id)
+            if esc is None:
+                raise KeyError(f"escalation {escalation_id}")
+            if s.get(EscalationResolution, escalation_id) is not None:
+                raise ValueError(f"escalation {escalation_id} is already resolved")
+            if s.get(EscalationHandoff, escalation_id) is not None:
+                raise ValueError(f"escalation {escalation_id} was already handed off")
+            to_tier = self._next_tier(esc.tier)
+            if to_tier is None:
+                raise ValueError(f"{esc.tier} is the last tier ({' → '.join(self.rt.s.tiers)}); record the fix instead")
+            packet = {**(esc.packet or {}), "packet_id": f"ESC-{uuid.uuid4().hex[:8]}",
+                      "created_at": datetime.utcnow().isoformat(), "tier": to_tier,
+                      "tier_reasons": [f"handed off by {esc.tier}: {note}", *(esc.packet or {}).get("tier_reasons", [])],
+                      "handed_off_from": {"escalation_id": esc.id, "tier": esc.tier, "team": esc.team, "note": note}}
+            new = EscalationRecord(incident_id=esc.incident_id, session_id=esc.session_id, tier=to_tier, team=esc.team,
+                                   expertise=esc.expertise, reason=f"{esc.tier} could not resolve it: {note}", packet=packet)
+            s.add(new)
+            s.flush()
+            hand = EscalationHandoff(from_escalation_id=esc.id, to_escalation_id=new.id, incident_id=esc.incident_id,
+                                     from_tier=esc.tier, to_tier=to_tier, note=note)
+            s.add(hand)
+            s.flush()
+            item = self._escalation_item(new, None, None, hand)
+            previous = self._escalation_item(esc, None, hand, None)
+        return _jsonable({"escalation": item, "previous": previous})
 
     def resolve_escalation(self, escalation_id: int, req) -> dict:
         """The next tier records what fixed an escalated incident. A live incident is marked resolved
@@ -317,7 +366,9 @@ class Platform:
         with session_scope() as s:
             res = s.get(EscalationResolution, escalation_id)
             res.kb_status = kb["status"] if kb else None
-            item = self._escalation_item(s.get(EscalationRecord, escalation_id), res)
+            item = self._escalation_item(s.get(EscalationRecord, escalation_id), res,
+                                         into=s.execute(select(EscalationHandoff).where(
+                                             EscalationHandoff.to_escalation_id == escalation_id)).scalars().first())
         return _jsonable({"escalation": item, "kb_update": kb})
 
     # ------------------------------------------------------------------ feedback + KB evolution
@@ -328,11 +379,14 @@ class Platform:
                                    pattern_correct=req.pattern_correct,
                                    troubleshooting_resolved=req.troubleshooting_resolved,
                                    escalation_appropriate=req.escalation_appropriate, comment=req.comment))
-        out = {"recorded": True, "penalised_records": [], "kb_update": None}
+        out = {"recorded": True, "penalised_records": [], "influence_changes": [], "kb_update": None}
         negative = {"wrong resolution", "outdated", "wrong incident"} & set(req.reasons)
         if (req.helpful is False or negative) and req.supporting_incident_ids:
-            out["penalised_records"] = self.evolution.apply_feedback_penalty(
-                req.supporting_incident_ids, next(iter(negative), "not helpful"))
+            with self.rt.lock:
+                changes = self.evolution.apply_feedback_penalty(
+                    req.supporting_incident_ids, next(iter(negative), "not helpful"))
+            out["influence_changes"] = changes
+            out["penalised_records"] = [c["incident_id"] for c in changes]
         row = incident_row(req.incident_id)
         if req.process_kb_update and row and row.get("origin") == "live" and row.get("status") == "Resolved":
             with self.rt.lock:
@@ -379,20 +433,46 @@ class Platform:
                 Incident.origin.in_(["kb_evolution", "live"]))).all()
             ev = [{"incident_id": e.incident_id, "stage": e.stage, "status": e.status, "details": e.details,
                    "at": e.created_at.isoformat()} for e in events]
+            gate_counts = dict(s.execute(select(KBEvolutionEvent.status, func.count()).where(
+                KBEvolutionEvent.stage == "quality_rescored").group_by(KBEvolutionEvent.status)).all())
             recs = [{"incident_id": i.incident_id, "title": i.title, "resolution_notes": i.resolution_notes,
                      "family_id": i.family_id, "in_kb": i.in_kb, "provenance": i.provenance, "quality": q.score,
                      "tier": q.tier, "flags": q.flags, "review_status": q.review_status,
                      "added_at": q.updated_at.isoformat() if q.updated_at else None} for i, q in added]
         return _jsonable({"events": ev, "recently_added": [r for r in recs if r["in_kb"]],
                           "pending_review": [r for r in recs if r["review_status"] == "pending_review"],
+                          "quality_threshold": self.evolution.threshold,
+                          "gate": {"passed": gate_counts.get("pass", 0), "held": gate_counts.get("below_threshold", 0),
+                                   "rejected": sum(r["review_status"] == "rejected" for r in recs)},
                           "pending_candidates": self.evolution.pending_candidates(),
                           "mode": "on-demand per resolved incident + documented nightly batch (scripts/kb_evolution_batch.py)"})
 
     # ------------------------------------------------------------------ incidents / evidence
+    def _historical_row(self, incident_id: str) -> tuple[dict, dict | None] | None:
+        """A historical knowledge-base incident lives in the in-memory store, not in the SQL `incidents`
+        table (that only holds live and evolved incidents), so the nearest-incident links need this path."""
+        if self.rt.store.get(incident_id) is None:
+            return None
+        rec = self.rt.store.get(incident_id)
+        meta = self.rt.store.metadata_view(incident_id)
+        fp = self.rt.patterns.fingerprint_of(incident_id)
+        row = {"incident_id": incident_id, "title": rec.get("title"), "description": rec.get("description"),
+               "status": meta.get("status"), "priority": meta.get("priority"), "open_time": meta.get("open_time"),
+               "impact_scope": meta.get("impact_scope"), "origin": "historical"}
+        return row, (fp.values if fp else None)
+
     def incident(self, incident_id: str) -> dict | None:
         row = incident_row(incident_id)
         if row is None:
-            return None
+            hist = self._historical_row(incident_id)
+            if hist is None:
+                return None
+            row, fp_values = hist
+            fam = self.rt.patterns.family_of(incident_id)
+            return _jsonable({"incident": row, "fingerprint": fp_values, "knowledge_quality": None,
+                              "family": fam.summary() if fam else None,
+                              "causal_chain": self.agents.pattern_agent.causal_chain(incident_id),
+                              "strategy_key": self.agents.sidx.strategy_of.get(incident_id), "escalations": []})
         with session_scope() as s:
             fp = s.get(IncidentFingerprint, incident_id)
             kq = s.get(KnowledgeQuality, incident_id)

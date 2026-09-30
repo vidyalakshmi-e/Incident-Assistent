@@ -4,7 +4,7 @@ Why RRF: the two retrievers produce scores on incomparable scales (cosine vs. BM
 *ranks*, needs no score normalisation, and is robust when one retriever is missing (which is
 exactly the ChromaDB-unavailable fallback). k=60 is the value from Cormack et al. (2009).
 
-Fallbacks handled here (docs/FALLBACKS.md):
+Fallbacks handled here:
   §2 embedding provider → handled inside EmbeddingService (local model)
   §3 reranker unavailable → fusion order, labelled "unreranked"
   §6 ChromaDB unreachable → BM25-only, labelled "keyword-only (semantic search unavailable)"
