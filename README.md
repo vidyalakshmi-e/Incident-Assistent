@@ -1,5 +1,5 @@
 # Incident Intelligence Platform
-
+Github link: "https://github.com/vidyalakshmi-e/Incident-Assistent"
 **An AI-powered Incident Intelligence and Troubleshooting platform** that combines hybrid retrieval with
 historical incident pattern discovery (including causal-chain reasoning), novel-incident detection,
 live incident correlation, resolution intelligence, transparent evidence-backed recommendations, and a
